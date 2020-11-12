@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
+             xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
+             x:Class="Collectio.Views.ListItemsPage"
+             Style="{StaticResource PageStyle}"
+             Title="{Binding Title}"
+             x:DataType="viewModels:ItemsViewModel">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="Add_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconAdd}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+
+        <RefreshView x:Name="RefreshItemsView"
+                     Padding="10"
+                     Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding IsRefreshing}">
+
+            <CollectionView x:Name="ItemsView"
+                            SelectionChanged="ItemsView_OnSelectionChanged" SelectionMode="Single"
+                            ItemsSource="{Binding Items}">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Item">
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Edit"
+                                               BackgroundColor="LightGreen">
+                                        <SwipeItem.IconImageSource>
+                                            <FontImageSource FontFamily="FA-S" Glyph="&#xf044;" />
+                                        </SwipeItem.IconImageSource>
+                                    </SwipeItem>
+                                    <SwipeItem Text="Delete"
+                                               BackgroundColor="Red">
+                                        <SwipeItem.IconImageSource>
+                                            <FontImageSource Color="Red" FontFamily="FA-S" Glyph="&#xf1f8;" />
+                                        </SwipeItem.IconImageSource>
+                                    </SwipeItem>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+
+                            <Frame HeightRequest="80" HasShadow="False" BackgroundColor="LightGray" CornerRadius="10">
+                                <Grid ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="80" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HeightRequest="80"
+                                           BackgroundColor="Aquamarine" />
+                                    <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}"
+                                           VerticalOptions="Center" VerticalTextAlignment="Center"
+                                           FontAttributes="Bold" TextDecorations="Underline" />
+                                    <Label Grid.Column="1" Grid.Row="1" Text="Descripción(?)"
+                                           VerticalOptions="Center" VerticalTextAlignment="Center" />
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <Grid>
+                        <Label Text="{x:Static culture:Strings.NoItems}"
+                               Style="{StaticResource LabelStyle}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+                    </Grid>
+                </CollectionView.EmptyView>
+
+            </CollectionView>
+        </RefreshView>
+    </ContentPage.Content>
+</ContentPage>

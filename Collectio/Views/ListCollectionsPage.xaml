@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
+             xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
+             xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
+             x:Class="Collectio.Views.ListCollectionsPage"
+             Title="{x:Static culture:Strings.Collections}"
+             Style="{DynamicResource PageStyle}"
+             x:DataType="viewModels:CollectionsViewModel">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="Add_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconAdd}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <RefreshView x:Name="RefreshCollectionView"
+                     Padding="10"
+                     Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding IsRefreshing}">
+
+            <CollectionView x:Name="CollectionsCollectionView"
+                            SelectionChanged="CollectionView_OnSelectionChanged" SelectionMode="Single"
+                            ItemsSource="{Binding CollectionGroups}"
+                            IsGrouped="True">
+
+                <CollectionView.GroupFooterTemplate>
+                    <DataTemplate x:DataType="models:CollectionGroup">
+                        <Grid Padding="0, 10">
+                            <Label
+                                Text="{Binding Count,
+                            StringFormat={x:Static culture:Strings.CollectionsCount}}"
+                                Style="{StaticResource LabelStyle}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.GroupFooterTemplate>
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate x:DataType="models:CollectionGroup">
+                        <Frame HasShadow="False" BackgroundColor="LightGray" CornerRadius="5" Padding="5">
+                            <Label Text="{Binding Name}"
+                                   FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"
+                                   FontAttributes="Bold" />
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Collection">
+                        <SwipeView Background="Transparent">
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItemView Invoked="Edit_Invoked">
+                                        <Grid Background="Transparent" Padding="20, 0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Image Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center">
+                                                <Image.Source>
+                                                    <FontImageSource FontFamily="FA-S"
+                                                                     Glyph="{StaticResource IconEdit}"
+                                                                     Color="LimeGreen" />
+                                                </Image.Source>
+                                            </Image>
+                                            <Label Grid.Row="1" VerticalOptions="Start" HorizontalOptions="Center"
+                                                   Text="Edit" TextColor="LimeGreen" />
+                                        </Grid>
+                                    </SwipeItemView>
+                                    <SwipeItem Invoked="Delete_Invoked"
+                                               Text="Delete"
+                                               BackgroundColor="Red">
+                                        <SwipeItem.IconImageSource>
+                                            <FontImageSource Color="Red" FontFamily="FA-S"
+                                                             Glyph="{StaticResource IconDelete}" />
+                                        </SwipeItem.IconImageSource>
+                                    </SwipeItem>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+
+                            <Frame HeightRequest="80" HasShadow="False" BackgroundColor="LightGray" CornerRadius="10">
+                                <Grid ColumnSpacing="10" RowSpacing="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="80" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <Ellipse Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                             HorizontalOptions="Center"
+                                             VerticalOptions="Center"
+                                             WidthRequest="80"
+                                             HeightRequest="80"
+                                             Stroke="#FFFF9900"
+                                             StrokeThickness="4" />
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HeightRequest="80"
+                                           HorizontalOptions="Center" Aspect="AspectFill"
+                                           VerticalOptions="Center">
+                                        <Image.Clip>
+                                            <EllipseGeometry Center="35,35"
+                                                             RadiusX="35"
+                                                             RadiusY="35" />
+                                        </Image.Clip>
+                                        <Image.Source>
+                                            <FileImageSource File="{Binding File}" />
+                                        </Image.Source>
+                                    </Image>
+                                    <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}"
+                                           VerticalOptions="Center" VerticalTextAlignment="Center"
+                                           FontAttributes="Bold" TextDecorations="Underline" MaxLines="1" />
+                                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding Description}"
+                                           VerticalTextAlignment="Center" MaxLines="3" />
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <Grid>
+                        <Label Text="{x:Static culture:Strings.NoCollections}"
+                               Style="{StaticResource LabelStyle}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+                    </Grid>
+                </CollectionView.EmptyView>
+
+            </CollectionView>
+
+        </RefreshView>
+
+    </ContentPage.Content>
+
+</ContentPage>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
+             xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
+             x:Class="Collectio.Views.ProfilePage"
+             Title="{x:Static culture:Strings.Profile}"
+             Style="{DynamicResource PageStyle}"
+             x:DataType="models:User">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="Settings_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconSettings}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid Padding="10" RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Ellipse x:Name="ProfileImageBorder" IsVisible="False"
+                         Grid.Row="0"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         WidthRequest="248"
+                         HeightRequest="248"
+                         Stroke="#FFFF9900"
+                         StrokeThickness="4" />
+                <ImageButton x:Name="ProfileImage" Grid.Row="0"
+                             Clicked="SelectImage_OnClicked" Aspect="AspectFill"
+                             Style="{StaticResource ProfileImageStyle}"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center">
+                    <ImageButton.Source>
+                        <FileImageSource File="{Binding File}" />
+                    </ImageButton.Source>
+                    <ImageButton.Clip>
+                        <EllipseGeometry Center="120,120"
+                                         RadiusX="120"
+                                         RadiusY="120" />
+                    </ImageButton.Clip>
+                </ImageButton>
+
+                <StackLayout x:Name="ProfileData" Grid.Row="1" VerticalOptions="Center">
+                    <Entry Text="{Binding Nickname}" Placeholder="Nickname"
+                           VerticalOptions="Center" />
+                    <Label Text="Mail" VerticalOptions="Center" />
+                </StackLayout>
+
+                <Button x:Name="LogoutButton" Text="{x:Static culture:Strings.Logout}"
+                        Grid.Row="2"
+                        Style="{StaticResource LogoutButtonStyle}"
+                        VerticalOptions="End"
+                        HorizontalOptions="Center" />
+                
+                
+                <Label x:Name="SigninInfo" Grid.Row="1" Text="Hello, world!"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center" />
+
+                <Button x:Name="SigninApple" Text="{x:Static culture:Strings.LoginApple}"
+                        Style="{StaticResource LoginButtonStyle}"
+                        HorizontalOptions="Center"
+                        Clicked="Apple_OnClicked"
+                        Grid.Row="2">
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Color="{AppThemeBinding Light={StaticResource LightBackgroundColor},
+                     Dark={StaticResource DarkBackgroundColor}}"
+                            FontFamily="FA-B" Glyph="{StaticResource IconApple}" />
+                    </Button.ImageSource>
+                </Button>
+
+                <Button x:Name="SigninGoogle" Text="{x:Static culture:Strings.LoginGoogle}"
+                        Style="{StaticResource LoginButtonStyle}"
+                        HorizontalOptions="Center"
+                        Clicked="Google_OnClicked"
+                        Grid.Row="3">
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Color="{AppThemeBinding Light={StaticResource LightBackgroundColor},
+                     Dark={StaticResource DarkBackgroundColor}}"
+                            FontFamily="FA-B" Glyph="{StaticResource IconGoogle}" />
+                    </Button.ImageSource>
+                </Button>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>

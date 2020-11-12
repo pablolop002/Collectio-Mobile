@@ -1,0 +1,4 @@
+NSCameraUsageDescription = "The app needs Camera access in order to take photos from your colection items.";
+NSMicrophoneUsageDescription = "Example";
+NSPhotoLibraryAddUsageDescription = "The apps needs Photo Library Write access in order to add your taken photos.";
+NSPhotoLibraryUsageDescription = "The apps need Photo Library Read access in order to take your collection items from Photos.";

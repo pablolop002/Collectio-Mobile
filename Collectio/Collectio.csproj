@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>8</LangVersion>
+        <NeutralLanguage>es</NeutralLanguage>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DebugType>pdbonly</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AppCenter" Version="3.4.3" />
+        <PackageReference Include="Microsoft.AppCenter.Analytics" Version="3.4.3" />
+        <PackageReference Include="Microsoft.AppCenter.Crashes" Version="3.4.3" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+        <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
+        <PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre3" />
+        <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\Fonts" />
+      <Folder Include="Resources\Images" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\Fonts\fa-brands-400.ttf" />
+      <EmbeddedResource Include="Resources\Fonts\fa-brands-400.ttf" />
+      <None Remove="Resources\Fonts\fa-regular-400.ttf" />
+      <EmbeddedResource Include="Resources\Fonts\fa-regular-400.ttf" />
+      <None Remove="Resources\Fonts\fa-solid-900.ttf" />
+      <EmbeddedResource Include="Resources\Fonts\fa-solid-900.ttf" />
+      <EmbeddedResource Update="Resources\Culture\Strings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Culture\Strings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Strings.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+</Project>

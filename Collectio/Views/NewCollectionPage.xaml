@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
+             xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
+             x:Class="Collectio.Views.NewCollectionPage"
+             Title="{ x:Static culture:Strings.NewCollection}"
+             Style="{StaticResource PageStyle}">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid Padding="10" RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+
+                <CollectionView x:Name="CategorySelector" SelectionMode="Single"
+                                SelectionChanged="CategorySelector_OnSelectionChanged"
+                                Grid.Row="0" Grid.RowSpan="5">
+
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Group">
+                            <Frame HeightRequest="80" HasShadow="False" BackgroundColor="LightGray" CornerRadius="10">
+                                <Grid ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="80" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HeightRequest="80"
+                                           BackgroundColor="Aquamarine" />
+                                    <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}"
+                                           VerticalOptions="Center" VerticalTextAlignment="Center" FontSize="Title"
+                                           FontAttributes="Bold" TextDecorations="Underline" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                    <CollectionView.EmptyView>
+                        <Grid>
+                            <Label Text="{x:Static culture:Strings.NoGroups}"
+                                   Style="{StaticResource LabelStyle}"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center" />
+                        </Grid>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+
+                <Ellipse x:Name="ImageBorder" IsVisible="False"
+                         Grid.Row="0"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         WidthRequest="248"
+                         HeightRequest="248"
+                         Stroke="#FFFF9900"
+                         StrokeThickness="4" />
+                <ImageButton x:Name="Image" Grid.Row="0" IsVisible="False"
+                             Clicked="SelectImage_OnClicked" Aspect="AspectFill"
+                             Style="{StaticResource ProfileImageStyle}"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center">
+                    <ImageButton.Clip>
+                        <EllipseGeometry Center="120,120"
+                                         RadiusX="120"
+                                         RadiusY="120" />
+                    </ImageButton.Clip>
+                </ImageButton>
+
+                <Label x:Name="SelectedCategory" HorizontalOptions="Center" VerticalOptions="End" IsVisible="False"
+                       Grid.Row="1" FontAttributes="Bold" />
+
+                <Entry x:Name="Name" VerticalOptions="Center" IsVisible="False"
+                       Placeholder="{x:Static culture:Strings.Name}"
+                       Grid.Row="2" />
+
+                <Editor x:Name="Description" IsVisible="False"
+                        Placeholder="{x:Static culture:Strings.Description}"
+                        Grid.Row="3" />
+
+                <StackLayout Grid.Row="4" Orientation="Horizontal" VerticalOptions="Start" Padding="5, 0, 0, 0">
+                    <Label x:Name="PrivateLabel" Text="{x:Static culture:Strings.Private}"
+                           HorizontalOptions="StartAndExpand"
+                           VerticalTextAlignment="Center" VerticalOptions="Center" IsVisible="False" />
+                    <CheckBox x:Name="Private" HorizontalOptions="End" VerticalOptions="Start" IsVisible="False"
+                              Color="{StaticResource PrimaryColor}" />
+                </StackLayout>
+
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

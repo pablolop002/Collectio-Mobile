@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Collections" xml:space="preserve">
+        <value>Colecciones</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Perfil</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Cerrar Sesión</value>
+    </data>
+    <data name="Ok" xml:space="preserve">
+        <value>Vale</value>
+    </data>
+    <data name="Error" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="NoItems" xml:space="preserve">
+        <value>No tienes elementos en la colección, ¡prueba a añadir uno!</value>
+    </data>
+    <data name="NoCollections" xml:space="preserve">
+        <value>No tienes colecciones, ¡prueba a crear una!</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Cancelar</value>
+    </data>
+    <data name="Create" xml:space="preserve">
+        <value>Crear</value>
+    </data>
+    <data name="Import" xml:space="preserve">
+        <value>Importar</value>
+    </data>
+    <data name="NewCollection" xml:space="preserve">
+        <value>Nueva colección</value>
+    </data>
+    <data name="EmptyCollectionName" xml:space="preserve">
+        <value>El nombre de la colección no puede estar vacío</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Inicio de Sesión</value>
+    </data>
+    <data name="LoginGoogle" xml:space="preserve">
+        <value>Iniciar sesión con Google</value>
+    </data>
+    <data name="LoginApple" xml:space="preserve">
+        <value>Iniciar sesión con Apple</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Nombre</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Descripción</value>
+    </data>
+    <data name="Private" xml:space="preserve">
+        <value>Privado</value>
+    </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Ajustes</value>
+    </data>
+    <data name="NoGroups" xml:space="preserve">
+        <value>Ups, parece que ocurrio un problema. No hay grupos disponibles.</value>
+    </data>
+    <data name="EditCollection" xml:space="preserve">
+        <value>Editar colección</value>
+    </data>
+    <data name="Confirm" xml:space="preserve">
+        <value>Confirmar</value>
+    </data>
+    <data name="CollectionsCount" xml:space="preserve">
+        <value>Colecciones en el grupo: {0}.</value>
+    </data>
+    <data name="NewItem" xml:space="preserve">
+        <value>Nuevo item</value>
+    </data>
+    <data name="Camera" xml:space="preserve">
+        <value>Camara</value>
+    </data>
+    <data name="Gallery" xml:space="preserve">
+        <value>Galería</value>
+    </data>
+    <data name="SureQuestion" xml:space="preserve">
+        <value>¿Estas seguro?</value>
+    </data>
+    <data name="EditItem" xml:space="preserve">
+        <value>Editar elemento</value>
+    </data>
+    <data name="DeleteCollection" xml:space="preserve">
+        <value>Eliminar una colección implica la eliminación de lodos los elementos que contiene y no podras recuperarlos</value>
+    </data>
+    <data name="DeleteItem" xml:space="preserve">
+        <value>Eliminar un elemento y sus imagenes. Esto implica que no podras recuperarlo</value>
+    </data>
+</root>

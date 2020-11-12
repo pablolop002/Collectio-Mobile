@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
+             x:Class="Collectio.Views.SettingsPage"
+             Title="{x:Static culture:Strings.Settings}"
+             Style="{StaticResource PageStyle}">
+    
+    <ContentPage.Content>
+        
+        <StackLayout Padding="10" Spacing="10">
+            
+            <StackLayout Orientation="Horizontal">
+                <Label Text="AppCenter" FontSize="Title" TextDecorations="Underline" VerticalTextAlignment="Center"
+                       Style="{StaticResource LabelStyle}" HorizontalOptions="StartAndExpand" />
+                <CheckBox x:Name="AppCenterStatus" Color="{StaticResource PrimaryColor}"
+                          CheckedChanged="AppCenterStatus_OnCheckedChanged" />
+            </StackLayout>
+            <Label Text="Descripción" Style="{StaticResource LabelStyle}" />
+
+            <Label Text="Backup" FontSize="Title" TextDecorations="Underline" Style="{StaticResource LabelStyle}" />
+            <Label Text="Descripción" Style="{StaticResource LabelStyle}" />
+            <Button Text="Backup"
+                    Style="{StaticResource ButtonStyle}"
+                    Clicked="Backup_OnClicked" />
+            
+            <!--<Label Text="Comentarios" FontSize="Title" TextDecorations="Underline" Style="{StaticResource LabelStyle}" />
+            <Label Text="Descripción" Style="{StaticResource LabelStyle}" />
+            <Button Text="Report Error"
+                    Style="{StaticResource ButtonStyle}"
+                    Clicked="ReportError_OnClicked" />-->
+            
+        </StackLayout>
+        
+    </ContentPage.Content>
+    
+</ContentPage>

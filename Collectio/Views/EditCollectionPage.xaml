@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
+             xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
+             x:Class="Collectio.Views.EditCollectionPage"
+             Style="{DynamicResource PageStyle}"
+             Title="{x:Static culture:Strings.EditCollection}"
+             x:DataType="models:Collection">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="Done_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconDone}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid Padding="10" RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+
+                <Ellipse Grid.Row="0"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         WidthRequest="248"
+                         HeightRequest="248"
+                         Stroke="#FFFF9900"
+                         StrokeThickness="4" />
+                <ImageButton x:Name="Image" Grid.Row="0"
+                             Clicked="SelectImage_OnClicked"
+                             Style="{StaticResource ProfileImageStyle}" Aspect="AspectFill"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center">
+                    <ImageButton.Source>
+                        <FileImageSource File="{Binding File}" />
+                    </ImageButton.Source>
+                    <ImageButton.Clip>
+                        <EllipseGeometry Center="120,120"
+                                         RadiusX="120"
+                                         RadiusY="120" />
+                    </ImageButton.Clip>
+                </ImageButton>
+
+                <Entry x:Name="Name" VerticalOptions="End"
+                       Text="{Binding Name}"
+                       Grid.Row="1" />
+
+                <Editor x:Name="Description"
+                        Placeholder="{x:Static culture:Strings.Description}"
+                        Text="{Binding Description}"
+                        Grid.Row="2" />
+
+                <StackLayout Grid.Row="3" Orientation="Horizontal" VerticalOptions="Start" Padding="5, 0, 0, 0">
+                    <Label Text="{x:Static culture:Strings.Private}"
+                           HorizontalOptions="StartAndExpand"
+                           VerticalTextAlignment="Center" VerticalOptions="Center" />
+                    <CheckBox x:Name="Private" HorizontalOptions="End" VerticalOptions="Start"
+                              IsChecked="{Binding Private}"
+                              Color="{StaticResource PrimaryColor}" />
+                </StackLayout>
+
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

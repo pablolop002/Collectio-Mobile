@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Collectio.App">
+    <Application.Resources>
+        <!-- Icons -->
+        <x:String x:Key="IconHome">&#xf015;</x:String>
+        <x:String x:Key="IconFriends">&#xf0c0;</x:String>
+        <x:String x:Key="IconProfile">&#xf007;</x:String>
+        <x:String x:Key="IconSettings">&#xf085;</x:String>
+        <x:String x:Key="IconEdit">&#xf044;</x:String>
+        <x:String x:Key="IconDelete">&#xf1f8;</x:String>
+        <x:String x:Key="IconCopy">&#xf0c5;</x:String>
+        <x:String x:Key="IconAdd">&#xf067;</x:String>
+        <x:String x:Key="IconDone">&#xf00c;</x:String>
+        <x:String x:Key="IconShare">&#xf14d;</x:String>
+        <x:String x:Key="IconApple">&#xf179;</x:String>
+        <x:String x:Key="IconGoogle">&#xf1a0;</x:String>
+
+        <!-- General Colors -->
+        <Color x:Key="PrimaryColor">DarkCyan</Color>
+
+        <!-- Light Colors -->
+        <Color x:Key="LightSecondaryColor">DarkCyan</Color>
+        <Color x:Key="LightSecondaryTextColor">WhiteSmoke</Color>
+        <Color x:Key="LightBackgroundColor">WhiteSmoke</Color>
+        <Color x:Key="LightTextColor">Black</Color>
+
+        <!-- Dark Colors -->
+        <Color x:Key="DarkSecondaryColor">Cyan</Color>
+        <Color x:Key="DarkSecondaryTextColor">Black</Color>
+        <Color x:Key="DarkBackgroundColor">Black</Color>
+        <Color x:Key="DarkTextColor">WhiteSmoke</Color>
+
+        <!-- Default Styles -->
+        <Style x:Key="ShellStyle" TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="{StaticResource PrimaryColor}" />
+            <Setter Property="Shell.ForegroundColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
+                     Dark={StaticResource DarkTextColor}}" />
+            <Setter Property="Shell.TitleColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
+                     Dark={StaticResource DarkTextColor}}" />
+            <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource PrimaryColor}" />
+            <Setter Property="Shell.TabBarForegroundColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
+                     Dark=MistyRose}" />
+            <Setter Property="Shell.TabBarUnselectedColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
+                     Dark={StaticResource DarkTextColor}}" />
+            <Setter Property="Shell.TabBarTitleColor"
+                    Value="{AppThemeBinding Light={StaticResource LightBackgroundColor},
+                     Dark={StaticResource DarkBackgroundColor}}" />
+            <Setter Property="Shell.NavBarHasShadow" Value="False" />
+            <Setter Property="Shell.FlyoutBehavior" Value="Disabled" />
+        </Style>
+        <Style x:Key="TabBarStyle" TargetType="TabBar" BasedOn="{StaticResource ShellStyle}" />
+
+        <Style x:Key="PageStyle" TargetType="ContentPage">
+            <Setter Property="BackgroundColor"
+                    Value="{AppThemeBinding Light={StaticResource LightBackgroundColor},
+                     Dark={StaticResource DarkBackgroundColor}}" />
+        </Style>
+
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
+                     Dark={StaticResource DarkTextColor}}" />
+        </Style>
+
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
+                     Dark={StaticResource DarkTextColor}}" />
+        </Style>
+
+        <Style x:Key="LoginButtonStyle" TargetType="Button">
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="FontSize" Value="19" />
+            <Setter Property="HeightRequest" Value="44" />
+            <Setter Property="TextColor" 
+                    Value="{AppThemeBinding Light={StaticResource LightBackgroundColor},
+                     Dark={StaticResource DarkBackgroundColor}}" />
+            <Setter Property="BackgroundColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
+                     Dark={StaticResource DarkTextColor}}" />
+        </Style>
+
+        <Style x:Key="LogoutButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="WidthRequest" Value="250" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="BorderColor" Value="Red" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="TextColor" Value="Red" />
+        </Style>
+
+        <Style x:Key="ProfileImageStyle" TargetType="ImageButton">
+            <Setter Property="WidthRequest" Value="240" />
+            <Setter Property="HeightRequest" Value="240" />
+            <!--<Setter Property="CornerRadius" Value="120" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="BorderColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
+                     Dark={StaticResource DarkTextColor}}" />-->
+        </Style>
+
+    </Application.Resources>
+</Application>
