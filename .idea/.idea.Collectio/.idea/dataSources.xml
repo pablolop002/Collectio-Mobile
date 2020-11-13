@@ -7,11 +7,5 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/Collectio-dev.db</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="collectio.db" uuid="4f9b6ff9-945b-47c3-8054-0863cd72dc5c">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$USER_HOME$/Desktop/Backup_2020-11-09_06-07-53/collectio.db</jdbc-url>
-    </data-source>
   </component>
 </project>
