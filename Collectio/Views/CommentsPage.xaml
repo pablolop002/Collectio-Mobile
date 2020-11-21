@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Collectio.Views.CommentsPage"
+             Style="{StaticResource PageStyle}">
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Entry x:Name="Mail" VerticalOptions="End" Grid.Row="0" Style="{StaticResource EntryStyle}" />
+                <Picker x:Name="CommentType" VerticalOptions="Center" Grid.Row="1" />
+                <Editor x:Name="Comment" Grid.Row="2" Style="{StaticResource EditorStyle}" />
+                <Button Text="Send" Style="{StaticResource ButtonStyle}" Grid.Row="3"
+                        VerticalOptions="Start" HorizontalOptions="Center" Clicked="Send_OnClicked"/>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

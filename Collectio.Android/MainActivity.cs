@@ -5,7 +5,7 @@ using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
 namespace Collectio.Droid
 {
-    [Activity(Label = "Collectio", /*Icon = "@mipmap/icon", RoundIcon ="@mipmap/icon",*/ Theme = "@style/MainTheme",
+    [Activity(Label = "Collectio", Icon = "@mipmap/icon", RoundIcon ="@mipmap/icon", Theme = "@style/MainTheme",
         MainLauncher = true, LaunchMode = LaunchMode.SingleTask,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode)]
     [IntentFilter(new[] {Android.Content.Intent.ActionView},
@@ -24,8 +24,8 @@ namespace Collectio.Droid
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             LoadApplication(new App());
-            //Xamarin.Forms.Application.Current.On<Xamarin.Forms.PlatformConfiguration.Android>()
-            //    .UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
+            Xamarin.Forms.Application.Current.On<Xamarin.Forms.PlatformConfiguration.Android>()
+                .UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions,

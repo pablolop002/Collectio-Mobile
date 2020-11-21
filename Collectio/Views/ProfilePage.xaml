@@ -27,19 +27,15 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Ellipse x:Name="ProfileImageBorder" IsVisible="False"
-                         Grid.Row="0"
-                         HorizontalOptions="Center"
-                         VerticalOptions="Center"
-                         WidthRequest="248"
-                         HeightRequest="248"
-                         Stroke="#FFFF9900"
-                         StrokeThickness="4" />
-                <ImageButton x:Name="ProfileImage" Grid.Row="0"
-                             Clicked="SelectImage_OnClicked" Aspect="AspectFill"
-                             Style="{StaticResource ProfileImageStyle}"
-                             VerticalOptions="Center"
-                             HorizontalOptions="Center">
+                <Ellipse x:Name="ProfileImageBorder" IsVisible="False" Grid.Row="0"
+                         Style="{StaticResource BigEllipseStyle}">
+                    <Ellipse.Stroke>
+                        <SolidColorBrush Color="Goldenrod" />
+                    </Ellipse.Stroke>
+                </Ellipse>
+                
+                <ImageButton x:Name="ProfileImage" Grid.Row="0" Clicked="SelectImage_OnClicked"
+                             Style="{StaticResource BigImageStyle}">
                     <ImageButton.Source>
                         <FileImageSource File="{Binding File}" />
                     </ImageButton.Source>
@@ -52,46 +48,37 @@
 
                 <StackLayout x:Name="ProfileData" Grid.Row="1" VerticalOptions="Center">
                     <Entry Text="{Binding Nickname}" Placeholder="Nickname"
-                           VerticalOptions="Center" />
-                    <Label Text="Mail" VerticalOptions="Center" />
+                           Style="{StaticResource EntryStyle}" />
+                    <Entry Text="{Binding Mail}" Placeholder="Mail"
+                           Style="{StaticResource EntryStyle}" />
                 </StackLayout>
 
-                <Button x:Name="LogoutButton" Text="{x:Static culture:Strings.Logout}"
-                        Grid.Row="2"
-                        Style="{StaticResource LogoutButtonStyle}"
-                        VerticalOptions="End"
-                        HorizontalOptions="Center" />
+                <Button x:Name="LogoutButton" Text="{x:Static culture:Strings.Logout}" Grid.Row="2"
+                        Style="{StaticResource LogoutButtonStyle}" />
                 
-                
-                <Label x:Name="SigninInfo" Grid.Row="1" Text="Hello, world!"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Center" />
+                <Label x:Name="SigninInfo" Grid.Row="1" HorizontalOptions="Center" Text="Hello, world!"
+                       Style="{StaticResource LabelStyle}" />
 
-                <Button x:Name="SigninApple" Text="{x:Static culture:Strings.LoginApple}"
-                        Style="{StaticResource LoginButtonStyle}"
-                        HorizontalOptions="Center"
-                        Clicked="Apple_OnClicked"
-                        Grid.Row="2">
+                <Button x:Name="SigninApple" Text="{x:Static culture:Strings.LoginApple}" Grid.Row="2"
+                        Style="{StaticResource LoginButtonStyle}" Clicked="Apple_OnClicked">
                     <Button.ImageSource>
-                        <FontImageSource
-                            Color="{AppThemeBinding Light={StaticResource LightBackgroundColor},
-                     Dark={StaticResource DarkBackgroundColor}}"
-                            FontFamily="FA-B" Glyph="{StaticResource IconApple}" />
+                        <FontImageSource FontFamily="FA-B" Glyph="{StaticResource IconApple}" 
+                                         Color="{AppThemeBinding
+                                            Light={StaticResource LightBackgroundColor},
+                                            Dark={StaticResource DarkBackgroundColor}}" />
                     </Button.ImageSource>
                 </Button>
 
-                <Button x:Name="SigninGoogle" Text="{x:Static culture:Strings.LoginGoogle}"
-                        Style="{StaticResource LoginButtonStyle}"
-                        HorizontalOptions="Center"
-                        Clicked="Google_OnClicked"
-                        Grid.Row="3">
+                <Button x:Name="SigninGoogle" Text="{x:Static culture:Strings.LoginGoogle}" Grid.Row="3"
+                        Style="{StaticResource LoginButtonStyle}" Clicked="Google_OnClicked">
                     <Button.ImageSource>
-                        <FontImageSource
-                            Color="{AppThemeBinding Light={StaticResource LightBackgroundColor},
-                     Dark={StaticResource DarkBackgroundColor}}"
-                            FontFamily="FA-B" Glyph="{StaticResource IconGoogle}" />
+                        <FontImageSource FontFamily="FA-B" Glyph="{StaticResource IconGoogle}"
+                                         Color="{AppThemeBinding
+                                            Light={StaticResource LightBackgroundColor},
+                                            Dark={StaticResource DarkBackgroundColor}}" />
                     </Button.ImageSource>
                 </Button>
+                
             </Grid>
         </ScrollView>
     </ContentPage.Content>

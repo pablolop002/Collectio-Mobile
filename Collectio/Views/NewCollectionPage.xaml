@@ -28,22 +28,34 @@
                     </CollectionView.ItemsLayout>
 
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Group">
-                            <Frame HeightRequest="80" HasShadow="False" BackgroundColor="LightGray" CornerRadius="10">
+                        <DataTemplate x:DataType="models:Category">
+                            <Frame Style="{StaticResource CategorySelectorFrameStyle}">
                                 <Grid ColumnSpacing="10">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="80" />
+                                        <ColumnDefinition Width="90" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HeightRequest="80"
-                                           BackgroundColor="Aquamarine" />
-                                    <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}"
-                                           VerticalOptions="Center" VerticalTextAlignment="Center" FontSize="Title"
-                                           FontAttributes="Bold" TextDecorations="Underline" />
+
+                                    <Ellipse Grid.Column="0" Style="{StaticResource SmallEllipseStyle}">
+                                        <Ellipse.Stroke>
+                                            <SolidColorBrush Color="Goldenrod" />
+                                        </Ellipse.Stroke>
+                                    </Ellipse>
+
+                                    <Image Grid.Column="0" Style="{StaticResource SmallImageStyle}">
+                                        <Image.Clip>
+                                            <EllipseGeometry Center="35,35"
+                                                             RadiusX="35"
+                                                             RadiusY="35" />
+                                        </Image.Clip>
+                                        <Image.Source>
+                                            <FileImageSource File="{Binding File}" />
+                                        </Image.Source>
+                                    </Image>
+
+                                    <Label Text="{Binding Name}" HorizontalTextAlignment="Center"
+                                           Style="{StaticResource TitleLabelStyle}" Grid.Column="1"
+                                           FontSize="Title" />
                                 </Grid>
                             </Frame>
                         </DataTemplate>
@@ -53,25 +65,20 @@
                         <Grid>
                             <Label Text="{x:Static culture:Strings.NoGroups}"
                                    Style="{StaticResource LabelStyle}"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center" />
+                                   HorizontalTextAlignment="Center" HorizontalOptions="Center" />
                         </Grid>
                     </CollectionView.EmptyView>
                 </CollectionView>
 
-                <Ellipse x:Name="ImageBorder" IsVisible="False"
-                         Grid.Row="0"
-                         HorizontalOptions="Center"
-                         VerticalOptions="Center"
-                         WidthRequest="248"
-                         HeightRequest="248"
-                         Stroke="#FFFF9900"
-                         StrokeThickness="4" />
-                <ImageButton x:Name="Image" Grid.Row="0" IsVisible="False"
-                             Clicked="SelectImage_OnClicked" Aspect="AspectFill"
-                             Style="{StaticResource ProfileImageStyle}"
-                             VerticalOptions="Center"
-                             HorizontalOptions="Center">
+                <Ellipse x:Name="ImageBorder" IsVisible="False" Grid.Row="0"
+                         Style="{StaticResource BigImageStyle}">
+                    <Ellipse.Stroke>
+                        <SolidColorBrush Color="Goldenrod" />
+                    </Ellipse.Stroke>
+                </Ellipse>
+                
+                <ImageButton x:Name="Image" Grid.Row="0" IsVisible="False" Clicked="SelectImage_OnClicked"
+                             Style="{StaticResource BigImageStyle}">
                     <ImageButton.Clip>
                         <EllipseGeometry Center="120,120"
                                          RadiusX="120"
@@ -79,21 +86,20 @@
                     </ImageButton.Clip>
                 </ImageButton>
 
-                <Label x:Name="SelectedCategory" HorizontalOptions="Center" VerticalOptions="End" IsVisible="False"
-                       Grid.Row="1" FontAttributes="Bold" />
+                <Label x:Name="SelectedCategory" HorizontalOptions="Center" Grid.Row="1" IsVisible="False"
+                       Style="{StaticResource TitleLabelStyle}" />
 
-                <Entry x:Name="Name" VerticalOptions="Center" IsVisible="False"
+                <Entry x:Name="Name" VerticalOptions="Center" IsVisible="False" Grid.Row="2"
                        Placeholder="{x:Static culture:Strings.Name}"
-                       Grid.Row="2" />
+                       Style="{StaticResource EntryStyle}" />
 
-                <Editor x:Name="Description" IsVisible="False"
+                <Editor x:Name="Description" IsVisible="False" Grid.Row="3"
                         Placeholder="{x:Static culture:Strings.Description}"
-                        Grid.Row="3" />
+                        Style="{StaticResource EditorStyle}" />
 
                 <StackLayout Grid.Row="4" Orientation="Horizontal" VerticalOptions="Start" Padding="5, 0, 0, 0">
-                    <Label x:Name="PrivateLabel" Text="{x:Static culture:Strings.Private}"
-                           HorizontalOptions="StartAndExpand"
-                           VerticalTextAlignment="Center" VerticalOptions="Center" IsVisible="False" />
+                    <Label x:Name="PrivateLabel" Text="{x:Static culture:Strings.Private}" IsVisible="False"
+                           HorizontalOptions="StartAndExpand" Style="{StaticResource LabelStyle}" />
                     <CheckBox x:Name="Private" HorizontalOptions="End" VerticalOptions="Start" IsVisible="False"
                               Color="{StaticResource PrimaryColor}" />
                 </StackLayout>

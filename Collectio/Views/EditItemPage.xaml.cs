@@ -1,4 +1,5 @@
 using System;
+using Collectio.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -8,20 +9,30 @@ namespace Collectio.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditItemPage : ContentPage
     {
-        private string _itemId;
+        private Item _item;
         
         public string Item
         {
             set
             {
-                _itemId = Uri.UnescapeDataString(value);
-                BindingContext = App.DataRepo.GetItem(_itemId);
+                BindingContext = _item = App.DataRepo.GetItem(value, true);
             }
         }
 
         public EditItemPage()
         {
             InitializeComponent();
+            Shell.SetTabBarIsVisible(this, false);
+        }
+
+        private void Done_OnClicked(object sender, EventArgs e)
+        {
+            //ToDo
+        }
+
+        private void AddImage_OnClicked(object sender, EventArgs e)
+        {
+            //ToDo
         }
     }
 }

@@ -86,4 +86,37 @@
     <data name="EditItem" xml:space="preserve">
         <value>Edit item</value>
     </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="Duplicate" xml:space="preserve">
+        <value>Duplicate</value>
+    </data>
+    <data name="Subcategory" xml:space="preserve">
+        <value>Subcategory</value>
+    </data>
+    <data name="Backup" xml:space="preserve">
+        <value>Backup</value>
+    </data>
+    <data name="RestoreBackup" xml:space="preserve">
+        <value>Restore backup</value>
+    </data>
+    <data name="Comments" xml:space="preserve">
+        <value>Comments</value>
+    </data>
+    <data name="AppCenter" xml:space="preserve">
+        <value>Bug and crash reports</value>
+    </data>
+    <data name="EmptyItemName" xml:space="preserve">
+        <value>Item's name can't be empty</value>
+    </data>
+    <data name="DeleteCache" xml:space="preserve">
+        <value>Delete cache</value>
+    </data>
+    <data name="DeleteData" xml:space="preserve">
+        <value>Delete data</value>
+    </data>
+    <data name="DisabledFunction" xml:space="preserve">
+        <value>Function not available</value>
+    </data>
 </root>

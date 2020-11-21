@@ -24,7 +24,7 @@ namespace Collectio.ViewModels
 
         public CollectionsViewModel()
         {
-            CollectionGroups = new ObservableCollection<CollectionGroup>(App.DataRepo.GetCollectionGroups(true));
+            CollectionGroups = new ObservableCollection<CollectionGroup>(App.DataRepo.GetCollectionGroups());
             RefreshCommand = new Command(RefreshEvent);
         }
 
@@ -33,7 +33,7 @@ namespace Collectio.ViewModels
             IsRefreshing = true;
 
             CollectionGroups.Clear();
-            foreach (var group in App.DataRepo.GetCollectionGroups(true))
+            foreach (var group in App.DataRepo.GetCollectionGroups())
             {
                 CollectionGroups.Add(group);
             }

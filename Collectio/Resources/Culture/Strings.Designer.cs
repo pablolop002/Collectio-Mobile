@@ -224,5 +224,167 @@ namespace Collectio.Resources.Culture {
                 return ResourceManager.GetString("DeleteItem", resourceCulture);
             }
         }
+        
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        internal static string Duplicate {
+            get {
+                return ResourceManager.GetString("Duplicate", resourceCulture);
+            }
+        }
+        
+        internal static string DuplicateMessage {
+            get {
+                return ResourceManager.GetString("DuplicateMessage", resourceCulture);
+            }
+        }
+        
+        internal static string Subcategory {
+            get {
+                return ResourceManager.GetString("Subcategory", resourceCulture);
+            }
+        }
+        
+        internal static string Backup {
+            get {
+                return ResourceManager.GetString("Backup", resourceCulture);
+            }
+        }
+        
+        internal static string BackupDescription {
+            get {
+                return ResourceManager.GetString("BackupDescription", resourceCulture);
+            }
+        }
+        
+        internal static string AppCenter {
+            get {
+                return ResourceManager.GetString("AppCenter", resourceCulture);
+            }
+        }
+        
+        internal static string AppCenterDescription {
+            get {
+                return ResourceManager.GetString("AppCenterDescription", resourceCulture);
+            }
+        }
+        
+        internal static string RestoreBackup {
+            get {
+                return ResourceManager.GetString("RestoreBackup", resourceCulture);
+            }
+        }
+        
+        internal static string RestoreBackupDescription {
+            get {
+                return ResourceManager.GetString("RestoreBackupDescription", resourceCulture);
+            }
+        }
+        
+        internal static string Comments {
+            get {
+                return ResourceManager.GetString("Comments", resourceCulture);
+            }
+        }
+        
+        internal static string CommentsDescription {
+            get {
+                return ResourceManager.GetString("CommentsDescription", resourceCulture);
+            }
+        }
+        
+        internal static string EmptyItemName {
+            get {
+                return ResourceManager.GetString("EmptyItemName", resourceCulture);
+            }
+        }
+        
+        internal static string BackupError {
+            get {
+                return ResourceManager.GetString("BackupError", resourceCulture);
+            }
+        }
+        
+        internal static string BackupCorrect {
+            get {
+                return ResourceManager.GetString("BackupCorrect", resourceCulture);
+            }
+        }
+        
+        internal static string RestoreBackupError {
+            get {
+                return ResourceManager.GetString("RestoreBackupError", resourceCulture);
+            }
+        }
+        
+        internal static string RestoreBackupCorrect {
+            get {
+                return ResourceManager.GetString("RestoreBackupCorrect", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteData {
+            get {
+                return ResourceManager.GetString("DeleteData", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteDataDescription {
+            get {
+                return ResourceManager.GetString("DeleteDataDescription", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteCache {
+            get {
+                return ResourceManager.GetString("DeleteCache", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteCacheDescription {
+            get {
+                return ResourceManager.GetString("DeleteCacheDescription", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteDataCorrect {
+            get {
+                return ResourceManager.GetString("DeleteDataCorrect", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteCacheCorrect {
+            get {
+                return ResourceManager.GetString("DeleteCacheCorrect", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteDataError {
+            get {
+                return ResourceManager.GetString("DeleteDataError", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteCacheError {
+            get {
+                return ResourceManager.GetString("DeleteCacheError", resourceCulture);
+            }
+        }
+        
+        internal static string DisabledFunction {
+            get {
+                return ResourceManager.GetString("DisabledFunction", resourceCulture);
+            }
+        }
     }
 }

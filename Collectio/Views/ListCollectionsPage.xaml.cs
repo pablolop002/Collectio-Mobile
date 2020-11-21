@@ -79,12 +79,12 @@ namespace Collectio.Views
 
         private async void Delete_Invoked(object sender, EventArgs eventArgs)
         {
-            if (!(((SwipeItem) sender).BindingContext is Collection collection)) return;
+            if (!(((SwipeItemView) sender).BindingContext is Collection collection)) return;
             var aux = await Shell.Current.DisplayAlert(Strings.SureQuestion, Strings.DeleteCollection,
                 Strings.Confirm, Strings.Cancel);
             if (!aux) return;
             
-            App.DataRepo.RemoveCollection(collection.Id);
+            App.DataRepo.RemoveCollection(collection.Id.ToString());
             FileSystemUtils.DeleteCollection(collection.Id.ToString());
             
             MainThread.BeginInvokeOnMainThread(() => RefreshCollectionView.IsRefreshing = true);

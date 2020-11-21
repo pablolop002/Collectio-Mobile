@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Collectio.Models;
 using Collectio.Resources.Culture;
@@ -11,19 +12,16 @@ namespace Collectio.Views
 {
     [QueryProperty("Collection", "collection")]
     [XamlCompilation(XamlCompilationOptions.Compile)]
+    [SuppressMessage("ReSharper", "RedundantExtendsListEntry")]
     public partial class EditCollectionPage : ContentPage
     {
-        private string _collectionId;
+        private Collection _collection;
         private string _imageName = string.Empty;
         private MemoryStream _imageStream = new MemoryStream();
 
         public string Collection
         {
-            set
-            {
-                _collectionId = Uri.UnescapeDataString(value);
-                BindingContext = App.DataRepo.GetCollection(_collectionId);
-            }
+            set => BindingContext = _collection = App.DataRepo.GetCollection(value, true);
         }
 
         public EditCollectionPage()
@@ -34,26 +32,21 @@ namespace Collectio.Views
 
         private async void Done_OnClicked(object sender, EventArgs e)
         {
-            var old = App.DataRepo.GetCollection(_collectionId);
-            var changed = new Collection()
-            {
-                Id = old.Id,
-                Name = Name.Text,
-                GroupId = old.GroupId,
-                Description = Description.Text,
-                Private = Private.IsChecked,
-                Image = string.IsNullOrWhiteSpace(_imageName) ? old.Image : _imageName
-            };
+            var original = App.DataRepo.GetCollection(_collection.Id.ToString());
 
-            if (!old.Equals(changed))
+            if (!_collection.Equals(original))
             {
-                App.DataRepo.UpdateCollection(changed);
-            }
+                App.DataRepo.UpdateCollection(_collection);
 
-            if (!string.IsNullOrWhiteSpace(_imageName) && !string.IsNullOrWhiteSpace(old.Image))
-            {
-                FileSystemUtils.DeleteImage(old.File);
-                FileSystemUtils.SaveFileFromStream(_imageStream, _imageName, changed.Id);
+                if (!string.IsNullOrWhiteSpace(_imageName))
+                {
+                    if(!string.IsNullOrWhiteSpace(original.Image))
+                    {
+                        FileSystemUtils.DeleteImage(original.File);
+                    }
+                    
+                    FileSystemUtils.SaveFileFromStream(_imageStream, _imageName, _collection.Id);
+                }
             }
 
             await Shell.Current.GoToAsync("..?refresh=true");
@@ -63,7 +56,7 @@ namespace Collectio.Views
         {
             var selection = await Shell.Current.DisplayActionSheet("Image", Strings.Cancel, null,
                 Strings.Camera, Strings.Gallery);
-            
+
             if (selection == null || selection == Strings.Cancel) return;
             if (selection == Strings.Camera)
             {
@@ -73,10 +66,11 @@ namespace Collectio.Views
                     {
                         var photo = await MediaPicker.CapturePhotoAsync();
                         if (photo == null) return;
-                        
+
                         _imageName = photo.FileName;
                         var stream = await photo.OpenReadAsync();
                         await stream.CopyToAsync(_imageStream);
+                        _collection.Image = _imageName;
                         Image.Source = ImageSource.FromStream(() => stream);
                     }
                     catch (PermissionException ex)
@@ -93,12 +87,11 @@ namespace Collectio.Views
                     {
                         var photo = await MediaPicker.PickPhotoAsync();
                         if (photo == null) return;
-                        
+
                         _imageName = photo.FileName;
                         var stream = await photo.OpenReadAsync();
                         await stream.CopyToAsync(_imageStream);
-                        stream.Close();
-                        stream.Dispose();
+                        _collection.Image = _imageName;
                         Image.Source = ImageSource.FromFile(photo.FullPath);
                     }
                     catch (PermissionException ex)

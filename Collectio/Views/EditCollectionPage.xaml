@@ -27,18 +27,14 @@
                     <RowDefinition Height="2*" />
                 </Grid.RowDefinitions>
 
-                <Ellipse Grid.Row="0"
-                         HorizontalOptions="Center"
-                         VerticalOptions="Center"
-                         WidthRequest="248"
-                         HeightRequest="248"
-                         Stroke="#FFFF9900"
-                         StrokeThickness="4" />
-                <ImageButton x:Name="Image" Grid.Row="0"
-                             Clicked="SelectImage_OnClicked"
-                             Style="{StaticResource ProfileImageStyle}" Aspect="AspectFill"
-                             VerticalOptions="Center"
-                             HorizontalOptions="Center">
+                <Ellipse Grid.Row="0" Style="{StaticResource BigEllipseStyle}">
+                    <Ellipse.Stroke>
+                        <SolidColorBrush Color="Goldenrod" />
+                    </Ellipse.Stroke>
+                </Ellipse>
+                
+                <ImageButton x:Name="Image" Grid.Row="0" Clicked="SelectImage_OnClicked"
+                             Style="{StaticResource BigImageStyle}">
                     <ImageButton.Source>
                         <FileImageSource File="{Binding File}" />
                     </ImageButton.Source>
@@ -49,20 +45,17 @@
                     </ImageButton.Clip>
                 </ImageButton>
 
-                <Entry x:Name="Name" VerticalOptions="End"
-                       Text="{Binding Name}"
-                       Grid.Row="1" />
+                <Entry VerticalOptions="End" Text="{Binding Name}" Grid.Row="1"
+                       Style="{StaticResource EntryStyle}" />
 
-                <Editor x:Name="Description"
-                        Placeholder="{x:Static culture:Strings.Description}"
+                <Editor Placeholder="{x:Static culture:Strings.Description}" Grid.Row="2"
                         Text="{Binding Description}"
-                        Grid.Row="2" />
+                        Style="{StaticResource EditorStyle}" />
 
                 <StackLayout Grid.Row="3" Orientation="Horizontal" VerticalOptions="Start" Padding="5, 0, 0, 0">
-                    <Label Text="{x:Static culture:Strings.Private}"
-                           HorizontalOptions="StartAndExpand"
-                           VerticalTextAlignment="Center" VerticalOptions="Center" />
-                    <CheckBox x:Name="Private" HorizontalOptions="End" VerticalOptions="Start"
+                    <Label Text="{x:Static culture:Strings.Private}" HorizontalOptions="StartAndExpand"
+                           Style="{StaticResource LabelStyle}" />
+                    <CheckBox HorizontalOptions="End" VerticalOptions="Start"
                               IsChecked="{Binding Private}"
                               Color="{StaticResource PrimaryColor}" />
                 </StackLayout>

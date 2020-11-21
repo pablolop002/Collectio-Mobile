@@ -6,33 +6,46 @@
              x:Class="Collectio.Views.SettingsPage"
              Title="{x:Static culture:Strings.Settings}"
              Style="{StaticResource PageStyle}">
-    
-    <ContentPage.Content>
-        
-        <StackLayout Padding="10" Spacing="10">
-            
-            <StackLayout Orientation="Horizontal">
-                <Label Text="AppCenter" FontSize="Title" TextDecorations="Underline" VerticalTextAlignment="Center"
-                       Style="{StaticResource LabelStyle}" HorizontalOptions="StartAndExpand" />
-                <CheckBox x:Name="AppCenterStatus" Color="{StaticResource PrimaryColor}"
-                          CheckedChanged="AppCenterStatus_OnCheckedChanged" />
-            </StackLayout>
-            <Label Text="Descripción" Style="{StaticResource LabelStyle}" />
 
-            <Label Text="Backup" FontSize="Title" TextDecorations="Underline" Style="{StaticResource LabelStyle}" />
-            <Label Text="Descripción" Style="{StaticResource LabelStyle}" />
-            <Button Text="Backup"
-                    Style="{StaticResource ButtonStyle}"
-                    Clicked="Backup_OnClicked" />
-            
-            <!--<Label Text="Comentarios" FontSize="Title" TextDecorations="Underline" Style="{StaticResource LabelStyle}" />
-            <Label Text="Descripción" Style="{StaticResource LabelStyle}" />
-            <Button Text="Report Error"
-                    Style="{StaticResource ButtonStyle}"
-                    Clicked="ReportError_OnClicked" />-->
-            
-        </StackLayout>
-        
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10" Spacing="10">
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{x:Static culture:Strings.AppCenter}" HorizontalOptions="StartAndExpand"
+                           Style="{StaticResource TitleLabelStyle}" />
+                    <CheckBox x:Name="AppCenterStatus" Color="{StaticResource PrimaryColor}"
+                              CheckedChanged="AppCenterStatus_OnCheckedChanged" VerticalOptions="FillAndExpand" />
+                </StackLayout>
+                <Label Text="{x:Static culture:Strings.AppCenterDescription}" Style="{StaticResource LabelStyle}" />
+
+                <Label Text="{x:Static culture:Strings.Comments}" Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.CommentsDescription}" Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.Comments}" Clicked="Comments_OnClicked"
+                        Style="{StaticResource ButtonStyle}" />
+
+                <Label Text="{x:Static culture:Strings.Backup}" Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.BackupDescription}" Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.Backup}" Clicked="Backup_OnClicked"
+                        Style="{StaticResource ButtonStyle}" />
+
+                <Label Text="{x:Static culture:Strings.RestoreBackup}" Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.RestoreBackupDescription}" Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.RestoreBackup}" Clicked="RestoreBackup_OnClicked"
+                        Style="{StaticResource ButtonStyle}" />
+
+                <Label Text="{x:Static culture:Strings.DeleteCache}" Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.DeleteCacheDescription}" Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.DeleteCache}" Clicked="DeleteCache_OnClicked"
+                        Style="{StaticResource ButtonStyle}" />
+
+                <Label Text="{x:Static culture:Strings.DeleteData}" Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.DeleteDataDescription}" Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.DeleteData}" Clicked="DeleteData_OnClicked"
+                        Style="{StaticResource ButtonStyle}" />
+
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
-    
+
 </ContentPage>

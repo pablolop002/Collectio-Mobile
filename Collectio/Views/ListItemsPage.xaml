@@ -2,9 +2,9 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
              xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
              xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
-             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
              x:Class="Collectio.Views.ListItemsPage"
              Style="{StaticResource PageStyle}"
              Title="{Binding Title}"
@@ -35,43 +35,121 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Item">
-                        <SwipeView>
+                        <SwipeView Style="{StaticResource SwipeStyle}">
+                            
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItemView Invoked="Duplicate_Invoked" Style="{StaticResource SwipeItemStyle}">
+                                        <Grid Padding="20, 0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Image Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center">
+                                                <Image.Source>
+                                                    <FontImageSource FontFamily="FA-S"
+                                                                     Glyph="{StaticResource IconDuplicate}"
+                                                                     Color="{AppThemeBinding
+                                                                      Light={StaticResource LightTextColor},
+                                                                      Dark={StaticResource DarkTextColor}}" />
+                                                </Image.Source>
+                                            </Image>
+                                            <Label Grid.Row="1" VerticalOptions="Start" HorizontalOptions="Center"
+                                                   Text="{x:Static culture:Strings.Duplicate}"
+                                                   TextColor="{AppThemeBinding
+                                                    Light={StaticResource LightTextColor},
+                                                    Dark={StaticResource DarkTextColor}}" />
+                                        </Grid>
+                                    </SwipeItemView>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            
                             <SwipeView.LeftItems>
                                 <SwipeItems>
-                                    <SwipeItem Text="Edit"
-                                               BackgroundColor="LightGreen">
-                                        <SwipeItem.IconImageSource>
-                                            <FontImageSource FontFamily="FA-S" Glyph="&#xf044;" />
-                                        </SwipeItem.IconImageSource>
-                                    </SwipeItem>
-                                    <SwipeItem Text="Delete"
-                                               BackgroundColor="Red">
-                                        <SwipeItem.IconImageSource>
-                                            <FontImageSource Color="Red" FontFamily="FA-S" Glyph="&#xf1f8;" />
-                                        </SwipeItem.IconImageSource>
-                                    </SwipeItem>
+                                    <SwipeItemView Invoked="Edit_Invoked" Style="{StaticResource SwipeItemStyle}">
+                                        <Grid Padding="20, 0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Image Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center">
+                                                <Image.Source>
+                                                    <FontImageSource FontFamily="FA-S"
+                                                                     Glyph="{StaticResource IconEdit}"
+                                                                     Color="{AppThemeBinding
+                                                                      Light={StaticResource LightTextColor},
+                                                                      Dark={StaticResource DarkTextColor}}" />
+                                                </Image.Source>
+                                            </Image>
+                                            <Label Grid.Row="1" VerticalOptions="Start" HorizontalOptions="Center"
+                                                   Text="{x:Static culture:Strings.Edit}"
+                                                   TextColor="{AppThemeBinding
+                                                    Light={StaticResource LightTextColor},
+                                                    Dark={StaticResource DarkTextColor}}" />
+                                        </Grid>
+                                    </SwipeItemView>
+                                    <SwipeItemView Invoked="Delete_Invoked" Style="{StaticResource SwipeItemStyle}">
+                                        <Grid Padding="20, 0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Image Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center">
+                                                <Image.Source>
+                                                    <FontImageSource FontFamily="FA-S"
+                                                                     Glyph="{StaticResource IconDelete}"
+                                                                     Color="Red" />
+                                                </Image.Source>
+                                            </Image>
+                                            <Label Grid.Row="1" VerticalOptions="Start" HorizontalOptions="Center"
+                                                   Text="{x:Static culture:Strings.Delete}" TextColor="Red"
+                                                   Style="{StaticResource LabelStyle}" />
+                                        </Grid>
+                                    </SwipeItemView>
                                 </SwipeItems>
                             </SwipeView.LeftItems>
 
-                            <Frame HeightRequest="80" HasShadow="False" BackgroundColor="LightGray" CornerRadius="10">
-                                <Grid ColumnSpacing="10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="80" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HeightRequest="80"
-                                           BackgroundColor="Aquamarine" />
-                                    <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}"
-                                           VerticalOptions="Center" VerticalTextAlignment="Center"
-                                           FontAttributes="Bold" TextDecorations="Underline" />
-                                    <Label Grid.Column="1" Grid.Row="1" Text="Descripción(?)"
-                                           VerticalOptions="Center" VerticalTextAlignment="Center" />
+                            <SwipeView.Content>
+                                <Grid Padding="2">
+                                    <Frame Style="{StaticResource FrameStyle}">
+                                        <Grid ColumnSpacing="15" RowSpacing="5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="90" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <Ellipse Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                                     Style="{StaticResource SmallEllipseStyle}">
+                                                <Ellipse.Stroke>
+                                                    <SolidColorBrush Color="Goldenrod" />
+                                                </Ellipse.Stroke>
+                                            </Ellipse>
+                                            <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                                                   Style="{StaticResource SmallImageStyle}">
+                                                <Image.Clip>
+                                                    <EllipseGeometry Center="40,40"
+                                                                     RadiusX="40"
+                                                                     RadiusY="40" />
+                                                </Image.Clip>
+                                                <Image.Source>
+                                                    <FileImageSource File="{Binding File}" />
+                                                </Image.Source>
+                                            </Image>
+                                            <Label Grid.Column="1" Grid.Row="0" MaxLines="1" FontSize="Default"
+                                                   Text="{Binding Name}"
+                                                   Style="{StaticResource TitleLabelStyle}" />
+                                            <Label Grid.Column="1" Grid.Row="1" MaxLines="3"
+                                                   Text="{Binding Description}"
+                                                   Style="{StaticResource LabelStyle}" />
+                                        </Grid>
+                                    </Frame>
                                 </Grid>
-                            </Frame>
+                            </SwipeView.Content>
+                            
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -80,12 +158,14 @@
                     <Grid>
                         <Label Text="{x:Static culture:Strings.NoItems}"
                                Style="{StaticResource LabelStyle}"
-                               VerticalOptions="Center"
                                HorizontalOptions="Center" />
                     </Grid>
                 </CollectionView.EmptyView>
 
             </CollectionView>
+            
         </RefreshView>
+        
     </ContentPage.Content>
+    
 </ContentPage>

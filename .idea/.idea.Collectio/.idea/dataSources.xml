@@ -7,5 +7,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/Collectio-dev.db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="MariaDB-Collectio" uuid="b13d48b3-fd45-498a-8cef-0b115842b359">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://localhost:3306/collectio</jdbc-url>
+    </data-source>
   </component>
 </project>

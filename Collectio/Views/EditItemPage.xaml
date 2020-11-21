@@ -3,14 +3,70 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
+             xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
              x:Class="Collectio.Views.EditItemPage"
              Title="{x:Static culture:Strings.EditItem}"
-             Style="{StaticResource PageStyle}">
+             Style="{StaticResource PageStyle}"
+             x:DataType="models:Item">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="Done_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconDone}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Hello, world!"
-                   VerticalOptions="CenterAndExpand"
-                   HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <Grid x:Name="UiLayout" ColumnSpacing="10" RowSpacing="10" Padding="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" RowSpacing="5" x:Name="ImagesGroup" VerticalOptions="StartAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <CarouselView ItemsSource="{Binding Images}" IndicatorView="Indicator"
+                                  Grid.Row="0"> <!-- Loop="False" -->
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate x:DataType="models:ItemImage">
+                                <Frame Style="{StaticResource ImageFrameStyle}">
+                                    <Image Style="{StaticResource BigImageStyle}"
+                                           Source="{Binding File}" />
+                                </Frame>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
+                    <IndicatorView x:Name="Indicator" Grid.Row="1" Style="{StaticResource IndicatorViewStyle}" />
+                    <Button Text="Add Image" Style="{StaticResource ButtonStyle}" HorizontalOptions="Center"
+                            WidthRequest="200" Clicked="AddImage_OnClicked" Grid.Row="2" />
+                </Grid>
+
+                <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="DetailsGroup"
+                             VerticalOptions="Center">
+                    <Entry Text="{Binding Name}" Placeholder="{x:Static culture:Strings.Name}"
+                           Style="{StaticResource EntryStyle}" />
+                    <Picker x:Name="SubcategoryPicker" ItemDisplayBinding="{Binding Name}"
+                            Title="{x:Static culture:Strings.Subcategory}"
+                            Style="{StaticResource PickerStyle}" />
+                    <Editor Text="{Binding Description}"
+                            Placeholder="{x:Static culture:Strings.Description}"
+                            Style="{StaticResource EditorStyle}" />
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{x:Static culture:Strings.Private}"
+                               Style="{StaticResource LabelStyle}"
+                               HorizontalOptions="StartAndExpand" />
+                        <CheckBox IsChecked="{Binding Private}" />
+                    </StackLayout>
+                </StackLayout>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

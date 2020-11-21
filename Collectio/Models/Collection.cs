@@ -1,30 +1,34 @@
+using System;
 using System.Collections.ObjectModel;
 using Collectio.Utils;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using Xamarin.Forms;
 
 namespace Collectio.Models
 {
     public class Collection
     {
         [PrimaryKey, AutoIncrement] public int Id { get; set; }
-        
+
         [Unique] public int? ServerId { get; set; }
-        
+
+        [Indexed, ForeignKey(typeof(CollectionGroup))] public int CategoryId { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
 
         public string Image { get; set; }
-        
-        [Ignore] public string File => FileSystemUtils.GetCollectionImage(Image, Id);
 
         public bool Private { get; set; }
 
-        [Indexed, ForeignKey(typeof(CollectionGroup))] public int GroupId { get; set; }
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
 
         [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableCollection<Item> Items { get; set; }
+
+        [Ignore] public string File => FileSystemUtils.GetCollectionImage(Image, Id);
 
         public override bool Equals(object obj)
         {
@@ -34,7 +38,7 @@ namespace Collectio.Models
         private bool Equals(Collection other)
         {
             return Name == other.Name && Description == other.Description && Image == other.Image &&
-                   Private == other.Private && GroupId == other.GroupId;
+                   Private == other.Private && CategoryId == other.CategoryId;
         }
 
         public override int GetHashCode()
@@ -45,7 +49,7 @@ namespace Collectio.Models
                 hashCode = (hashCode * 397) ^ (Description != null ? Description.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Image != null ? Image.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ Private.GetHashCode();
-                hashCode = (hashCode * 397) ^ GroupId;
+                hashCode = (hashCode * 397) ^ CategoryId;
                 return hashCode;
             }
         }

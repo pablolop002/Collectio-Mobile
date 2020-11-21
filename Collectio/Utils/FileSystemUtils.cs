@@ -34,6 +34,33 @@ namespace Collectio.Utils
                 return false;
             }
         }
+        
+        public static bool RestoreBackupDataAndDatabase(string databasePath)
+        {
+            try
+            {
+                /*var destDir = DeviceInfo.Platform == DevicePlatform.iOS
+                    ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                    : FileSystem.AppDataDirectory;
+
+                destDir = Path.Combine(destDir, $"Backup_{DateTime.Now:yyyy-MM-dd_hh-mm-ss}");
+                Directory.CreateDirectory(destDir);
+
+                File.Copy(databasePath, Path.Combine(destDir, "collectio.db"), true);
+
+                destDir = Path.Combine(destDir, "Images");
+                var originDir = Path.Combine(FileSystem.AppDataDirectory, "Images");
+
+                DirectoryCopy(originDir, destDir);*/
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                AppCenterUtils.ReportException(ex, "RestoreBackup");
+                return false;
+            }
+        }
 
         #endregion
 
@@ -97,6 +124,22 @@ namespace Collectio.Utils
 
         #region Get
 
+        public static string GetGroupImage(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName)) return "";
+            
+            var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
+            path = Path.Combine(path, "Groups");
+            path = Path.Combine(path, fileName);
+
+            if (!File.Exists(path))
+            {
+                //SaveFileFromStream("", fileName);
+            }
+
+            return path;
+        }
+        
         public static string GetProfileImage(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName)) return "";
@@ -151,6 +194,21 @@ namespace Collectio.Utils
 
         #region Delete
 
+        public static bool DeleteCache()
+        {
+            var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
+            Directory.Delete(path, true);
+            return true;
+        }
+        
+        public static bool DeleteAllData(string databasePath)
+        {
+            var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
+            Directory.Delete(path, true);
+            File.Delete(databasePath);
+            return true;
+        }
+        
         public static void DeleteImage(string imageDir)
         {
             File.Delete(imageDir);

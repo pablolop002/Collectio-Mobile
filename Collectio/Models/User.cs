@@ -8,9 +8,11 @@ namespace Collectio.Models
         [PrimaryKey, AutoIncrement] public int Id { get; set; }
 
         public string Nickname { get; set; }
+        
+        public string Mail { get; set; }
 
-        public string FileName { get; set; }
+        public string Image { get; set; }
 
-        [Ignore] public string File => FileSystemUtils.GetProfileImage(FileName);
+        [Ignore] public string File => FileSystemUtils.GetProfileImage(Image);
     }
 }

@@ -12,7 +12,7 @@ namespace Collectio.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NewCollectionPage : ContentPage
     {
-        private Group _group;
+        private Category _category;
         private Collection _collection;
         private string _imageName = string.Empty;
         private MemoryStream _imageStream = new MemoryStream();
@@ -22,11 +22,9 @@ namespace Collectio.Views
             InitializeComponent();
             Shell.SetTabBarIsVisible(this, false);
 
-            _collection = new Collection();
-
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                CategorySelector.ItemsSource = App.DataRepo.GetCollectionGroupTypes();
+                CategorySelector.ItemsSource = App.DataRepo.GetCategories();
                 CategorySelector.Focus();
                 if (DeviceInfo.Idiom != DeviceIdiom.Tablet) return;
                 CategorySelector.ItemsLayout = new GridItemsLayout(2, ItemsLayoutOrientation.Vertical)
@@ -38,8 +36,8 @@ namespace Collectio.Views
 
         private void CategorySelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _group = CategorySelector.SelectedItem as Group;
-            if (_group == null) return;
+            _category = CategorySelector.SelectedItem as Category;
+            if (_category == null) return;
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -48,7 +46,7 @@ namespace Collectio.Views
                 ImageBorder.IsVisible = Image.IsVisible = SelectedCategory.IsVisible = Name.IsVisible =
                     Description.IsVisible = PrivateLabel.IsVisible = Private.IsVisible = true;
 
-                SelectedCategory.Text = _group.Name;
+                SelectedCategory.Text = _category.Name;
                 var done = new ToolbarItem()
                 {
                     IconImageSource = new FontImageSource() {FontFamily = "FA-S", Glyph = "\uf00c"},
@@ -66,14 +64,20 @@ namespace Collectio.Views
                 return;
             }
 
-            _collection.Name = Name.Text;
+            _collection = new Collection
+            {
+                Name = Name.Text,
+                Description = Description.Text,
+                CategoryId = _category.Id,
+                Private = Private.IsChecked,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            };
+            
             if(!string.IsNullOrWhiteSpace(_imageName))
             {
                 _collection.Image = _imageName;
             }
-            _collection.Description = Description.Text;
-            _collection.GroupId = _group.Id;
-            _collection.Private = Private.IsChecked;
             
             App.DataRepo.AddCollection(ref _collection);
             

@@ -4,13 +4,76 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
              x:Class="Collectio.Views.NewItemPage"
-             Title="x:Static culture:Strings.NewItem}"
+             Title="{x:Static culture:Strings.NewItem}"
              Style="{StaticResource PageStyle}">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="Done_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconDone}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Hello, world!"
-                   VerticalOptions="CenterAndExpand"
-                   HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <Grid x:Name="UiLayout" ColumnSpacing="10" RowSpacing="10" Padding="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="ImagesGroup">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <CarouselView x:Name="Images" IndicatorView="Indicator" Grid.Row="0"> <!-- Loop="False" -->
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Style="{StaticResource ImageFrameStyle}">
+                                    <StackLayout>
+                                        <Image Style="{StaticResource BigImageStyle}">
+                                            <Image.Source>
+                                                <StreamImageSource Stream="{Binding Value}" />
+                                            </Image.Source>
+                                        </Image>
+                                        <Label Text="{Binding Key}" Style="{StaticResource LabelStyle}" />
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
+                    <IndicatorView x:Name="Indicator" Grid.Row="1" Style="{StaticResource IndicatorViewStyle}"/>
+                    <Button Text="Add Image" Style="{StaticResource ButtonStyle}" HorizontalOptions="Center"
+                            WidthRequest="200" Clicked="AddImage_OnClicked" Grid.Row="2" />
+                </Grid>
+
+                <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="DetailsGroup"
+                             VerticalOptions="Center">
+                    <Entry x:Name="Name" Placeholder="{x:Static culture:Strings.Name}"
+                           Style="{StaticResource EntryStyle}" />
+                    <Picker x:Name="SubcategoryPicker" ItemDisplayBinding="{Binding Name}"
+                            Title="{x:Static culture:Strings.Subcategory}"
+                            Style="{StaticResource PickerStyle}" />
+                    <Editor x:Name="Description"
+                            Placeholder="{x:Static culture:Strings.Description}"
+                            Style="{StaticResource EditorStyle}" />
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{x:Static culture:Strings.Private}"
+                               Style="{StaticResource LabelStyle}"
+                               HorizontalOptions="StartAndExpand" />
+                        <CheckBox x:Name="Private" />
+                    </StackLayout>
+                </StackLayout>
+                
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
+    
 </ContentPage>

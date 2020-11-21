@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
+             x:Class="Collectio.Views.DetailItemPage"
+             Title="{Binding Name}"
+             Style="{StaticResource PageStyle}"
+             x:DataType="models:Item">
+    <ContentPage.Content>
+
+        <Grid Padding="10" RowSpacing="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" RowSpacing="5" VerticalOptions="StartAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <CarouselView Grid.Row="0" ItemsSource="{Binding Images}"
+                              IndicatorView="Indicator"> <!-- Loop="False" -->
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ItemImage">
+                            <Frame Style="{StaticResource ImageFrameStyle}">
+                                <Image Source="{Binding File}"
+                                       Style="{StaticResource BigImageStyle}" />
+                            </Frame>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+                <IndicatorView x:Name="Indicator" Grid.Row="1" Style="{StaticResource IndicatorViewStyle}" />
+            </Grid>
+
+            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10">
+                <Label Text="{Binding Name}" Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{Binding Description}" Style="{StaticResource LabelStyle}" />
+                <Label Text="{Binding CreatedAt}" Style="{StaticResource LabelStyle}" />
+                <Label Text="{Binding UpdatedAt}" Style="{StaticResource LabelStyle}" />
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{x:Static culture:Strings.Private}" Style="{StaticResource LabelStyle}"
+                           HorizontalOptions="StartAndExpand" />
+                    <CheckBox IsChecked="{Binding Private}"
+                              Color="{StaticResource PrimaryColor}"
+                              IsEnabled="False" />
+                </StackLayout>
+            </StackLayout>
+
+        </Grid>
+
+    </ContentPage.Content>
+</ContentPage>

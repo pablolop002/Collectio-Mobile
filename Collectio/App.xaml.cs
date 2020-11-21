@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using Collectio.Repositories;
@@ -13,6 +14,7 @@ using Xamarin.Forms.Xaml;
 
 namespace Collectio
 {
+    [SuppressMessage("ReSharper", "RedundantExtendsListEntry")]
     public partial class App : Application
     {
         public static DataRepository DataRepo { get; private set; }
@@ -62,12 +64,11 @@ namespace Collectio
         private static void SetLang()
         {
             Thread.CurrentThread.CurrentUICulture = Collectio.Resources.Culture.Strings.Culture =
-                Preferences.Get("lang", null) switch
+                Preferences.Get("lang", CultureInfo.InstalledUICulture.TwoLetterISOLanguageName) switch
                 {
-                    "es" => new CultureInfo("es"),
                     "en" => new CultureInfo("en"),
                     "ca" => new CultureInfo("ca"),
-                    _ => CultureInfo.InstalledUICulture
+                    _ => new CultureInfo("es")
                 };
         }
     }
