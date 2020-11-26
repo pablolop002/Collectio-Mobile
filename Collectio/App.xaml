@@ -207,6 +207,8 @@
         <Style x:Key="ImageFrameStyle" TargetType="Frame">
             <Setter Property="HasShadow" Value="False" />
             <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="HeightRequest" Value="255" />
+            <Setter Property="WidthRequest" Value="255" />
             <Setter Property="BackgroundColor" 
                     Value="{AppThemeBinding Light={StaticResource LightBackgroundColor},
                      Dark={StaticResource DarkBackgroundColor}}" />
