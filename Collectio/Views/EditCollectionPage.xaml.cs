@@ -17,7 +17,7 @@ namespace Collectio.Views
     {
         private Collection _collection;
         private string _imageName = string.Empty;
-        private MemoryStream _imageStream = new MemoryStream();
+        private string _file = string.Empty;
 
         public string Collection
         {
@@ -45,7 +45,8 @@ namespace Collectio.Views
                         FileSystemUtils.DeleteImage(original.File);
                     }
                     
-                    FileSystemUtils.SaveFileFromStream(_imageStream, _imageName, _collection.Id);
+                    FileSystemUtils.SaveFileFromPath(_file, _imageName, _collection.Id);
+                    FileSystemUtils.ClearTempPath();
                 }
             }
 
@@ -67,11 +68,17 @@ namespace Collectio.Views
                         var photo = await MediaPicker.CapturePhotoAsync();
                         if (photo == null) return;
 
-                        _imageName = photo.FileName;
-                        var stream = await photo.OpenReadAsync();
-                        await stream.CopyToAsync(_imageStream);
-                        _collection.Image = _imageName;
-                        Image.Source = ImageSource.FromStream(() => stream);
+                        using (var stream = await photo.OpenReadAsync())
+                        {
+                            using (var memStream = new MemoryStream())
+                            {
+                                await stream.CopyToAsync(memStream);
+                                _file = FileSystemUtils.TempSave(memStream, photo.FileName);
+                                _imageName = photo.FileName;
+                            }
+                        }
+
+                        Image.Source = ImageSource.FromFile(_file);
                     }
                     catch (PermissionException ex)
                     {
@@ -88,11 +95,17 @@ namespace Collectio.Views
                         var photo = await MediaPicker.PickPhotoAsync();
                         if (photo == null) return;
 
-                        _imageName = photo.FileName;
-                        var stream = await photo.OpenReadAsync();
-                        await stream.CopyToAsync(_imageStream);
-                        _collection.Image = _imageName;
-                        Image.Source = ImageSource.FromFile(photo.FullPath);
+                        using (var stream = await photo.OpenReadAsync())
+                        {
+                            using (var memStream = new MemoryStream())
+                            {
+                                await stream.CopyToAsync(memStream);
+                                _file = FileSystemUtils.TempSave(memStream, photo.FileName);
+                                _imageName = photo.FileName;
+                            }
+                        }
+
+                        Image.Source = ImageSource.FromFile(_file);
                     }
                     catch (PermissionException ex)
                     {

@@ -66,6 +66,40 @@ namespace Collectio.Utils
 
         #region Save
 
+        public static string TempSave(MemoryStream stream, string fileName)
+        {
+            var path = Path.Combine(FileSystem.AppDataDirectory, "Temp");
+            
+            try
+            {
+                Directory.CreateDirectory(path);
+                path = Path.Combine(path, fileName);
+                
+                File.WriteAllBytes(path, stream.ToArray());
+
+                return path;
+            }
+            catch (Exception ex)
+            {
+                AppCenterUtils.ReportException(ex, "SaveFileTemp");
+                return null;
+            }
+        }
+
+        public static void ClearTempPath()
+        {
+            var path = Path.Combine(FileSystem.AppDataDirectory, "Temp");
+            
+            try
+            {
+                Directory.Delete(path, true);
+            }
+            catch (Exception ex)
+            {
+                AppCenterUtils.ReportException(ex, "ClearTempPath");
+            }
+        }
+
         public static bool SaveFileFromPath(string originalPath, string fileName, int? collection = null, int? item = null)
         {
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
