@@ -1,0 +1,4 @@
+"NSCameraUsageDescription" = "La app necesita acceso a la cámara para que puedas fotografiar los elementos de tu colección.";
+"NSMicrophoneUsageDescription" = "La app necesita acceso al microfono para que puedas grabar los elementos de tu colección.";
+"NSPhotoLibraryAddUsageDescription" = "La app necesita acceso a la galería para añadir las fotos y videos de los elementos de tu colección que realices.";
+"NSPhotoLibraryUsageDescription" = "La app necesita acceso a la galería para que puedas seleccionar las fotos y videos de los elementos de tu colección.";
