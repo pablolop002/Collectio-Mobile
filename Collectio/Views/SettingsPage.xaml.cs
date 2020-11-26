@@ -14,7 +14,7 @@ namespace Collectio.Views
         public SettingsPage()
         {
             InitializeComponent();
-            Shell.SetTabBarIsVisible(this, false);
+            //Shell.SetTabBarIsVisible(this, false);
             AppCenterStatus.IsChecked = Preferences.Get("AppCenter", true);
         }
 
