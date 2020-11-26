@@ -71,7 +71,7 @@
                 </CollectionView>
 
                 <Ellipse x:Name="ImageBorder" IsVisible="False" Grid.Row="0"
-                         Style="{StaticResource BigImageStyle}">
+                         Style="{StaticResource BigEllipseStyle}">
                     <Ellipse.Stroke>
                         <SolidColorBrush Color="Goldenrod" />
                     </Ellipse.Stroke>
