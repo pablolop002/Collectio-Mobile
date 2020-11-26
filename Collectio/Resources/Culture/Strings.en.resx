@@ -156,7 +156,7 @@ No hay grupos disponibles.</value>
         <value>Error al realizar la copia de seguridad. Prueba de nuevo más tarde</value>
     </data>
     <data name="BackupCorrect" xml:space="preserve">
-        <value>Copia de seguridad creada correctamente</value>
+        <value>Backup successfully created</value>
     </data>
     <data name="RestoreBackupError" xml:space="preserve">
         <value>Error en la restauración de la copia de seguridad. Es posible que no esté completa o tenga algún error. Si estas seguro que no es asi, prueba de nuevo más tarde</value>
