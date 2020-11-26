@@ -1,0 +1,6 @@
+files:
+  - source: /Collectio/Resources/Culture/Strings.resx
+    translation: /Collectio/Resources/Culture/Strings.%two_letters_code%.resx
+  - source: /Collectio.iOS/Resources/es.lproj/*.*
+    translation: >-
+      /Collectio.iOS/Resources/%two_letters_code%.lproj/%file_name%.%file_extension%
