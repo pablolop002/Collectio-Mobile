@@ -20,12 +20,18 @@
                 <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconFriends}" />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:FriendsPage}" />
-        </Tab> -->
+        </Tab>
         <Tab Route="profile">
             <Tab.Icon>
                 <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconProfile}" />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:ProfilePage}" />
+        </Tab> -->
+        <Tab Route="settings">
+            <Tab.Icon>
+                <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconSettings}" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate views:SettingsPage}" />
         </Tab>
     </TabBar>
 
