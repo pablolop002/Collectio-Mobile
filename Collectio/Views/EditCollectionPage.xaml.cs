@@ -55,7 +55,7 @@ namespace Collectio.Views
 
         private async void SelectImage_OnClicked(object sender, EventArgs e)
         {
-            var selection = await Shell.Current.DisplayActionSheet("Image", Strings.Cancel, null,
+            var selection = await Shell.Current.DisplayActionSheet(Strings.ImageOrigin, Strings.Cancel, null,
                 Strings.Camera, Strings.Gallery);
 
             if (selection == null || selection == Strings.Cancel) return;

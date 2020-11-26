@@ -119,4 +119,10 @@
     <data name="DisabledFunction" xml:space="preserve">
         <value>Function not available</value>
     </data>
+    <data name="ImageOrigin" xml:space="preserve">
+        <value>Image origin</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
 </root>

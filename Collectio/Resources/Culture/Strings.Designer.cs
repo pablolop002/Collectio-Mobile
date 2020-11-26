@@ -386,5 +386,11 @@ namespace Collectio.Resources.Culture {
                 return ResourceManager.GetString("DisabledFunction", resourceCulture);
             }
         }
+        
+        internal static string ImageOrigin {
+            get {
+                return ResourceManager.GetString("ImageOrigin", resourceCulture);
+            }
+        }
     }
 }

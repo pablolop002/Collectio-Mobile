@@ -94,7 +94,7 @@ No hay grupos disponibles.</value>
         <value>Nuevo item</value>
     </data>
     <data name="Camera" xml:space="preserve">
-        <value>Camara</value>
+        <value>Cámara</value>
     </data>
     <data name="Gallery" xml:space="preserve">
         <value>Galería</value>
@@ -191,5 +191,8 @@ No hay grupos disponibles.</value>
     </data>
     <data name="DisabledFunction" xml:space="preserve">
         <value>Función no disponible</value>
+    </data>
+    <data name="ImageOrigin" xml:space="preserve">
+        <value>Origen de la imagen</value>
     </data>
 </root>
