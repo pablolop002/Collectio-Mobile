@@ -69,7 +69,7 @@
         <value>Confirm</value>
     </data>
     <data name="CollectionsCount" xml:space="preserve">
-        <value>Collections in the group: {0}.</value>
+        <value>Collections in the group: {0}</value>
     </data>
     <data name="NewItem" xml:space="preserve">
         <value>New item</value>
@@ -124,5 +124,8 @@
     </data>
     <data name="Edit" xml:space="preserve">
         <value>Edit</value>
+    </data>
+    <data name="Public" xml:space="preserve">
+        <value>Public</value>
     </data>
 </root>

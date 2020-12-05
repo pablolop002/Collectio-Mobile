@@ -6,7 +6,7 @@
              x:Class="Collectio.Views.NewItemPage"
              Title="{x:Static culture:Strings.NewItem}"
              Style="{StaticResource PageStyle}">
-    
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Clicked="Done_OnClicked">
             <ToolbarItem.IconImageSource>
@@ -14,12 +14,13 @@
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    
+
     <ContentPage.Content>
         <ScrollView>
             <Grid x:Name="UiLayout" ColumnSpacing="10" RowSpacing="10" Padding="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -30,31 +31,20 @@
                 <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="ImagesGroup">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <CarouselView x:Name="Images" IndicatorView="Indicator" Grid.Row="0"> <!-- Loop="False" -->
-                        <CarouselView.ItemTemplate>
-                            <DataTemplate>
-                                <Frame Style="{StaticResource ImageFrameStyle}">
-                                    <StackLayout>
-                                        <Image Style="{StaticResource BigImageStyle}">
-                                            <Image.Source>
-                                                <StreamImageSource Stream="{Binding Value}" />
-                                            </Image.Source>
-                                        </Image>
-                                        <Label Text="{Binding Key}" Style="{StaticResource LabelStyle}" />
-                                    </StackLayout>
-                                </Frame>
-                            </DataTemplate>
-                        </CarouselView.ItemTemplate>
-                    </CarouselView>
-                    <IndicatorView x:Name="Indicator" Grid.Row="1" Style="{StaticResource IndicatorViewStyle}"/>
-                    <Button Text="Add Image" Style="{StaticResource ButtonStyle}" HorizontalOptions="Center"
-                            WidthRequest="200" Clicked="AddImage_OnClicked" Grid.Row="2" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
                 </Grid>
+                
+                <Button Text="Add Image" Style="{StaticResource ButtonStyle}" HorizontalOptions="Center"
+                        WidthRequest="200" Clicked="AddImage_OnClicked" Grid.Row="1" Grid.Column="0"
+                        Grid.ColumnSpan="2" />
 
-                <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="DetailsGroup"
+                <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="DetailsGroup"
                              VerticalOptions="Center">
                     <Entry x:Name="Name" Placeholder="{x:Static culture:Strings.Name}"
                            Style="{StaticResource EntryStyle}" />
@@ -68,12 +58,12 @@
                         <Label Text="{x:Static culture:Strings.Private}"
                                Style="{StaticResource LabelStyle}"
                                HorizontalOptions="StartAndExpand" />
-                        <CheckBox x:Name="Private" />
+                        <CheckBox x:Name="Private" Color="{StaticResource PrimaryColor}" />
                     </StackLayout>
                 </StackLayout>
-                
+
             </Grid>
         </ScrollView>
     </ContentPage.Content>
-    
+
 </ContentPage>

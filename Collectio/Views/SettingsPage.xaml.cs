@@ -67,6 +67,8 @@ namespace Collectio.Views
 
         private void DeleteCache_OnClicked(object sender, EventArgs e)
         {
+            FileSystemUtils.ClearTempPath();
+            
             if (!Preferences.Get("LoggedIn", false))
             {
                 Shell.Current.DisplayAlert(Strings.Error, Strings.DisabledFunction, Strings.Ok);

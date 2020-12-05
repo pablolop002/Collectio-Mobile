@@ -12,7 +12,11 @@ namespace Collectio.Repositories
 {
     public class DataRepository
     {
-        private const string BaseUrl = "https://192.168.14.25:3000";
+#if DEBUG
+        private const string BaseUrl = "http://192.168.14.23:3000";
+#else
+        private const string BaseUrl = "HOSTURL";
+#endif
         private readonly HttpClient _client;
         private SQLiteConnection _connection;
         private readonly string _databasePath;
@@ -867,10 +871,15 @@ namespace Collectio.Repositories
         #endregion
 
         #region Subcategories
-        
+
         public IEnumerable<Subcategory> GetSubcategoriesByCategoryId(string categoryId)
         {
             return _connection.Query<Subcategory>("Select * from Subcategory Where CategoryId = ?", categoryId);
+        }
+
+        public Subcategory GetSubcategory(string id)
+        {
+            return _connection.Get<Subcategory>(id);
         }
 
         public void AddSubcategories(ref IEnumerable<Subcategory> subcategories)
@@ -889,7 +898,7 @@ namespace Collectio.Repositories
         }
 
         #endregion
-        
+
         #region Collection
 
         public Collection GetCollection(string id, bool withChildren = false)
@@ -1009,7 +1018,6 @@ namespace Collectio.Repositories
 
         public void AddItemImage(ItemImage itemImage)
         {
-            
             _connection.Insert(itemImage);
         }
 

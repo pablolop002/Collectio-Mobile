@@ -120,15 +120,16 @@
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
 
-                                            <Ellipse Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                            <Ellipse Grid.Row="0" Grid.Column="0" Grid.RowSpan="3"
                                                      Style="{StaticResource SmallEllipseStyle}">
                                                 <Ellipse.Stroke>
                                                     <SolidColorBrush Color="Goldenrod" />
                                                 </Ellipse.Stroke>
                                             </Ellipse>
-                                            <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                                            <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
                                                    Style="{StaticResource SmallImageStyle}">
                                                 <Image.Clip>
                                                     <EllipseGeometry Center="40,40"
@@ -145,6 +146,11 @@
                                             <Label Grid.Column="1" Grid.Row="1" MaxLines="3"
                                                    Text="{Binding Description}"
                                                    Style="{StaticResource LabelStyle}" />
+                                            <StackLayout Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                                                <Label MaxLines="1"
+                                                       Text="{Binding PrivateText}"
+                                                       Style="{StaticResource LabelStyle}" />
+                                            </StackLayout>
                                         </Grid>
                                     </Frame>
                                 </Grid>

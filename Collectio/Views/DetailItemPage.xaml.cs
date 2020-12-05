@@ -9,9 +9,14 @@ namespace Collectio.Views
     {
         public string Item
         {
-            set => BindingContext = App.DataRepo.GetItem(value, true);
+            set
+            {
+                var item = App.DataRepo.GetItem(value, true);
+                BindingContext = item;
+                Subcategory.Text = App.DataRepo.GetSubcategory(item.SubcategoryId.ToString()).Name;
+            }
         }
-        
+
         public DetailItemPage()
         {
             InitializeComponent();

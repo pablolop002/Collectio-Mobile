@@ -42,6 +42,7 @@
             <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10">
                 <Label Text="{Binding Name}" Style="{StaticResource TitleLabelStyle}" />
                 <Label Text="{Binding Description}" Style="{StaticResource LabelStyle}" />
+                <Label x:Name="Subcategory" Style="{StaticResource LabelStyle}" />
                 <Label Text="{Binding CreatedAt}" Style="{StaticResource LabelStyle}" />
                 <Label Text="{Binding UpdatedAt}" Style="{StaticResource LabelStyle}" />
                 <StackLayout Orientation="Horizontal">

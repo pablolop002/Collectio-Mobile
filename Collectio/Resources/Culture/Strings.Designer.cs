@@ -392,5 +392,11 @@ namespace Collectio.Resources.Culture {
                 return ResourceManager.GetString("ImageOrigin", resourceCulture);
             }
         }
+        
+        internal static string Public {
+            get {
+                return ResourceManager.GetString("Public", resourceCulture);
+            }
+        }
     }
 }

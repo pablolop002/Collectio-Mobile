@@ -33,21 +33,23 @@ namespace Collectio.Views
         private async void Done_OnClicked(object sender, EventArgs e)
         {
             var original = App.DataRepo.GetCollection(_collection.Id.ToString());
+            
+            if (!string.IsNullOrWhiteSpace(_imageName))
+            {
+                if (!string.IsNullOrWhiteSpace(original.Image))
+                {
+                    FileSystemUtils.DeleteImage(original.File);
+                }
+
+                _collection.Image = _imageName;
+                FileSystemUtils.SaveFileFromPath(_file, _imageName, _collection.Id);
+                FileSystemUtils.ClearTempPath();
+            }
 
             if (!_collection.Equals(original))
             {
+                _collection.UpdatedAt = DateTime.Now;
                 App.DataRepo.UpdateCollection(_collection);
-
-                if (!string.IsNullOrWhiteSpace(_imageName))
-                {
-                    if(!string.IsNullOrWhiteSpace(original.Image))
-                    {
-                        FileSystemUtils.DeleteImage(original.File);
-                    }
-                    
-                    FileSystemUtils.SaveFileFromPath(_file, _imageName, _collection.Id);
-                    FileSystemUtils.ClearTempPath();
-                }
             }
 
             await Shell.Current.GoToAsync("..?refresh=true");

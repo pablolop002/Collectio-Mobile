@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.IO.Compression;
 using Xamarin.Essentials;
 
 namespace Collectio.Utils
@@ -12,19 +13,23 @@ namespace Collectio.Utils
         {
             try
             {
-                var destDir = DeviceInfo.Platform == DevicePlatform.iOS
+                var destBaseDir = DeviceInfo.Platform == DevicePlatform.iOS
                     ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                     : FileSystem.AppDataDirectory;
 
-                destDir = Path.Combine(destDir, $"Backup_{DateTime.Now:yyyy-MM-dd_hh-mm-ss}");
-                Directory.CreateDirectory(destDir);
+                var fileName = $"Backup_{DateTime.Now:yyyy-MM-dd_hh-mm-ss}";
 
-                File.Copy(databasePath, Path.Combine(destDir, "collectio.db"), true);
+                destBaseDir = Path.Combine(destBaseDir, fileName);
+                Directory.CreateDirectory(destBaseDir);
 
-                destDir = Path.Combine(destDir, "Images");
+                File.Copy(databasePath, Path.Combine(destBaseDir, "collectio.db"), true);
+
+                var destDir = Path.Combine(destBaseDir, "Images");
                 var originDir = Path.Combine(FileSystem.AppDataDirectory, "Images");
 
                 DirectoryCopy(originDir, destDir);
+                
+                ZipFile.CreateFromDirectory(destBaseDir, fileName);
 
                 return true;
             }

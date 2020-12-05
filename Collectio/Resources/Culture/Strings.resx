@@ -88,7 +88,7 @@ No hay grupos disponibles.</value>
         <value>Confirmar</value>
     </data>
     <data name="CollectionsCount" xml:space="preserve">
-        <value>Colecciones en el grupo: {0}.</value>
+        <value>Colecciones en el grupo: {0}</value>
     </data>
     <data name="NewItem" xml:space="preserve">
         <value>Nuevo item</value>
@@ -194,5 +194,8 @@ No hay grupos disponibles.</value>
     </data>
     <data name="ImageOrigin" xml:space="preserve">
         <value>Origen de la imagen</value>
+    </data>
+    <data name="Public" xml:space="preserve">
+        <value>Público</value>
     </data>
 </root>

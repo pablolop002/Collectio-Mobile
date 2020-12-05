@@ -20,6 +20,7 @@
             <Grid x:Name="UiLayout" ColumnSpacing="10" RowSpacing="10" Padding="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -27,29 +28,24 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" RowSpacing="5" x:Name="ImagesGroup" VerticalOptions="StartAndExpand">
+                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" RowSpacing="5" x:Name="ImagesGroup"
+                      VerticalOptions="StartAndExpand">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <CarouselView ItemsSource="{Binding Images}" IndicatorView="Indicator"
-                                  Grid.Row="0"> <!-- Loop="False" -->
-                        <CarouselView.ItemTemplate>
-                            <DataTemplate x:DataType="models:ItemImage">
-                                <Frame Style="{StaticResource ImageFrameStyle}">
-                                    <Image Style="{StaticResource BigImageStyle}"
-                                           Source="{Binding File}" />
-                                </Frame>
-                            </DataTemplate>
-                        </CarouselView.ItemTemplate>
-                    </CarouselView>
-                    <IndicatorView x:Name="Indicator" Grid.Row="1" Style="{StaticResource IndicatorViewStyle}" />
-                    <Button Text="Add Image" Style="{StaticResource ButtonStyle}" HorizontalOptions="Center"
-                            WidthRequest="200" Clicked="AddImage_OnClicked" Grid.Row="2" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
                 </Grid>
+                
+                <Button Text="Add Image" Style="{StaticResource ButtonStyle}" HorizontalOptions="Center"
+                        WidthRequest="200" Clicked="AddImage_OnClicked" Grid.Row="1" Grid.Column="0"
+                        Grid.ColumnSpan="2" />
 
-                <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="DetailsGroup"
+                <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="DetailsGroup"
                              VerticalOptions="Center">
                     <Entry Text="{Binding Name}" Placeholder="{x:Static culture:Strings.Name}"
                            Style="{StaticResource EntryStyle}" />
@@ -63,7 +59,7 @@
                         <Label Text="{x:Static culture:Strings.Private}"
                                Style="{StaticResource LabelStyle}"
                                HorizontalOptions="StartAndExpand" />
-                        <CheckBox IsChecked="{Binding Private}" />
+                        <CheckBox IsChecked="{Binding Private}" Color="{StaticResource PrimaryColor}" />
                     </StackLayout>
                 </StackLayout>
             </Grid>

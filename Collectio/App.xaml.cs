@@ -42,16 +42,16 @@ namespace Collectio
         {
             base.OnStart();
 
-#if !DEBUG
-            if (DeviceInfo.DeviceType == DeviceType.Physical)
-            {
-                AppCenter.Start("android=;" +
-                                "ios=",
-                    typeof(Analytics), typeof(Crashes));
-                AppCenter.LogLevel = LogLevel.Verbose;
+            if (DeviceInfo.DeviceType != DeviceType.Physical) return;
+
+            AppCenter.Start("android=APPCENTER_DROID;ios=APPCENTER_IOS",
+                typeof(Analytics), typeof(Crashes));
+            AppCenter.LogLevel = LogLevel.Verbose;
+#if DEBUG
+            AppCenter.SetEnabledAsync(false);
+#else
                 AppCenter.SetEnabledAsync(Preferences.Get("AppCenter", true));
                 AppCenter.SetUserId("256 characters");
-            }
 #endif
         }
 

@@ -1,5 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using Collectio.Models;
+using Collectio.Resources.Culture;
+using Collectio.Utils;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -7,15 +14,50 @@ namespace Collectio.Views
 {
     [QueryProperty("Item", "item")]
     [XamlCompilation(XamlCompilationOptions.Compile)]
+    [SuppressMessage("ReSharper", "RedundantExtendsListEntry")]
     public partial class EditItemPage : ContentPage
     {
+        private readonly double _size;
+        private readonly int _maxSize = 3;
         private Item _item;
-        
+
+        private readonly List<KeyValuePair<string, KeyValuePair<string, ImageButton>>> _images =
+            new List<KeyValuePair<string, KeyValuePair<string, ImageButton>>>();
+
+        private readonly List<string> _toDelete = new List<string>();
+
         public string Item
         {
             set
             {
                 BindingContext = _item = App.DataRepo.GetItem(value, true);
+                foreach (var image in _item.Images)
+                {
+                    _images.Add(new KeyValuePair<string, KeyValuePair<string, ImageButton>>(image.File,
+                        new KeyValuePair<string, ImageButton>(image.Image, new ImageButton()
+                        {
+                            Source = image.File,
+                            Aspect = Aspect.AspectFill,
+                            WidthRequest = _size,
+                            HeightRequest = _size
+                        })));
+                    _images[_images.Count - 1].Value.Value.Clicked += Delete_OnClicked;
+                    
+                    ImagesGroup.Children.Add(_images[_images.Count - 1].Value.Value, (_images.Count - 1) % _maxSize,
+                        (_images.Count - 1) / _maxSize);
+                }
+
+                var subcategoryList =
+                    App.DataRepo.GetSubcategoriesByCategoryId(App.DataRepo
+                        .GetCollection(_item.CollectionId.ToString())
+                        .CategoryId.ToString()) as List<Subcategory>;
+                SubcategoryPicker.ItemsSource = subcategoryList;
+                if (SubcategoryPicker.ItemsSource != null && subcategoryList != null)
+                {
+                    SubcategoryPicker.SelectedIndex =
+                        SubcategoryPicker.ItemsSource.IndexOf(
+                            subcategoryList.Find(e => e.Id == _item.SubcategoryId));
+                }
             }
         }
 
@@ -23,16 +65,161 @@ namespace Collectio.Views
         {
             InitializeComponent();
             Shell.SetTabBarIsVisible(this, false);
+            if (DeviceInfo.Idiom == DeviceIdiom.Tablet) _maxSize = 2;
+            if (DeviceDisplay.MainDisplayInfo.Orientation == DisplayOrientation.Landscape)
+            {
+                _size = DeviceDisplay.MainDisplayInfo.Height / 2 / _maxSize;
+            }
+            else
+            {
+                _size = DeviceDisplay.MainDisplayInfo.Width / 2 / _maxSize;
+            }
         }
 
-        private void Done_OnClicked(object sender, EventArgs e)
+        private async void AddImage_OnClicked(object sender, EventArgs e)
         {
-            //ToDo
+            if (_images.Count > 5)
+            {
+                await Shell.Current.DisplayAlert(Strings.Error, "Limit Reached", Strings.Ok);
+                return;
+            }
+
+            var selection = await Shell.Current.DisplayActionSheet(Strings.ImageOrigin, Strings.Cancel, null,
+                Strings.Camera, Strings.Gallery);
+
+            if (selection == null || selection == Strings.Cancel) return;
+            if (selection == Strings.Camera)
+            {
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    try
+                    {
+                        var photo = await MediaPicker.CapturePhotoAsync();
+                        if (photo == null) return;
+
+                        using (var stream = await photo.OpenReadAsync())
+                        {
+                            using (var memStream = new MemoryStream())
+                            {
+                                await stream.CopyToAsync(memStream);
+                                var image = FileSystemUtils.TempSave(memStream, photo.FileName);
+                                _images.Add(new KeyValuePair<string, KeyValuePair<string, ImageButton>>(image,
+                                    new KeyValuePair<string, ImageButton>(photo.FileName, new ImageButton()
+                                    {
+                                        Source = image,
+                                        Aspect = Aspect.AspectFill,
+                                        WidthRequest = _size,
+                                        HeightRequest = _size
+                                    })));
+                            }
+                        }
+
+                        var pos = _images.Count - 1;
+                        _images[pos].Value.Value.Clicked += Delete_OnClicked;
+                        ImagesGroup.Children.Add(_images[pos].Value.Value, pos % _maxSize, pos / _maxSize);
+                    }
+                    catch (PermissionException ex)
+                    {
+                        await Shell.Current.DisplayAlert(Strings.Error, ex.Message, Strings.Ok);
+                    }
+                });
+            }
+            else
+            {
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    try
+                    {
+                        var photo = await MediaPicker.PickPhotoAsync();
+                        if (photo == null) return;
+
+                        using (var stream = await photo.OpenReadAsync())
+                        {
+                            using (var memStream = new MemoryStream())
+                            {
+                                await stream.CopyToAsync(memStream);
+                                var image = FileSystemUtils.TempSave(memStream, photo.FileName);
+                                _images.Add(new KeyValuePair<string, KeyValuePair<string, ImageButton>>(image,
+                                    new KeyValuePair<string, ImageButton>(photo.FileName, new ImageButton()
+                                    {
+                                        Source = image,
+                                        Aspect = Aspect.AspectFill,
+                                        WidthRequest = _size,
+                                        HeightRequest = _size
+                                    })));
+                            }
+                        }
+
+                        var pos = _images.Count - 1;
+                        _images[pos].Value.Value.Clicked += Delete_OnClicked;
+                        ImagesGroup.Children.Add(_images[pos].Value.Value, pos % _maxSize, pos / _maxSize);
+                    }
+                    catch (PermissionException ex)
+                    {
+                        await Shell.Current.DisplayAlert(Strings.Error, ex.Message, Strings.Ok);
+                    }
+                });
+            }
         }
 
-        private void AddImage_OnClicked(object sender, EventArgs e)
+        private void Delete_OnClicked(object sender, EventArgs e)
         {
-            //ToDo
+            var aux = sender as ImageButton;
+            var elem = _images.FindIndex(pair => pair.Value.Value == aux);
+
+            _toDelete.Add(_images[elem].Key);
+            _images.Remove(_images[elem]);
+            MainThread.BeginInvokeOnMainThread(ImagesGroup.Children.Clear);
+
+            var pos = 0;
+            foreach (var image in _images)
+            {
+                var pos1 = pos;
+                MainThread.BeginInvokeOnMainThread(() =>
+                    ImagesGroup.Children.Add(image.Value.Value, pos1 % _maxSize, pos1 / _maxSize));
+                pos++;
+            }
+        }
+
+        private async void Done_OnClicked(object sender, EventArgs e)
+        {
+            var original = App.DataRepo.GetItem(_item.Id.ToString(), true);
+
+            foreach (var image in _toDelete)
+            {
+                if (_item.Images.Exists(elem => elem.File == image))
+                {
+                    var img = _item.Images.Find(elem => elem.File == image);
+                    App.DataRepo.RemoveItemImage(img.Id.ToString());
+                    _item.Images.Remove(img);
+                }
+
+                FileSystemUtils.DeleteImage(image);
+            }
+
+            foreach (var image in _images.Where(image =>
+                !_item.Images.Exists(elem => elem.File == image.Key)))
+            {
+                FileSystemUtils.SaveFileFromPath(image.Key, image.Value.Key, _item.CollectionId, _item.Id);
+                var itemImage = new ItemImage()
+                {
+                    ItemId = _item.Id,
+                    Image = image.Value.Key
+                };
+
+                App.DataRepo.AddItemImage(itemImage);
+                _item.Images.Add(itemImage);
+            }
+
+            if (!_item.Equals(original))
+            {
+                _item.UpdatedAt = DateTime.Now;
+                App.DataRepo.UpdateItem(_item);
+            }
+
+            FileSystemUtils.ClearTempPath();
+
+            await Shell.Current.GoToAsync($"..?collection={_item.CollectionId.ToString()}&refresh=true");
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using Collectio.Resources.Culture;
 using Collectio.Utils;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -21,6 +22,8 @@ namespace Collectio.Models
         public string Image { get; set; }
 
         public bool Private { get; set; }
+
+        [Ignore] public string PrivateText => Private ? Strings.Private : Strings.Public;
 
         public DateTime CreatedAt { get; set; }
 

@@ -55,7 +55,7 @@
 
                                     <Label Text="{Binding Name}" HorizontalTextAlignment="Center"
                                            Style="{StaticResource TitleLabelStyle}" Grid.Column="1"
-                                           FontSize="Title" />
+                                           FontSize="Title" TextDecorations="None" />
                                 </Grid>
                             </Frame>
                         </DataTemplate>
