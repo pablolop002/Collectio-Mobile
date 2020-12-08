@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Collectio.Repositories;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
 using Xamarin.Essentials;
@@ -62,7 +63,7 @@ namespace Collectio.Views
             else
             {
                 authResult = await WebAuthenticator.AuthenticateAsync(
-                    new Uri("https://mysite.com/auth/apple"),
+                    new Uri($"{RestServiceUtils.RestUrl}/login/apple"),
                     new Uri("collectio://"));
             }
 
@@ -77,7 +78,7 @@ namespace Collectio.Views
         private async void Google_OnClicked(object sender, EventArgs e)
         {
             var authResult = await WebAuthenticator.AuthenticateAsync(
-                new Uri("https://mysite.com/auth/google"),
+                new Uri($"{RestServiceUtils.RestUrl}/login/google"),
                 new Uri("collectio://"));
 
             var accessToken = authResult?.AccessToken;
