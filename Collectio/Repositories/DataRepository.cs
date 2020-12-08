@@ -2,35 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Http;
 using Collectio.Models;
 using Collectio.Utils;
 using SQLite;
 using SQLiteNetExtensions.Extensions;
+using Xamarin.Essentials;
 
 namespace Collectio.Repositories
 {
     public class DataRepository
     {
-#if DEBUG
-        private const string BaseUrl = "http://192.168.14.23:3000";
-#else
-        private const string BaseUrl = "HOSTURL";
-#endif
-        private readonly HttpClient _client;
+        private DateTime LastSynced
+        {
+            get => Preferences.Get("lastSynced", DateTime.Now);
+            set => Preferences.Set("lastSynced", value);
+        }
+
         private SQLiteConnection _connection;
         private readonly string _databasePath;
 
+        public RestServiceUtils Connection = new RestServiceUtils();
+
         public DataRepository()
         {
-            _client = new HttpClient()
-            {
-                BaseAddress = new Uri(BaseUrl)
-            };
-
             try
             {
-                _databasePath = System.IO.Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, "collectio.db");
+                _databasePath = System.IO.Path.Combine(FileSystem.AppDataDirectory, "collectio.db");
                 _connection = new SQLiteConnection(_databasePath);
                 _connection.CreateTable<Category>();
                 _connection.CreateTable<Subcategory>();
@@ -853,14 +850,9 @@ namespace Collectio.Repositories
             return ret;
         }
 
-        public void AddCategories(ref IEnumerable<Category> categories)
+        public void AddOrUpdateCategories(ref IEnumerable<Category> categories)
         {
-            _connection.Insert(categories);
-        }
-
-        public void UpdateCategory(Category category)
-        {
-            _connection.Update(category);
+            _connection.InsertOrReplace(categories);
         }
 
         public void DeleteCategory(string id)
@@ -882,14 +874,9 @@ namespace Collectio.Repositories
             return _connection.Get<Subcategory>(id);
         }
 
-        public void AddSubcategories(ref IEnumerable<Subcategory> subcategories)
+        public void AddOrUpdateSubcategories(ref IEnumerable<Subcategory> subcategories)
         {
-            _connection.Insert(subcategories);
-        }
-
-        public void UpdateSubcategory(Subcategory subcategory)
-        {
-            _connection.Update(subcategory);
+            _connection.InsertOrReplace(subcategories);
         }
 
         public void DeleteSubcategory(string id)
@@ -911,6 +898,11 @@ namespace Collectio.Repositories
             {
                 return _connection.Get<Collection>(id);
             }
+        }
+
+        public IEnumerable<Collection> GetAllCollections()
+        {
+            return _connection.GetAllWithChildren<Collection>(c => true);
         }
 
         public void AddCollection(ref Collection collection, bool recursive = false)
