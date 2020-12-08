@@ -10,10 +10,10 @@ namespace Collectio.ViewModels
     public class ItemsViewModel : BaseViewModel
     {
         private bool _isRefreshing;
-        private int _collectionId;
 
         public ObservableCollection<Item> Items { get; private set; }
         public Command RefreshCommand { get; set; }
+        public int CollectionId { get; }
 
         public bool IsRefreshing
         {
@@ -28,7 +28,7 @@ namespace Collectio.ViewModels
         public ItemsViewModel(Collection collection)
         {
             Title = collection.Name;
-            _collectionId = collection.Id;
+            CollectionId = collection.Id;
             Items = new ObservableCollection<Item>();
             RefreshCommand = new Command(RefreshEvent);
             IsRefreshing = true;
@@ -39,7 +39,7 @@ namespace Collectio.ViewModels
             IsRefreshing = true;
 
             Items.Clear();
-            foreach (var item in App.DataRepo.GetAllItemsFromCategory(_collectionId.ToString(), true))
+            foreach (var item in App.DataRepo.GetAllItemsFromCategory(CollectionId.ToString(), true))
             {
                 Items.Add(item);
             }
