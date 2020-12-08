@@ -1,6 +1,8 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Firebase;
+using Xamarin.Forms.Platform.Android.AppLinks;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
 namespace Collectio.Droid
@@ -19,9 +21,11 @@ namespace Collectio.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-
+            
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            FirebaseApp.InitializeApp(this);
+            AndroidAppLinks.Init(this);
 
             LoadApplication(new App());
             Xamarin.Forms.Application.Current.On<Xamarin.Forms.PlatformConfiguration.Android>()

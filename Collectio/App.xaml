@@ -9,6 +9,7 @@
         <x:String x:Key="IconFriends">&#xf0c0;</x:String>
         <x:String x:Key="IconProfile">&#xf007;</x:String>
         <x:String x:Key="IconSettings">&#xf085;</x:String>
+        <x:String x:Key="IconSync">&#xf021;</x:String>
         <x:String x:Key="IconEdit">&#xf044;</x:String>
         <x:String x:Key="IconDelete">&#xf1f8;</x:String>
         <x:String x:Key="IconDuplicate">&#xf0c5;</x:String>
