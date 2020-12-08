@@ -91,7 +91,7 @@ No hay grupos disponibles.</value>
         <value>Colecciones en el grupo: {0}</value>
     </data>
     <data name="NewItem" xml:space="preserve">
-        <value>Nuevo item</value>
+        <value>Nuevo elemento</value>
     </data>
     <data name="Camera" xml:space="preserve">
         <value>Cámara</value>
