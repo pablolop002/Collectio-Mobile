@@ -5,10 +5,37 @@
              xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
              xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
              xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
+             xmlns:utils="clr-namespace:Collectio.Utils;assembly=Collectio"
              x:Class="Collectio.Views.ListItemsPage"
              Style="{StaticResource PageStyle}"
              Title="{Binding Title}"
              x:DataType="viewModels:ItemsViewModel">
+
+    <Shell.SearchHandler>
+        <utils:ItemsSearchHandler Placeholder="Enter search term"
+                                        ShowsResults="true"
+                                        SearchBoxVisibility="Collapsible"
+                                        Collection="{Binding CollectionId}"
+                                        DisplayMemberName="Name">
+            <!-- <utils:ItemsSearchHandler.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.15*" />
+                            <ColumnDefinition Width="0.85*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{Binding ImageUrl}"
+                               Aspect="AspectFill"
+                               HeightRequest="40"
+                               WidthRequest="40" />
+                        <Label Grid.Column="1"
+                               Text="{Binding Name}"
+                               FontAttributes="Bold" />
+                    </Grid>
+                </DataTemplate>
+            </utils:ItemsSearchHandler.ItemTemplate> -->
+        </utils:ItemsSearchHandler>
+    </Shell.SearchHandler>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Clicked="Add_OnClicked">

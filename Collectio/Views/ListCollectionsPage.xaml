@@ -5,10 +5,36 @@
              xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
              xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
              xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
+             xmlns:utils="clr-namespace:Collectio.Utils;assembly=Collectio"
              x:Class="Collectio.Views.ListCollectionsPage"
              Style="{StaticResource PageStyle}"
              Title="{x:Static culture:Strings.Collections}"
              x:DataType="viewModels:CollectionsViewModel">
+
+    <Shell.SearchHandler>
+        <utils:CollectionsSearchHandler Placeholder="Enter search term"
+                                        ShowsResults="true"
+                                        SearchBoxVisibility="Collapsible"
+                                        DisplayMemberName="Name">
+            <!-- <utils:CollectionsSearchHandler.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.15*" />
+                            <ColumnDefinition Width="0.85*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{Binding ImageUrl}"
+                               Aspect="AspectFill"
+                               HeightRequest="40"
+                               WidthRequest="40" />
+                        <Label Grid.Column="1"
+                               Text="{Binding Name}"
+                               FontAttributes="Bold" />
+                    </Grid>
+                </DataTemplate>
+            </utils:CollectionsSearchHandler.ItemTemplate> -->
+        </utils:CollectionsSearchHandler>
+    </Shell.SearchHandler>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Clicked="Add_OnClicked">
@@ -47,7 +73,8 @@
                 <CollectionView.GroupFooterTemplate>
                     <DataTemplate x:DataType="models:CollectionGroup">
                         <Grid Padding="0, 10">
-                            <Label Text="{Binding Count,
+                            <Label
+                                Text="{Binding Count,
                             StringFormat={x:Static culture:Strings.CollectionsCount}}"
                                 Style="{StaticResource LabelStyle}" />
                         </Grid>
@@ -57,7 +84,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Collection">
                         <SwipeView Style="{StaticResource SwipeStyle}">
-                            
+
                             <SwipeView.LeftItems>
                                 <SwipeItems>
                                     <SwipeItemView Invoked="Edit_Invoked" Style="{StaticResource SwipeItemStyle}">
@@ -140,10 +167,11 @@
                                             <Label Grid.Column="1" Grid.Row="1" MaxLines="3"
                                                    Text="{Binding Description}"
                                                    Style="{StaticResource LabelStyle}" />
-                                            <StackLayout Grid.Column="1" Grid.Row="2" Padding="0" Orientation="Horizontal">
-                                            <Label MaxLines="1"
-                                                   Text="{Binding PrivateText}"
-                                                   Style="{StaticResource LabelStyle}" />
+                                            <StackLayout Grid.Column="1" Grid.Row="2" Padding="0"
+                                                         Orientation="Horizontal">
+                                                <Label MaxLines="1"
+                                                       Text="{Binding PrivateText}"
+                                                       Style="{StaticResource LabelStyle}" />
                                             </StackLayout>
                                         </Grid>
                                     </Frame>
