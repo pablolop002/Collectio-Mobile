@@ -65,7 +65,7 @@ namespace Collectio.Views
             }
             else if (answer == Strings.Import)
             {
-                await Shell.Current.DisplayAlert("", "Import", "OK");
+                await Shell.Current.DisplayAlert(Strings.Import, "Próximamente", Strings.Ok);
                 //await Shell.Current.GoToAsync("importCollection");
             }
         }
