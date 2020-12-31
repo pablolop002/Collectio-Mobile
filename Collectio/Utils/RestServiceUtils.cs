@@ -18,12 +18,12 @@ namespace Collectio.Utils
         /// Propiedad privada con la URL
         /// </summary>
 #if DEBUG
-        private const string BaseUrl = "http://192.168.14.23:3000";
+        private const string BaseUrl = "https://beta.collectioapp.com";
 #else
-        private const string BaseUrl = "HOSTURL";
+        private const string BaseUrl = "https://collectioapp.com";
 #endif
 
-        public static string RestUrl => $"{BaseUrl}/api/{{0}}";
+        public static string RestUrl => $"{BaseUrl}/api/v1{{0}}";
 
         private readonly HttpClient _client;
 
