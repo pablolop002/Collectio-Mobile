@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Collections" xml:space="preserve">
+        <value>Colecciones</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Perfil</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Cerrar Sesión</value>
+    </data>
+    <data name="Ok" xml:space="preserve">
+        <value>Vale</value>
+    </data>
+    <data name="Error" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="NoItems" xml:space="preserve">
+        <value>No tienes elementos en la colección,
+¡prueba a añadir uno!</value>
+    </data>
+    <data name="NoCollections" xml:space="preserve">
+        <value>No tienes colecciones,
+¡prueba a crear una!</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Cancelar</value>
+    </data>
+    <data name="Create" xml:space="preserve">
+        <value>Crear</value>
+    </data>
+    <data name="Import" xml:space="preserve">
+        <value>Importar</value>
+    </data>
+    <data name="NewCollection" xml:space="preserve">
+        <value>Nueva colección</value>
+    </data>
+    <data name="EmptyCollectionName" xml:space="preserve">
+        <value>El nombre de la colección no puede estar vacío</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Inicio de Sesión</value>
+    </data>
+    <data name="LoginGoogle" xml:space="preserve">
+        <value>Iniciar sesión con Google</value>
+    </data>
+    <data name="LoginApple" xml:space="preserve">
+        <value>Iniciar sesión con Apple</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Nombre</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Descripción</value>
+    </data>
+    <data name="Private" xml:space="preserve">
+        <value>Privado</value>
+    </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Ajustes</value>
+    </data>
+    <data name="NoGroups" xml:space="preserve">
+        <value>Ups, parece que ocurrio un problema.
+No hay grupos disponibles.</value>
+    </data>
+    <data name="EditCollection" xml:space="preserve">
+        <value>Editar colección</value>
+    </data>
+    <data name="Confirm" xml:space="preserve">
+        <value>Confirmar</value>
+    </data>
+    <data name="CollectionsCount" xml:space="preserve">
+        <value>Colecciones en el grupo: {0}</value>
+    </data>
+    <data name="NewItem" xml:space="preserve">
+        <value>Nuevo elemento</value>
+    </data>
+    <data name="Camera" xml:space="preserve">
+        <value>Cámara</value>
+    </data>
+    <data name="Gallery" xml:space="preserve">
+        <value>Galería</value>
+    </data>
+    <data name="SureQuestion" xml:space="preserve">
+        <value>¿Estas seguro?</value>
+    </data>
+    <data name="EditItem" xml:space="preserve">
+        <value>Editar elemento</value>
+    </data>
+    <data name="DeleteCollection" xml:space="preserve">
+        <value>Eliminar una colección implica la eliminación de lodos los elementos que contiene y no podras recuperarlos</value>
+    </data>
+    <data name="DeleteItem" xml:space="preserve">
+        <value>Eliminar un elemento y sus imagenes e implica que no podras recuperarlo</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Editar</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Eliminar</value>
+    </data>
+    <data name="Duplicate" xml:space="preserve">
+        <value>Duplicar</value>
+    </data>
+    <data name="DuplicateMessage" xml:space="preserve">
+        <value>Para duplicar un elemento deslizalo de derecha a izquierda para mostrar la opción</value>
+    </data>
+    <data name="Subcategory" xml:space="preserve">
+        <value>Subcategoria</value>
+    </data>
+    <data name="Backup" xml:space="preserve">
+        <value>Copia de seguridad</value>
+    </data>
+    <data name="BackupDescription" xml:space="preserve">
+        <value>Genera manualmente una copia de seguridad de la base de datos de la aplicación y de todos los archivos de las colecciones</value>
+    </data>
+    <data name="AppCenter" xml:space="preserve">
+        <value>Reporte de fallos</value>
+    </data>
+    <data name="AppCenterDescription" xml:space="preserve">
+        <value>Ayuda a mejorar la aplicación enviando informes de errores de forma automatica, siempre de forma anonima. Si dejas esta opción activa ayudaras en el desarrollo de la aplicación con mejoras y solución de errores sin hacer nada además de usar la aplicación</value>
+    </data>
+    <data name="RestoreBackup" xml:space="preserve">
+        <value>Restaurar copia</value>
+    </data>
+    <data name="RestoreBackupDescription" xml:space="preserve">
+        <value>Restaura la última copia de seguridad manual realizada. ¡Advertencia, todos los datos de la aplicación que no esten en la copia serán eliminados!</value>
+    </data>
+    <data name="Comments" xml:space="preserve">
+        <value>Comentarios</value>
+    </data>
+    <data name="CommentsDescription" xml:space="preserve">
+        <value>Si tienes una idea o quieres reportar un fallo en la aplicación este es tu botón. Todo lo que implique mejorar es siempre bienvenido :)</value>
+    </data>
+    <data name="EmptyItemName" xml:space="preserve">
+        <value>El nombre del elemento no puede estar vacío</value>
+    </data>
+    <data name="BackupError" xml:space="preserve">
+        <value>Error al realizar la copia de seguridad. Prueba de nuevo más tarde</value>
+    </data>
+    <data name="BackupCorrect" xml:space="preserve">
+        <value>Copia de seguridad creada correctamente</value>
+    </data>
+    <data name="RestoreBackupError" xml:space="preserve">
+        <value>Error en la restauración de la copia de seguridad. Es posible que no esté completa o tenga algún error. Si estas seguro que no es asi, prueba de nuevo más tarde</value>
+    </data>
+    <data name="RestoreBackupCorrect" xml:space="preserve">
+        <value>Restauración de la copia de seguridad realizada. Por favor, reinicie la aplicación o actualiza la lista de colecciones</value>
+    </data>
+    <data name="DeleteData" xml:space="preserve">
+        <value>Eliminar datos</value>
+    </data>
+    <data name="DeleteDataDescription" xml:space="preserve">
+        <value>Elimina todos los datos, lo que incluye la base de datos. ¡Advertencia: elimina todos los datos, tanto imagenes como la base de datos completa y no se puede recuperar si no dispones de una copia!</value>
+    </data>
+    <data name="DeleteCache" xml:space="preserve">
+        <value>Eliminar caché</value>
+    </data>
+    <data name="DeleteCacheDescription" xml:space="preserve">
+        <value>Elimina las copias locales de las imagenes, lo que implica que serán descargadas de nuevo en caso de necesidad. Solo esta disponible para usuarios con cuenta</value>
+    </data>
+    <data name="DeleteDataCorrect" xml:space="preserve">
+        <value>Se han eliminado todos los datos de forma correcta</value>
+    </data>
+    <data name="DeleteCacheCorrect" xml:space="preserve">
+        <value>Se han eliminado las copias locales de las imagenes de forma correcta</value>
+    </data>
+    <data name="DeleteDataError" xml:space="preserve">
+        <value>Error al eliminar los datos. Si sigues seguro de que quieres esto, prueba de nuevo más tarde</value>
+    </data>
+    <data name="DeleteCacheError" xml:space="preserve">
+        <value>Error al eliminar las copias locales de las imagenes. Prueba de nuevo más tarde</value>
+    </data>
+    <data name="DisabledFunction" xml:space="preserve">
+        <value>Función no disponible</value>
+    </data>
+    <data name="ImageOrigin" xml:space="preserve">
+        <value>Origen de la imagen</value>
+    </data>
+    <data name="Public" xml:space="preserve">
+        <value>Público</value>
+    </data>
+    <data name="CollectionSearch" xml:space="preserve">
+        <value>Busca entre tus colecciones</value>
+    </data>
+    <data name="ItemSearch" xml:space="preserve">
+        <value>Busca entre los elementos de la colección</value>
+    </data>
+</root>
