@@ -1,6 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.IO;
-using Collectio.Repositories;
+using System.Threading.Tasks;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
 using Xamarin.Essentials;
@@ -54,20 +55,33 @@ namespace Collectio.Views
         /// <param name="e"></param>
         private async void Apple_OnClicked(object sender, EventArgs e)
         {
-            WebAuthenticatorResult authResult;
-
-            if (DeviceInfo.Platform == DevicePlatform.iOS && DeviceInfo.Version.Major >= 13)
+            try
             {
-                authResult = await AppleSignInAuthenticator.AuthenticateAsync();
-            }
-            else
-            {
-                authResult = await WebAuthenticator.AuthenticateAsync(
-                    new Uri($"{RestServiceUtils.RestUrl}/login/apple"),
-                    new Uri("collectio://"));
-            }
+                WebAuthenticatorResult authResult;
 
-            var accessToken = authResult?.AccessToken;
+                if (DeviceInfo.Platform == DevicePlatform.iOS && DeviceInfo.Version.Major >= 13)
+                {
+                    authResult = await AppleSignInAuthenticator.AuthenticateAsync();
+                }
+                else
+                {
+                    authResult = await WebAuthenticator.AuthenticateAsync(
+                        new Uri(string.Format(RestServiceUtils.RestUrl, "/login/apple")),
+                        new Uri("collectio://"));
+                }
+
+                var accessToken = authResult?.AccessToken;
+                if (string.IsNullOrWhiteSpace(accessToken)) return;
+                await SecureStorage.SetAsync("ApiKey", accessToken);
+                Preferences.Set("LoggedIn", true);
+            }
+            catch (TaskCanceledException ex)
+            {
+            }
+            catch (Exception ex)
+            {
+                AppCenterUtils.ReportException(ex, "loginApple");
+            }
         }
 
         /// <summary>
@@ -77,13 +91,26 @@ namespace Collectio.Views
         /// <param name="e"></param>
         private async void Google_OnClicked(object sender, EventArgs e)
         {
-            var authResult = await WebAuthenticator.AuthenticateAsync(
-                new Uri($"{RestServiceUtils.RestUrl}/login/google"),
-                new Uri("collectio://"));
+            try
+            {
+                var authResult = await WebAuthenticator.AuthenticateAsync(
+                    new Uri(string.Format(RestServiceUtils.RestUrl, "/login/google")),
+                    new Uri("collectio://"));
 
-            var accessToken = authResult?.AccessToken;
+                var accessToken = authResult?.AccessToken;
+                if (string.IsNullOrWhiteSpace(accessToken)) return;
+                await SecureStorage.SetAsync("ApiKey", accessToken);
+                Preferences.Set("LoggedIn", true);
+            }
+            catch (TaskCanceledException ex)
+            {
+            }
+            catch (Exception ex)
+            {
+                AppCenterUtils.ReportException(ex, "loginGoogle");
+            }
         }
-        
+
         /// <summary>
         /// Select profile image
         /// </summary>
@@ -93,7 +120,7 @@ namespace Collectio.Views
         {
             var selection = await Shell.Current.DisplayActionSheet("Strings.ProfileImage", Strings.Cancel, null,
                 Strings.Camera, Strings.Gallery);
-            
+
             if (selection == null || selection == Strings.Cancel) return;
             if (selection == Strings.Camera)
             {
@@ -103,10 +130,10 @@ namespace Collectio.Views
                     {
                         var photo = await MediaPicker.CapturePhotoAsync();
                         if (photo == null) return;
-                        
+
                         var imageName = photo.FileName;
                         var imageStream = new MemoryStream();
-                        
+
                         var stream = await photo.OpenReadAsync();
                         await stream.CopyToAsync(imageStream);
                         stream.Close();
@@ -129,10 +156,10 @@ namespace Collectio.Views
                     {
                         var photo = await MediaPicker.PickPhotoAsync();
                         if (photo == null) return;
-                        
+
                         var imageName = photo.FileName;
                         var imageStream = new MemoryStream();
-                        
+
                         var stream = await photo.OpenReadAsync();
                         await stream.CopyToAsync(imageStream);
                         stream.Close();
