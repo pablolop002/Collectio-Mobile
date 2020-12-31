@@ -122,7 +122,7 @@ namespace Collectio.Views
                     }
                 });
             }
-            else
+            else if (selection == Strings.Gallery)
             {
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
