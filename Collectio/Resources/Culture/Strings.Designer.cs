@@ -398,5 +398,17 @@ namespace Collectio.Resources.Culture {
                 return ResourceManager.GetString("Public", resourceCulture);
             }
         }
+        
+        internal static string CollectionSearch {
+            get {
+                return ResourceManager.GetString("CollectionSearch", resourceCulture);
+            }
+        }
+        
+        internal static string ItemSearch {
+            get {
+                return ResourceManager.GetString("ItemSearch", resourceCulture);
+            }
+        }
     }
 }

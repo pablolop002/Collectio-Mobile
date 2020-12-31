@@ -12,28 +12,40 @@
              x:DataType="viewModels:ItemsViewModel">
 
     <Shell.SearchHandler>
-        <utils:ItemsSearchHandler Placeholder="Enter search term"
-                                        ShowsResults="true"
-                                        SearchBoxVisibility="Collapsible"
-                                        Collection="{Binding CollectionId}"
-                                        DisplayMemberName="Name">
-            <!-- <utils:ItemsSearchHandler.ItemTemplate>
-                <DataTemplate>
+        <utils:ItemsSearchHandler Placeholder="{x:Static culture:Strings.ItemSearch}"
+                                  ShowsResults="true"
+                                  SearchBoxVisibility="Collapsible"
+                                  Collection="{Binding CollectionId}"
+                                  VerticalTextAlignment="Center"
+                                  PlaceholderColor="{AppThemeBinding
+                                            Light={StaticResource LightTextColor},
+                                            Dark={StaticResource DarkTextColor}}"
+                                  CancelButtonColor="{AppThemeBinding
+                                            Light={StaticResource LightTextColor},
+                                            Dark={StaticResource DarkTextColor}}"
+                                  TextColor="{AppThemeBinding
+                                            Light={StaticResource LightTextColor},
+                                            Dark={StaticResource DarkTextColor}}">
+            <utils:ItemsSearchHandler.ItemTemplate>
+                <DataTemplate x:DataType="models:Item">
                     <Grid Padding="10">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.15*" />
-                            <ColumnDefinition Width="0.85*" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Image Source="{Binding ImageUrl}"
-                               Aspect="AspectFill"
-                               HeightRequest="40"
-                               WidthRequest="40" />
+                        
+                        <Image Grid.Column="0" Grid.Row="0"
+                               Style="{StaticResource SmallImageStyle}">
+                            <Image.Source>
+                                <FileImageSource File="{Binding File}" />
+                            </Image.Source>
+                        </Image>
                         <Label Grid.Column="1"
-                               Text="{Binding Name}"
-                               FontAttributes="Bold" />
+                               Text="{Binding Name}" />
+                        
                     </Grid>
                 </DataTemplate>
-            </utils:ItemsSearchHandler.ItemTemplate> -->
+            </utils:ItemsSearchHandler.ItemTemplate>
         </utils:ItemsSearchHandler>
     </Shell.SearchHandler>
 
@@ -63,7 +75,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Item">
                         <SwipeView Style="{StaticResource SwipeStyle}">
-                            
+
                             <SwipeView.RightItems>
                                 <SwipeItems>
                                     <SwipeItemView Invoked="Duplicate_Invoked" Style="{StaticResource SwipeItemStyle}">
@@ -90,7 +102,7 @@
                                     </SwipeItemView>
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            
+
                             <SwipeView.LeftItems>
                                 <SwipeItems>
                                     <SwipeItemView Invoked="Edit_Invoked" Style="{StaticResource SwipeItemStyle}">
@@ -182,7 +194,7 @@
                                     </Frame>
                                 </Grid>
                             </SwipeView.Content>
-                            
+
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -196,9 +208,9 @@
                 </CollectionView.EmptyView>
 
             </CollectionView>
-            
+
         </RefreshView>
-        
+
     </ContentPage.Content>
-    
+
 </ContentPage>

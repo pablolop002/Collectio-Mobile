@@ -198,4 +198,10 @@ No hay grupos disponibles.</value>
     <data name="Public" xml:space="preserve">
         <value>Público</value>
     </data>
+    <data name="CollectionSearch" xml:space="preserve">
+        <value>Busca entre tus colecciones</value>
+    </data>
+    <data name="ItemSearch" xml:space="preserve">
+        <value>Busca entre los elementos de la colección</value>
+    </data>
 </root>

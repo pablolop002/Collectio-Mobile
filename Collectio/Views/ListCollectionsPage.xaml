@@ -12,27 +12,39 @@
              x:DataType="viewModels:CollectionsViewModel">
 
     <Shell.SearchHandler>
-        <utils:CollectionsSearchHandler Placeholder="Enter search term"
+        <utils:CollectionsSearchHandler Placeholder="{x:Static culture:Strings.CollectionSearch}"
                                         ShowsResults="true"
                                         SearchBoxVisibility="Collapsible"
-                                        DisplayMemberName="Name">
-            <!-- <utils:CollectionsSearchHandler.ItemTemplate>
-                <DataTemplate>
+                                        VerticalTextAlignment="Center"
+                                        PlaceholderColor="{AppThemeBinding
+                                            Light={StaticResource LightTextColor},
+                                            Dark={StaticResource DarkTextColor}}"
+                                        CancelButtonColor="{AppThemeBinding
+                                            Light={StaticResource LightTextColor},
+                                            Dark={StaticResource DarkTextColor}}"
+                                        TextColor="{AppThemeBinding
+                                            Light={StaticResource LightTextColor},
+                                            Dark={StaticResource DarkTextColor}}">
+            <utils:CollectionsSearchHandler.ItemTemplate>
+                <DataTemplate x:DataType="models:Collection">
                     <Grid Padding="10">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.15*" />
-                            <ColumnDefinition Width="0.85*" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Image Source="{Binding ImageUrl}"
-                               Aspect="AspectFill"
-                               HeightRequest="40"
-                               WidthRequest="40" />
+
+                        <Image Grid.Column="0" Grid.Row="0"
+                               Style="{StaticResource SmallImageStyle}">
+                            <Image.Source>
+                                <FileImageSource File="{Binding File}" />
+                            </Image.Source>
+                        </Image>
                         <Label Grid.Column="1"
-                               Text="{Binding Name}"
-                               FontAttributes="Bold" />
+                               Text="{Binding Name}" />
+                        
                     </Grid>
                 </DataTemplate>
-            </utils:CollectionsSearchHandler.ItemTemplate> -->
+            </utils:CollectionsSearchHandler.ItemTemplate>
         </utils:CollectionsSearchHandler>
     </Shell.SearchHandler>
 
