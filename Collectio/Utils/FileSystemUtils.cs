@@ -29,7 +29,7 @@ namespace Collectio.Utils
 
                 DirectoryCopy(originDir, destDir);
                 
-                ZipFile.CreateFromDirectory(destBaseDir, fileName);
+                //ZipFile.CreateFromDirectory(destBaseDir, Path.Combine(destBaseDir, ".zip"));
 
                 return true;
             }
