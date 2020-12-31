@@ -19,6 +19,7 @@ namespace Collectio.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             Xamarin.Forms.Forms.Init();
+            Xamarin.Forms.Nuke.FormsHandler.Init(debug: false);
             
             LoadApplication(new App());
 

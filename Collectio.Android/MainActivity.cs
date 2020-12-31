@@ -24,6 +24,7 @@ namespace Collectio.Droid
             
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Android.Glide.Forms.Init (this);
             FirebaseApp.InitializeApp(this);
             AndroidAppLinks.Init(this);
 

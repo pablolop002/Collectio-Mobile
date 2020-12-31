@@ -19,8 +19,8 @@
         <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
         <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
         <PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
-        <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre5" />
-        <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.6.0" />
+        <PackageReference Include="Xamarin.Forms" Version="5.0.0.1829-pre6" />
     </ItemGroup>
 
     <ItemGroup>
