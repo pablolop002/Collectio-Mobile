@@ -78,7 +78,7 @@ namespace Collectio.Views
             else if (answer == Strings.Import)
             {
                 await Shell.Current.DisplayAlert(Strings.Import, "Próximamente", Strings.Ok);
-                //await Shell.Current.GoToAsync($"importItem?item={_collectionId}");
+                //await Shell.Current.GoToAsync($"importItem?collection={_collectionId}");
             }
             else
             {
