@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
@@ -22,14 +21,6 @@ namespace Collectio
         public App()
         {
             InitializeComponent();
-
-            /*Xamarin.Forms.Device.SetFlags(new List<string>()
-            {
-                "SwipeView_Experimental",    // Opciones deslizantes
-                "CarouselView_Experimental", // Carrusel
-                "Brush_Experimental",        // Degradados
-                "Shapes_Experimental"        // Formas geométricas
-            });*/
 
             SetLang();
 
