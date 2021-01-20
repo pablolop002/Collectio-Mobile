@@ -34,7 +34,7 @@ namespace Collectio.Views
 
         private void RestoreBackup_OnClicked(object sender, EventArgs e)
         {
-            if (!Preferences.Get("LoggedIn", false))
+            if (Preferences.Get("LoggedIn", false))
             {
                 Shell.Current.DisplayAlert(Strings.Error, Strings.DisabledFunction, Strings.Ok);
                 return;
