@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Collectio.Resources.Culture;
@@ -77,6 +76,7 @@ namespace Collectio.Views
             }
             catch (TaskCanceledException ex)
             {
+                AppCenterUtils.ReportException(ex, "loginAppleCancelled");
             }
             catch (Exception ex)
             {
@@ -104,6 +104,7 @@ namespace Collectio.Views
             }
             catch (TaskCanceledException ex)
             {
+                AppCenterUtils.ReportException(ex, "loginGoogleCancelled");
             }
             catch (Exception ex)
             {
