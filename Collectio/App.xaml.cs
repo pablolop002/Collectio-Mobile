@@ -23,13 +23,13 @@ namespace Collectio
         {
             InitializeComponent();
 
-            Xamarin.Forms.Device.SetFlags(new List<string>()
+            /*Xamarin.Forms.Device.SetFlags(new List<string>()
             {
                 "SwipeView_Experimental",    // Opciones deslizantes
                 "CarouselView_Experimental", // Carrusel
                 "Brush_Experimental",        // Degradados
                 "Shapes_Experimental"        // Formas geométricas
-            });
+            });*/
 
             SetLang();
 

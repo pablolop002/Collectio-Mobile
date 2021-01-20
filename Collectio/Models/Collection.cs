@@ -12,8 +12,10 @@ namespace Collectio.Models
         [PrimaryKey, AutoIncrement] public int Id { get; set; }
 
         [Unique] public int? ServerId { get; set; }
+        
+        [ForeignKey(typeof(User))] public int? UserId { get; set; }
 
-        [Indexed, ForeignKey(typeof(CollectionGroup))] public int CategoryId { get; set; }
+        [Indexed, ForeignKey(typeof(Category))] public int CategoryId { get; set; }
 
         public string Name { get; set; }
 
