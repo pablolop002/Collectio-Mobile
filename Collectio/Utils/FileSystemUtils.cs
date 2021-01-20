@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using System.IO.Compression;
+using System.Linq;
 using Xamarin.Essentials;
 
 namespace Collectio.Utils
@@ -28,7 +28,7 @@ namespace Collectio.Utils
                 var originDir = Path.Combine(FileSystem.AppDataDirectory, "Images");
 
                 DirectoryCopy(originDir, destDir);
-                
+
                 //ZipFile.CreateFromDirectory(destBaseDir, Path.Combine(destBaseDir, ".zip"));
 
                 return true;
@@ -39,24 +39,43 @@ namespace Collectio.Utils
                 return false;
             }
         }
-        
+
         public static bool RestoreBackupDataAndDatabase(string databasePath)
         {
             try
             {
-                /*var destDir = DeviceInfo.Platform == DevicePlatform.iOS
+                var originDir = DeviceInfo.Platform == DevicePlatform.iOS
                     ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                     : FileSystem.AppDataDirectory;
+                var dirs = new DirectoryInfo(originDir).GetDirectories("Backup_*-*-*_*-*-*");
+                if (dirs.Length == 0)
+                {
+                    return false;
+                }
 
-                destDir = Path.Combine(destDir, $"Backup_{DateTime.Now:yyyy-MM-dd_hh-mm-ss}");
-                Directory.CreateDirectory(destDir);
+                var directory = dirs.OrderByDescending(d => d.FullName).First();
 
-                File.Copy(databasePath, Path.Combine(destDir, "collectio.db"), true);
+                if (!directory.Exists || directory.GetFiles("collectio.db").Length == 0 ||
+                    !directory.GetFiles("collectio.db").First().Exists) return false;
 
-                destDir = Path.Combine(destDir, "Images");
-                var originDir = Path.Combine(FileSystem.AppDataDirectory, "Images");
+                // Delete old images and database
+                File.Delete(databasePath);
 
-                DirectoryCopy(originDir, destDir);*/
+                var baseDir = new DirectoryInfo(FileSystem.AppDataDirectory);
+                if (baseDir.GetDirectories("Images").Length != 0 &&
+                    baseDir.GetDirectories("Images").First().Exists)
+                    baseDir.GetDirectories("Images").First().Delete();
+
+                // Copy database
+                directory.GetFiles("collectio.db").First().CopyTo(databasePath, true);
+
+                // Check if backup has images directory and copy it
+                if (directory.GetDirectories("Images").Length == 1 &&
+                    directory.GetDirectories("Images").First().Exists)
+                {
+                    DirectoryCopy(directory.GetDirectories("Images").First().FullName,
+                        Path.Combine(FileSystem.AppDataDirectory, "Images"));
+                }
 
                 return true;
             }
@@ -74,12 +93,12 @@ namespace Collectio.Utils
         public static string TempSave(MemoryStream stream, string fileName)
         {
             var path = Path.Combine(FileSystem.AppDataDirectory, "Temp");
-            
+
             try
             {
                 Directory.CreateDirectory(path);
                 path = Path.Combine(path, fileName);
-                
+
                 File.WriteAllBytes(path, stream.ToArray());
 
                 return path;
@@ -94,7 +113,7 @@ namespace Collectio.Utils
         public static void ClearTempPath()
         {
             var path = Path.Combine(FileSystem.AppDataDirectory, "Temp");
-            
+
             try
             {
                 Directory.Delete(path, true);
@@ -105,7 +124,8 @@ namespace Collectio.Utils
             }
         }
 
-        public static bool SaveFileFromPath(string originalPath, string fileName, int? collection = null, int? item = null)
+        public static bool SaveFileFromPath(string originalPath, string fileName, int? collection = null,
+            int? item = null)
         {
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
             if (collection != null)
@@ -118,7 +138,7 @@ namespace Collectio.Utils
             {
                 Directory.CreateDirectory(path);
                 path = Path.Combine(path, fileName);
-                
+
                 File.Copy(originalPath, path, true);
 
                 return true;
@@ -166,7 +186,7 @@ namespace Collectio.Utils
         public static string GetGroupImage(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName)) return "";
-            
+
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
             path = Path.Combine(path, "Groups");
             path = Path.Combine(path, fileName);
@@ -178,11 +198,11 @@ namespace Collectio.Utils
 
             return path;
         }
-        
+
         public static string GetProfileImage(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName)) return "";
-            
+
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
             path = Path.Combine(path, fileName);
 
@@ -197,7 +217,7 @@ namespace Collectio.Utils
         public static string GetCollectionImage(string fileName, int collection)
         {
             if (string.IsNullOrWhiteSpace(fileName)) return "";
-            
+
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
             path = Path.Combine(path, $"Collection{collection.ToString()}");
             path = Path.Combine(path, fileName);
@@ -213,7 +233,7 @@ namespace Collectio.Utils
         public static string GetItemImage(string fileName, int itemId)
         {
             if (string.IsNullOrWhiteSpace(fileName)) return "";
-            
+
             var item = App.DataRepo.GetItem(itemId.ToString());
 
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
@@ -239,7 +259,7 @@ namespace Collectio.Utils
             Directory.Delete(path, true);
             return true;
         }
-        
+
         public static bool DeleteAllData(string databasePath)
         {
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
@@ -247,7 +267,7 @@ namespace Collectio.Utils
             File.Delete(databasePath);
             return true;
         }
-        
+
         public static void DeleteImage(string imageDir)
         {
             File.Delete(imageDir);
