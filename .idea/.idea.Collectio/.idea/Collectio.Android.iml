@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="RIDER_MODULE_ANDROID" version="4">
+<module version="4">
   <component name="FacetManager">
     <facet type="android" name="Android Facet - Collectio.Android">
       <configuration>
@@ -10,7 +10,6 @@
     </facet>
   </component>
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$/../../Collectio.Android" />
     <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

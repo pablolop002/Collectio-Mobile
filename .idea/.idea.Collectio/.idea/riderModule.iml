@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="RIDER_MODULE" version="4">
+<module version="4">
   <component name="NewModuleRootManager">
     <content url="file://$USER_HOME$/.nuget/packages/xamarin.androidx.activity/1.1.0.5/aar/androidx.activity.activity.aar" />
     <content url="file://$USER_HOME$/.nuget/packages/xamarin.androidx.annotation/1.1.0.8/jar" />
