@@ -5,27 +5,33 @@
              xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
              xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
              xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
-             xmlns:utils="clr-namespace:Collectio.Utils;assembly=Collectio"
-             x:Class="Collectio.Views.ListCollectionsPage"
+             xmlns:searchHandlers="clr-namespace:Collectio.Utils.SearchHandlers;assembly=Collectio"
+             x:Class="Collectio.Views.CollectionsView"
              Style="{StaticResource PageStyle}"
              Title="{x:Static culture:Strings.Collections}"
-             x:DataType="viewModels:CollectionsViewModel">
+             x:DataType="viewModels:CollectionsViewModel"
+             x:Name="CollectionsPage">
+
+    <ContentPage.BindingContext>
+        <viewModels:CollectionsViewModel />
+    </ContentPage.BindingContext>
 
     <Shell.SearchHandler>
-        <utils:CollectionsSearchHandler Placeholder="{x:Static culture:Strings.CollectionSearch}"
-                                        ShowsResults="true"
-                                        SearchBoxVisibility="Collapsible"
-                                        VerticalTextAlignment="Center"
-                                        PlaceholderColor="{AppThemeBinding
-                                            Light={StaticResource LightTextColor},
-                                            Dark={StaticResource DarkTextColor}}"
-                                        CancelButtonColor="{AppThemeBinding
-                                            Light={StaticResource LightTextColor},
-                                            Dark={StaticResource DarkTextColor}}"
-                                        TextColor="{AppThemeBinding
-                                            Light={StaticResource LightTextColor},
-                                            Dark={StaticResource DarkTextColor}}">
-            <utils:CollectionsSearchHandler.ItemTemplate>
+        <searchHandlers:CollectionsSearchHandler Placeholder="{x:Static culture:Strings.CollectionSearch}"
+                                                 ShowsResults="true"
+                                                 SearchBoxVisibility="Collapsible"
+                                                 VerticalTextAlignment="Center"
+                                                 PlaceholderColor="{AppThemeBinding
+                                                 Light={StaticResource LightTextColor},
+                                                 Dark={StaticResource DarkTextColor}}"
+                                                 CancelButtonColor="{AppThemeBinding
+                                                 Light={StaticResource LightTextColor},
+                                                 Dark={StaticResource DarkTextColor}}"
+                                                 TextColor="{AppThemeBinding
+                                                 Light={StaticResource LightTextColor},
+                                                 Dark={StaticResource DarkTextColor}}">
+
+            <searchHandlers:CollectionsSearchHandler.ItemTemplate>
                 <DataTemplate x:DataType="models:Collection">
                     <Grid Padding="10">
                         <Grid.ColumnDefinitions>
@@ -33,7 +39,8 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Image Grid.Column="0" Grid.Row="0"
+                        <Image Grid.Column="0"
+                               Grid.Row="0"
                                Style="{StaticResource SmallImageStyle}">
                             <Image.Source>
                                 <FileImageSource File="{Binding File}" />
@@ -41,15 +48,21 @@
                         </Image>
                         <Label Grid.Column="1"
                                Text="{Binding Name}" />
-                        
+
                     </Grid>
                 </DataTemplate>
-            </utils:CollectionsSearchHandler.ItemTemplate>
-        </utils:CollectionsSearchHandler>
+            </searchHandlers:CollectionsSearchHandler.ItemTemplate>
+        </searchHandlers:CollectionsSearchHandler>
     </Shell.SearchHandler>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Clicked="Add_OnClicked">
+        <ToolbarItem Command="{Binding SyncCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconSync}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+
+        <ToolbarItem Command="{Binding AddCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconAdd}" />
             </ToolbarItem.IconImageSource>
@@ -57,26 +70,32 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <RefreshView x:Name="RefreshCollectionView"
-                     Padding="10"
+        <RefreshView Padding="10"
                      Command="{Binding RefreshCommand}"
-                     IsRefreshing="{Binding IsRefreshing}">
+                     IsRefreshing="{Binding IsBusy}"
+                     RefreshColor="{StaticResource PrimaryColor}">
 
-            <CollectionView x:Name="CollectionsCollectionView"
-                            SelectionChanged="CollectionView_OnSelectionChanged" SelectionMode="Single"
+            <CollectionView SelectedItem="{Binding SelectedCollection}"
+                            SelectionMode="Single"
                             ItemsSource="{Binding CollectionGroups}"
                             IsGrouped="True">
 
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="{OnIdiom Phone=1, Default=2}"
+                                     VerticalItemSpacing="10"
+                                     HorizontalItemSpacing="10" />
                 </CollectionView.ItemsLayout>
 
                 <CollectionView.GroupHeaderTemplate>
                     <DataTemplate x:DataType="models:CollectionGroup">
-                        <Frame HasShadow="False" Background="Transparent" Padding="5" CornerRadius="5"
-                               BorderColor="{StaticResource PrimaryColor}">
+                        <Frame HasShadow="False"
+                               BackgroundColor="{StaticResource PrimaryColor}"
+                               Padding="5"
+                               CornerRadius="5">
                             <Label Text="{Binding Name}"
                                    Style="{StaticResource TitleLabelStyle}"
+                                   HorizontalOptions="Center"
                                    HorizontalTextAlignment="Center" />
                         </Frame>
                     </DataTemplate>
@@ -88,6 +107,8 @@
                             <Label
                                 Text="{Binding Count,
                             StringFormat={x:Static culture:Strings.CollectionsCount}}"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
                                 Style="{StaticResource LabelStyle}" />
                         </Grid>
                     </DataTemplate>
@@ -99,43 +120,62 @@
 
                             <SwipeView.LeftItems>
                                 <SwipeItems>
-                                    <SwipeItemView Invoked="Edit_Invoked" Style="{StaticResource SwipeItemStyle}">
+                                    <SwipeItemView
+                                        Command="{Binding Source={RelativeSource 
+                                        AncestorType={x:Type viewModels:CollectionsViewModel}},
+                                        Path=EditCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource SwipeItemStyle}">
                                         <Grid Padding="20, 0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center">
+                                            <Image Grid.Row="0"
+                                                   VerticalOptions="End"
+                                                   HorizontalOptions="Center">
                                                 <Image.Source>
                                                     <FontImageSource FontFamily="FA-S"
                                                                      Glyph="{StaticResource IconEdit}"
                                                                      Color="{AppThemeBinding 
-                                                                      Light={StaticResource LightTextColor},
-                                                                      Dark={StaticResource DarkTextColor}}" />
+                                                                     Light={StaticResource LightTextColor},
+                                                                     Dark={StaticResource DarkTextColor}}" />
                                                 </Image.Source>
                                             </Image>
-                                            <Label Grid.Row="1" VerticalOptions="Start" HorizontalOptions="Center"
+                                            <Label Grid.Row="1"
+                                                   VerticalOptions="Start"
+                                                   HorizontalOptions="Center"
                                                    Text="{x:Static culture:Strings.Edit}"
                                                    TextColor="{AppThemeBinding 
-                                                    Light={StaticResource LightTextColor},
-                                                    Dark={StaticResource DarkTextColor}}" />
+                                                   Light={StaticResource LightTextColor},
+                                                   Dark={StaticResource DarkTextColor}}" />
                                         </Grid>
                                     </SwipeItemView>
-                                    <SwipeItemView Invoked="Delete_Invoked" Style="{StaticResource SwipeItemStyle}">
+                                    <SwipeItemView
+                                        Command="{Binding Source={RelativeSource 
+                                        AncestorType={x:Type viewModels:CollectionsViewModel}},
+                                        Path=DeleteCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource SwipeItemStyle}">
                                         <Grid Padding="20, 0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Grid.Row="0" VerticalOptions="End" HorizontalOptions="Center">
+                                            <Image Grid.Row="0"
+                                                   VerticalOptions="End"
+                                                   HorizontalOptions="Center">
                                                 <Image.Source>
                                                     <FontImageSource FontFamily="FA-S"
                                                                      Glyph="{StaticResource IconDelete}"
                                                                      Color="Red" />
                                                 </Image.Source>
                                             </Image>
-                                            <Label Grid.Row="1" VerticalOptions="Start" HorizontalOptions="Center"
-                                                   Text="{x:Static culture:Strings.Delete}" TextColor="Red"
+                                            <Label Grid.Row="1"
+                                                   VerticalOptions="Start"
+                                                   HorizontalOptions="Center"
+                                                   Text="{x:Static culture:Strings.Delete}"
+                                                   TextColor="Red"
                                                    Style="{StaticResource LabelStyle}" />
                                         </Grid>
                                     </SwipeItemView>
@@ -156,13 +196,17 @@
                                                 <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
 
-                                            <Ellipse Grid.Row="0" Grid.Column="0" Grid.RowSpan="3"
+                                            <Ellipse Grid.Row="0"
+                                                     Grid.Column="0"
+                                                     Grid.RowSpan="3"
                                                      Style="{StaticResource SmallEllipseStyle}">
                                                 <Ellipse.Stroke>
                                                     <SolidColorBrush Color="Goldenrod" />
                                                 </Ellipse.Stroke>
                                             </Ellipse>
-                                            <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
+                                            <Image Grid.Column="0"
+                                                   Grid.Row="0"
+                                                   Grid.RowSpan="3"
                                                    Style="{StaticResource SmallImageStyle}">
                                                 <Image.Clip>
                                                     <EllipseGeometry Center="40,40"
@@ -173,13 +217,20 @@
                                                     <FileImageSource File="{Binding File}" />
                                                 </Image.Source>
                                             </Image>
-                                            <Label Grid.Column="1" Grid.Row="0" MaxLines="1" FontSize="Default"
+                                            <Label Grid.Column="1"
+                                                   Grid.Row="0"
+                                                   MaxLines="1"
+                                                   FontSize="Default"
                                                    Text="{Binding Name}"
                                                    Style="{StaticResource TitleLabelStyle}" />
-                                            <Label Grid.Column="1" Grid.Row="1" MaxLines="3"
+                                            <Label Grid.Column="1"
+                                                   Grid.Row="1"
+                                                   MaxLines="3"
                                                    Text="{Binding Description}"
                                                    Style="{StaticResource LabelStyle}" />
-                                            <StackLayout Grid.Column="1" Grid.Row="2" Padding="0"
+                                            <StackLayout Grid.Column="1"
+                                                         Grid.Row="2"
+                                                         Padding="0"
                                                          Orientation="Horizontal">
                                                 <Label MaxLines="1"
                                                        Text="{Binding PrivateText}"

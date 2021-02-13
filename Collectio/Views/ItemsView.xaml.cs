@@ -13,7 +13,7 @@ namespace Collectio.Views
     [QueryProperty("Collection", "collection")]
     [QueryProperty("Refresh", "refresh")]
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ListItemsPage : ContentPage
+    public partial class ItemsView : ContentPage
     {
         private string _collectionId;
 
@@ -22,6 +22,7 @@ namespace Collectio.Views
             set
             {
                 _collectionId = value;
+                //((ItemsViewModel) BindingContext).Collection = App.DataRepo.GetCollection(Uri.UnescapeDataString(value));
                 BindingContext = new ItemsViewModel(App.DataRepo.GetCollection(Uri.UnescapeDataString(value)));
             }
         }
@@ -31,7 +32,7 @@ namespace Collectio.Views
             set => MainThread.BeginInvokeOnMainThread(() => RefreshItemsView.IsRefreshing = value.Equals("true"));
         }
 
-        public ListItemsPage()
+        public ItemsView()
         {
             InitializeComponent();
             Shell.SetTabBarIsVisible(this, false);
@@ -39,7 +40,7 @@ namespace Collectio.Views
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 if (DeviceInfo.Idiom != DeviceIdiom.Tablet) return;
-                ItemsView.ItemsLayout = new GridItemsLayout(2, ItemsLayoutOrientation.Vertical)
+                ItemsCollectionView.ItemsLayout = new GridItemsLayout(2, ItemsLayoutOrientation.Vertical)
                 {
                     HorizontalItemSpacing = 10, VerticalItemSpacing = 10
                 };
@@ -51,8 +52,8 @@ namespace Collectio.Views
             base.OnAppearing();
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                ItemsView.SelectedItems = null;
-                ItemsView.SelectedItem = null;
+                ItemsCollectionView.SelectedItems = null;
+                ItemsCollectionView.SelectedItem = null;
             });
         }
 

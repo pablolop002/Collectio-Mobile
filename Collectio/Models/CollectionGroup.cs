@@ -1,13 +1,13 @@
-using System.Collections.ObjectModel;
+using MvvmHelpers;
 
 namespace Collectio.Models
 {
-    public class CollectionGroup : ObservableCollection<Collection>
+    public class CollectionGroup : ObservableRangeCollection<Collection>
     {
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public CollectionGroup(string name, ObservableCollection<Collection> collections) : base(collections)
+        public CollectionGroup(string name, ObservableRangeCollection<Collection> collections) : base(collections)
         {
             Name = name;
         }

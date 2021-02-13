@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using Collectio.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,16 +12,16 @@ namespace Collectio
         {
             InitializeComponent();
             
-            Routing.RegisterRoute("settings", typeof(SettingsPage));
-            Routing.RegisterRoute("comments", typeof(CommentsPage));
+            Routing.RegisterRoute("settings", typeof(Views.SettingsView));
+            Routing.RegisterRoute("comments", typeof(Views.CommentsView));
             
-            Routing.RegisterRoute("newCollection", typeof(NewCollectionPage));
-            Routing.RegisterRoute("editCollection", typeof(EditCollectionPage));
+            Routing.RegisterRoute("newCollection", typeof(Views.CollectionNewView));
+            Routing.RegisterRoute("editCollection", typeof(Views.CollectionEditView));
             
-            Routing.RegisterRoute("items", typeof(ListItemsPage));
-            Routing.RegisterRoute("item", typeof(DetailItemPage));
-            Routing.RegisterRoute("newItem", typeof(NewItemPage));
-            Routing.RegisterRoute("editItem", typeof(EditItemPage));
+            Routing.RegisterRoute("items", typeof(Views.ItemsView));
+            Routing.RegisterRoute("item", typeof(Views.ItemDetailView));
+            Routing.RegisterRoute("newItem", typeof(Views.ItemNewView));
+            Routing.RegisterRoute("editItem", typeof(Views.ItemEditView));
         }
     }
 }

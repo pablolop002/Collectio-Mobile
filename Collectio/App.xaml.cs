@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
@@ -11,28 +10,20 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
-
 namespace Collectio
 {
     [SuppressMessage("ReSharper", "RedundantExtendsListEntry")]
     public partial class App : Application
     {
         public static DataRepository DataRepo { get; private set; }
+        
+        public static string Token { get; set; }
 
         public App()
         {
             InitializeComponent();
 
-            Xamarin.Forms.Device.SetFlags(new List<string>()
-            {
-                "SwipeView_Experimental",    // Opciones deslizantes
-                "CarouselView_Experimental", // Carrusel
-                "Brush_Experimental",        // Degradados
-                "Shapes_Experimental"        // Formas geométricas
-            });
-
             SetLang();
-
             DataRepo = new DataRepository();
 
             MainPage = new AppShell();
@@ -50,8 +41,8 @@ namespace Collectio
 #if DEBUG
             AppCenter.SetEnabledAsync(false);
 #else
-                AppCenter.SetEnabledAsync(Preferences.Get("AppCenter", true));
-                AppCenter.SetUserId("256 characters");
+            AppCenter.SetEnabledAsync(Preferences.Get("AppCenter", true));
+            //AppCenter.SetUserId("256-characters");
 #endif
         }
 

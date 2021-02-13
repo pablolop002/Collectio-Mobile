@@ -410,5 +410,59 @@ namespace Collectio.Resources.Culture {
                 return ResourceManager.GetString("ItemSearch", resourceCulture);
             }
         }
+        
+        internal static string LoginBenefit {
+            get {
+                return ResourceManager.GetString("LoginBenefit", resourceCulture);
+            }
+        }
+        
+        internal static string Mail {
+            get {
+                return ResourceManager.GetString("Mail", resourceCulture);
+            }
+        }
+        
+        internal static string Nickname {
+            get {
+                return ResourceManager.GetString("Nickname", resourceCulture);
+            }
+        }
+        
+        internal static string ProfileImage {
+            get {
+                return ResourceManager.GetString("ProfileImage", resourceCulture);
+            }
+        }
+        
+        internal static string CommentAddition {
+            get {
+                return ResourceManager.GetString("CommentAddition", resourceCulture);
+            }
+        }
+        
+        internal static string CommentBugReport {
+            get {
+                return ResourceManager.GetString("CommentBugReport", resourceCulture);
+            }
+        }
+        
+        internal static string CommentExplain {
+            get {
+                return ResourceManager.GetString("CommentExplain", resourceCulture);
+            }
+        }
+        
+        internal static string CommentNotComplete {
+            get {
+                return ResourceManager.GetString("CommentNotComplete", resourceCulture);
+            }
+        }
+        
+        internal static string CategoryNotSelected {
+            get {
+                return ResourceManager.GetString("CategoryNotSelected", resourceCulture);
+            }
+        }
     }
 }

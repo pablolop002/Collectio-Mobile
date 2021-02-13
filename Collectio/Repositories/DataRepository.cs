@@ -1,9 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Collectio.Models;
 using Collectio.Utils;
+using MvvmHelpers;
+using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Extensions;
 using Xamarin.Essentials;
@@ -12,31 +16,37 @@ namespace Collectio.Repositories
 {
     public class DataRepository
     {
-        private DateTime LastSynced
+        private static DateTime LastSynced
         {
             get => Preferences.Get("lastSynced", DateTime.Now);
             set => Preferences.Set("lastSynced", value);
         }
 
-        private SQLiteConnection _connection;
+        private bool LoggedIn => Preferences.Get("LoggedIn", false);
+
+        private SQLiteConnection _database;
+        public readonly RestServiceUtils RestService;
         private readonly string _databasePath;
 
-        public RestServiceUtils Connection = new RestServiceUtils();
 
         public DataRepository()
         {
             try
             {
                 _databasePath = System.IO.Path.Combine(FileSystem.AppDataDirectory, "collectio.db");
-                _connection = new SQLiteConnection(_databasePath);
-                _connection.CreateTable<Category>();
-                _connection.CreateTable<Subcategory>();
-                _connection.CreateTable<Collection>();
-                _connection.CreateTable<Item>();
-                _connection.CreateTable<ItemImage>();
+                _database = new SQLiteConnection(_databasePath);
+                RestService = new RestServiceUtils();
+                _database.CreateTable<User>();
+                _database.CreateTable<Apikey>();
+                _database.CreateTable<Category>();
+                _database.CreateTable<Subcategory>();
+                _database.CreateTable<Collection>();
+                _database.CreateTable<Item>();
+                _database.CreateTable<ItemImage>();
+                _database.CreateTable<OfflineActions>();
 
-                CreateCategories();
-                CreateSubcategories();
+                if (Preferences.Get("LoggedIn", false)) CreateUser();
+                CreateOrUpdateCategories();
             }
             catch (Exception ex)
             {
@@ -44,11 +54,66 @@ namespace Collectio.Repositories
             }
         }
 
-        #region Categories and Subcategories Creation
+        #region Backup and Delete
 
-        private void CreateCategories()
+        public bool CreateBackup()
         {
-            var categories = new List<Category>()
+            _database.Close();
+
+            var ret = FileSystemUtils.BackupDataAndDatabase(_databasePath);
+
+            _database = new SQLiteConnection(_databasePath);
+
+            return ret;
+        }
+
+        public bool RestoreBackup()
+        {
+            _database.Close();
+
+            var ret = FileSystemUtils.RestoreBackupDataAndDatabase(_databasePath);
+
+            _database = new SQLiteConnection(_databasePath);
+
+            return ret;
+        }
+
+        public bool DeleteAllData()
+        {
+            _database.Close();
+
+            var ret = FileSystemUtils.DeleteAllData(_databasePath);
+
+            _database = new SQLiteConnection(_databasePath);
+
+            return ret;
+        }
+
+        #endregion
+
+        #region Categories and CollectionGroups
+
+        private async void CreateOrUpdateCategories()
+        {
+            var aux = await RestService.GetRequest("/categories");
+            var response = JsonConvert.DeserializeObject<ResponseWs<IEnumerable<Category>>>(aux);
+
+            if (response.Status.Equals("ok"))
+            {
+                foreach (var category in response.Data)
+                {
+                    _database.InsertOrReplace(category);
+                }
+            }
+            else
+            {
+                await Xamarin.Forms.Shell.Current.DisplayAlert(Resources.Culture.Strings.Error,
+                    response.Message, Resources.Culture.Strings.Ok);
+            }
+
+            CreateOrUpdateSubcategories();
+
+            /*var categories = new List<Category>()
             {
                 new Category()
                 {
@@ -246,13 +311,69 @@ namespace Collectio.Repositories
 
             foreach (var group in categories)
             {
-                _connection.InsertOrReplace(group);
-            }
+                _database.InsertOrReplace(group);
+            }*/
         }
 
-        private void CreateSubcategories()
+        public IEnumerable<Category> GetCategories()
         {
-            var subcategories = new List<Subcategory>()
+            return _database.Table<Category>().ToList();
+        }
+
+        public IEnumerable<CollectionGroup> GetCollectionGroups()
+        {
+            var ret = new ObservableCollection<CollectionGroup>();
+
+            var groups = GetCategories();
+
+            foreach (var collectionGroup in from category in groups
+                let collections =
+                    new ObservableRangeCollection<Collection>(GetCollectionsByGroupId(category.Id.ToString()))
+                where collections.Count > 0
+                select new CollectionGroup(category.Name, collections)
+                {
+                    Id = category.Id
+                })
+            {
+                ret.Add(collectionGroup);
+            }
+
+            return ret;
+        }
+
+        public void AddOrUpdateCategories(ref IEnumerable<Category> categories)
+        {
+            _database.InsertOrReplace(categories);
+        }
+
+        public void DeleteCategory(string id)
+        {
+            _database.Delete<Category>(id);
+        }
+
+        #endregion
+
+        #region Subcategories
+
+        private async void CreateOrUpdateSubcategories()
+        {
+            var aux = await RestService.GetRequest("/subcategories");
+            var response = JsonConvert.DeserializeObject<ResponseWs<IEnumerable<Subcategory>>>(aux);
+
+            if (response.Status.Equals("ok"))
+            {
+                foreach (var subcategory in response.Data)
+                {
+                    _database.InsertOrReplace(subcategory);
+                }
+            }
+            else
+            {
+                await Xamarin.Forms.Shell.Current.DisplayAlert(Resources.Culture.Strings.Error,
+                    response.Message, Resources.Culture.Strings.Ok);
+            }
+
+            /*var subcategories = new List<Subcategory>()
             {
                 new Subcategory()
                 {
@@ -780,108 +901,28 @@ namespace Collectio.Repositories
 
             foreach (var subcategory in subcategories)
             {
-                _connection.InsertOrReplace(subcategory);
-            }
+                _database.InsertOrReplace(subcategory);
+            }*/
         }
-
-        #endregion
-
-        #region Backup and Delete
-
-        public bool CreateBackup()
-        {
-            _connection.Close();
-
-            var ret = FileSystemUtils.BackupDataAndDatabase(_databasePath);
-
-            _connection = new SQLiteConnection(_databasePath);
-
-            return ret;
-        }
-
-        public bool RestoreBackup()
-        {
-            _connection.Close();
-
-            var ret = FileSystemUtils.RestoreBackupDataAndDatabase(_databasePath);
-
-            _connection = new SQLiteConnection(_databasePath);
-
-            return ret;
-        }
-
-        public bool DeleteAllData()
-        {
-            _connection.Close();
-
-            var ret = FileSystemUtils.DeleteAllData(_databasePath);
-
-            _connection = new SQLiteConnection(_databasePath);
-
-            return ret;
-        }
-
-        #endregion
-
-        #region Categories & GetCollectionGroups
-
-        public IEnumerable<Category> GetCategories()
-        {
-            return _connection.Table<Category>().ToList();
-        }
-
-        public IEnumerable<CollectionGroup> GetCollectionGroups()
-        {
-            var ret = new ObservableCollection<CollectionGroup>();
-
-            var groups = GetCategories();
-
-            foreach (var collectionGroup in from category in groups
-                let collections = new ObservableCollection<Collection>(GetCollectionsByGroupId(category.Id.ToString()))
-                where collections.Count > 0
-                select new CollectionGroup(category.Name, collections)
-                {
-                    Id = category.Id
-                })
-            {
-                ret.Add(collectionGroup);
-            }
-
-            return ret;
-        }
-
-        public void AddOrUpdateCategories(ref IEnumerable<Category> categories)
-        {
-            _connection.InsertOrReplace(categories);
-        }
-
-        public void DeleteCategory(string id)
-        {
-            _connection.Delete<Category>(id);
-        }
-
-        #endregion
-
-        #region Subcategories
 
         public IEnumerable<Subcategory> GetSubcategoriesByCategoryId(string categoryId)
         {
-            return _connection.Query<Subcategory>("Select * from Subcategory Where CategoryId = ?", categoryId);
+            return _database.Query<Subcategory>("Select * from Subcategory Where CategoryId = ?", categoryId);
         }
 
         public Subcategory GetSubcategory(string id)
         {
-            return _connection.Get<Subcategory>(id);
+            return _database.Get<Subcategory>(id);
         }
 
         public void AddOrUpdateSubcategories(ref IEnumerable<Subcategory> subcategories)
         {
-            _connection.InsertOrReplace(subcategories);
+            _database.InsertOrReplace(subcategories);
         }
 
         public void DeleteSubcategory(string id)
         {
-            _connection.Delete<Subcategory>(id);
+            _database.Delete<Subcategory>(id);
         }
 
         #endregion
@@ -892,28 +933,28 @@ namespace Collectio.Repositories
         {
             if (withChildren)
             {
-                return _connection.GetWithChildren<Collection>(id);
+                return _database.GetWithChildren<Collection>(id);
             }
             else
             {
-                return _connection.Get<Collection>(id);
+                return _database.Get<Collection>(id);
             }
         }
 
         public IEnumerable<Collection> GetAllCollections()
         {
-            return _connection.GetAllWithChildren<Collection>(c => true);
+            return _database.GetAllWithChildren<Collection>(c => true);
         }
 
         public void AddCollection(ref Collection collection, bool recursive = false)
         {
             if (recursive)
             {
-                _connection.InsertWithChildren(collection, true);
+                _database.InsertWithChildren(collection, true);
             }
             else
             {
-                _connection.Insert(collection);
+                _database.Insert(collection);
             }
         }
 
@@ -921,23 +962,23 @@ namespace Collectio.Repositories
         {
             if (recursive)
             {
-                _connection.UpdateWithChildren(collection);
+                _database.UpdateWithChildren(collection);
             }
             else
             {
-                _connection.Update(collection);
+                _database.Update(collection);
             }
         }
 
         public void RemoveCollection(string id)
         {
-            _connection.Query<Item>("Delete from Item Where CollectionId = ?", id);
-            _connection.Delete<Collection>(id);
+            _database.Query<Item>("Delete from Item Where CollectionId = ?", id);
+            _database.Delete<Collection>(id);
         }
 
         public IEnumerable<Collection> GetCollectionsByGroupId(string id)
         {
-            return _connection.Query<Collection>("Select * from Collection Where CategoryId = ?", id);
+            return _database.Query<Collection>("Select * from Collection Where CategoryId = ?", id);
         }
 
         #endregion
@@ -948,11 +989,11 @@ namespace Collectio.Repositories
         {
             if (withChildren)
             {
-                return _connection.GetWithChildren<Item>(id);
+                return _database.GetWithChildren<Item>(id);
             }
             else
             {
-                return _connection.Get<Item>(id);
+                return _database.Get<Item>(id);
             }
         }
 
@@ -961,11 +1002,11 @@ namespace Collectio.Repositories
             if (withChildren)
             {
                 var collId = int.Parse(collectionId);
-                return _connection.GetAllWithChildren<Item>(item => item.CollectionId == collId);
+                return _database.GetAllWithChildren<Item>(item => item.CollectionId == collId);
             }
             else
             {
-                return _connection.Query<Item>("Select * From Item WHERE CollectionId = ?", collectionId);
+                return _database.Query<Item>("Select * From Item WHERE CollectionId = ?", collectionId);
             }
         }
 
@@ -973,11 +1014,11 @@ namespace Collectio.Repositories
         {
             if (recursive)
             {
-                _connection.InsertWithChildren(item, true);
+                _database.InsertWithChildren(item, true);
             }
             else
             {
-                _connection.Insert(item);
+                _database.Insert(item);
             }
         }
 
@@ -985,18 +1026,18 @@ namespace Collectio.Repositories
         {
             if (recursive)
             {
-                _connection.UpdateWithChildren(item);
+                _database.UpdateWithChildren(item);
             }
             else
             {
-                _connection.Update(item);
+                _database.Update(item);
             }
         }
 
         public void RemoveItem(string id)
         {
-            _connection.Query<ItemImage>("Delete from ItemImage Where ItemId = ?", id);
-            _connection.Delete<Item>(id);
+            _database.Query<ItemImage>("Delete from ItemImage Where ItemId = ?", id);
+            _database.Delete<Item>(id);
         }
 
         #endregion
@@ -1005,22 +1046,140 @@ namespace Collectio.Repositories
 
         public ItemImage GetItemImage(string id)
         {
-            return _connection.Get<ItemImage>(id);
+            return _database.Get<ItemImage>(id);
         }
 
         public void AddItemImage(ItemImage itemImage)
         {
-            _connection.Insert(itemImage);
+            _database.Insert(itemImage);
         }
 
         public void UpdateItemImage(ItemImage itemImage)
         {
-            _connection.Update(itemImage);
+            _database.Update(itemImage);
         }
 
         public void RemoveItemImage(string id)
         {
-            _connection.Delete<ItemImage>(id);
+            _database.Delete<ItemImage>(id);
+        }
+
+        #endregion
+
+        #region OfflineActions
+
+        public IEnumerable<OfflineActions> GetOfflineActions()
+        {
+            return _database.Table<OfflineActions>().ToList();
+        }
+
+        public void RemoveOfflineAction(int id)
+        {
+            _database.Delete<OfflineActions>(id);
+        }
+
+        #endregion
+
+        #region User
+
+        private void CreateUser()
+        {
+            _database.InsertOrReplace(new User()
+            {
+                Id = 1
+            });
+        }
+
+        public async Task<User> GetUser(int id = 1)
+        {
+            if (DateTime.Now.Subtract(LastSynced).TotalMinutes.Equals(5))
+            {
+                var aux = await RestService.GetRequest("/user");
+                var response = JsonConvert.DeserializeObject<ResponseWs<User>>(aux);
+                if (response.Status.Equals("ok"))
+                {
+                    _database.DeleteAll<User>();
+                    _database.InsertOrReplace(response.Data);
+                }
+                else
+                {
+                    await Xamarin.Forms.Shell.Current.DisplayAlert(Resources.Culture.Strings.Error,
+                        response.Message, Resources.Culture.Strings.Ok);
+                }
+            }
+
+            return _database.Get<User>(id);
+        }
+
+        public async Task EditUser(User user)
+        {
+            var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonConvert.SerializeObject(user));
+            var files = new[] {new FileResult(user.File)};
+            
+            var aux = await RestService.PostRequest("user/api-keys/", form, files);
+            var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
+            if (response.Status.Equals("ok"))
+            {
+                _database.Update(user);
+            }
+            else
+            {
+                await Xamarin.Forms.Shell.Current.DisplayAlert(Resources.Culture.Strings.Error, response.Message,
+                    Resources.Culture.Strings.Ok);
+            }
+        }
+
+        public async Task<IEnumerable<Apikey>> GetApiKeys()
+        {
+            if (LoggedIn && DateTime.Now.Subtract(LastSynced).TotalMinutes.Equals(5))
+            {
+                var aux = await RestService.GetRequest("/user/api-keys");
+                var response = JsonConvert.DeserializeObject<ResponseWs<IEnumerable<Apikey>>>(aux);
+                if (response.Status.Equals("ok"))
+                {
+                    _database.DeleteAll<Apikey>();
+                    _database.InsertAll(response.Data);
+                }
+                else
+                {
+                    await Xamarin.Forms.Shell.Current.DisplayAlert(Resources.Culture.Strings.Error,
+                        response.Message, Resources.Culture.Strings.Ok);
+                }
+            }
+
+            return _database.Table<Apikey>().ToList();
+        }
+
+        public async Task EditApikey(Apikey apikey)
+        {
+            var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonConvert.SerializeObject(apikey));
+            
+            var aux = await RestService.PostRequest("user/api-keys/", form);
+            var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
+            if (response.Status.Equals("ok"))
+            {
+                _database.Update(apikey);
+            }
+            else
+            {
+                await Xamarin.Forms.Shell.Current.DisplayAlert(Resources.Culture.Strings.Error,
+                    response.Message, Resources.Culture.Strings.Ok);
+            }
+        }
+
+        public async Task DeleteApikey(string apikey)
+        {
+            var aux = await RestService.DeleteRequest($"user/api-keys/{apikey}");
+            var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
+            if (response.Status.Equals("ok"))
+            {
+                _database.Delete<Apikey>(apikey);
+            }
+            else
+            {
+                await Xamarin.Forms.Shell.Current.DisplayAlert(Resources.Culture.Strings.Error,
+                    response.Message, Resources.Culture.Strings.Ok);
+            }
         }
 
         #endregion

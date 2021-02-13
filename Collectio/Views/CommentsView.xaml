@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
+             x:Class="Collectio.Views.CommentsView"
+             Style="{StaticResource PageStyle}"
+             x:DataType="viewModels:CommentsViewModel"
+             Shell.TabBarIsVisible="False">
+    
+    <ContentPage.BindingContext>
+        <viewModels:CommentsViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <Picker ItemsSource="{Binding CommentType}"
+                        SelectedIndex="{Binding CommentTypeIndex}"
+                        VerticalOptions="Center"
+                        Grid.Row="0" />
+                
+                <Editor Text="{Binding Body}"
+                        Grid.Row="1"
+                        Style="{StaticResource EditorStyle}" />
+                
+                <Button Text="Send"
+                        Style="{StaticResource ButtonStyle}"
+                        Grid.Row="2"
+                        VerticalOptions="Start"
+                        HorizontalOptions="Center"
+                        Command="{Binding SendMessageCommand}" />
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
