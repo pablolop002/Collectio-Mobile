@@ -227,4 +227,7 @@ No hay grupos disponibles.</value>
     <data name="CommentNotComplete" xml:space="preserve">
         <value>No has seleccionado tipo de comentario</value>
     </data>
+    <data name="CategoryNotSelected" xml:space="preserve">
+        <value>Para crear una colección primero tienes que seleccionar la categoria a la que pertenece.</value>
+    </data>
 </root>
