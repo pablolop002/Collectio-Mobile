@@ -10,20 +10,20 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
-
 namespace Collectio
 {
     [SuppressMessage("ReSharper", "RedundantExtendsListEntry")]
     public partial class App : Application
     {
         public static DataRepository DataRepo { get; private set; }
+        
+        public static string Token { get; set; }
 
         public App()
         {
             InitializeComponent();
 
             SetLang();
-
             DataRepo = new DataRepository();
 
             MainPage = new AppShell();
@@ -41,8 +41,8 @@ namespace Collectio
 #if DEBUG
             AppCenter.SetEnabledAsync(false);
 #else
-                AppCenter.SetEnabledAsync(Preferences.Get("AppCenter", true));
-                AppCenter.SetUserId("256-characters");
+            AppCenter.SetEnabledAsync(Preferences.Get("AppCenter", true));
+            //AppCenter.SetUserId("256-characters");
 #endif
         }
 

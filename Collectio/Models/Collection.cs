@@ -1,7 +1,7 @@
 using System;
-using System.Collections.ObjectModel;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
+using MvvmHelpers;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 
@@ -31,7 +31,7 @@ namespace Collectio.Models
 
         public DateTime UpdatedAt { get; set; }
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableCollection<Item> Items { get; set; }
+        [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableRangeCollection<Item> Items { get; set; }
 
         [Ignore] public string File => FileSystemUtils.GetCollectionImage(Image, Id);
 

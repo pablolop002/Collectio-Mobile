@@ -1,63 +1,42 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Collectio.Models;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
+using MvvmHelpers;
+using MvvmHelpers.Commands;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
-namespace Collectio.Views
+namespace Collectio.ViewModels
 {
-    [QueryProperty("Collection", "collection")]
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    [SuppressMessage("ReSharper", "RedundantExtendsListEntry")]
-    public partial class EditCollectionPage : ContentPage
+    public class CollectionEditViewModel : BaseViewModel
     {
         private Collection _collection;
         private string _imageName = string.Empty;
         private string _file = string.Empty;
 
-        public string Collection
+        public Collection Collection
         {
-            set => BindingContext = _collection = App.DataRepo.GetCollection(value, true);
+            get => _collection;
+            set => SetProperty(ref _collection, value);
         }
 
-        public EditCollectionPage()
+        public ICommand ImageSelectorCommand { get; }
+        
+        public ICommand SaveCommand { get; }
+
+        public CollectionEditViewModel()
         {
-            InitializeComponent();
-            Shell.SetTabBarIsVisible(this, false);
+            ImageSelectorCommand = new AsyncCommand(ImageSelector);
+            SaveCommand = new AsyncCommand(SaveItem);
         }
 
-        private async void Done_OnClicked(object sender, EventArgs e)
+        private async Task ImageSelector()
         {
-            var original = App.DataRepo.GetCollection(_collection.Id.ToString());
-            
-            if (!string.IsNullOrWhiteSpace(_imageName))
-            {
-                if (!string.IsNullOrWhiteSpace(original.Image))
-                {
-                    FileSystemUtils.DeleteImage(original.File);
-                }
-
-                _collection.Image = _imageName;
-                FileSystemUtils.SaveFileFromPath(_file, _imageName, _collection.Id);
-                FileSystemUtils.ClearTempPath();
-            }
-
-            if (!_collection.Equals(original))
-            {
-                _collection.UpdatedAt = DateTime.Now;
-                App.DataRepo.UpdateCollection(_collection);
-            }
-
-            await Shell.Current.GoToAsync("..?refresh=true");
-        }
-
-        private async void SelectImage_OnClicked(object sender, EventArgs e)
-        {
-            var selection = await Shell.Current.DisplayActionSheet(Strings.ImageOrigin, Strings.Cancel, null,
+            var selection = await Xamarin.Forms.Shell.Current.DisplayActionSheet(Strings.ImageOrigin, Strings.Cancel, null,
                 Strings.Camera, Strings.Gallery);
 
             if (selection == null || selection == Strings.Cancel) return;
@@ -80,7 +59,7 @@ namespace Collectio.Views
                             }
                         }
 
-                        Image.Source = ImageSource.FromFile(_file);
+                        //Image.Source = ImageSource.FromFile(_file);
                     }
                     catch (PermissionException ex)
                     {
@@ -107,7 +86,7 @@ namespace Collectio.Views
                             }
                         }
 
-                        Image.Source = ImageSource.FromFile(_file);
+                        //Image.Source = ImageSource.FromFile(_file);
                     }
                     catch (PermissionException ex)
                     {
@@ -115,6 +94,31 @@ namespace Collectio.Views
                     }
                 });
             }
+        }
+
+        private async Task SaveItem()
+        {
+            var original = App.DataRepo.GetCollection(_collection.Id.ToString());
+
+            if (!string.IsNullOrWhiteSpace(_imageName))
+            {
+                if (!string.IsNullOrWhiteSpace(original.Image))
+                {
+                    FileSystemUtils.DeleteImage(original.File);
+                }
+
+                _collection.Image = _imageName;
+                FileSystemUtils.SaveFileFromPath(_file, _imageName, _collection.Id);
+                FileSystemUtils.ClearTempPath();
+            }
+
+            if (!_collection.Equals(original))
+            {
+                _collection.UpdatedAt = DateTime.Now;
+                App.DataRepo.UpdateCollection(_collection);
+            }
+
+            await Xamarin.Forms.Shell.Current.GoToAsync("..?refresh=true");
         }
     }
 }

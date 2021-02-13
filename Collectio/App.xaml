@@ -36,19 +36,31 @@
 
         <!-- Shell -->
         <Style x:Key="ShellStyle" TargetType="Element">
-            <Setter Property="Shell.BackgroundColor" Value="{StaticResource PrimaryColor}" />
+            <Setter Property="Shell.BackgroundColor"
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightBackgroundColor},
+                    Dark={StaticResource DarkBackgroundColor}}" />
             <Setter Property="Shell.ForegroundColor"
-                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
-                     Dark={StaticResource DarkTextColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightTextColor},
+                    Dark={StaticResource DarkTextColor}}" />
             <Setter Property="Shell.TitleColor"
-                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
-                     Dark={StaticResource DarkTextColor}}" />
-            <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource PrimaryColor}" />
-            <!-- <Setter Property="Shell.TabBarForegroundColor"
-                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
-                     Dark=MistyRose}" />  -->
-            <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource LightTextColor}" />
-            <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource LightBackgroundColor}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightTextColor},
+                    Dark={StaticResource DarkTextColor}}" />
+            <Setter Property="Shell.TabBarBackgroundColor"
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightBackgroundColor},
+                    Dark={StaticResource DarkBackgroundColor}}" />
+            <Setter Property="Shell.TabBarForegroundColor"
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightTextColor},
+                    Dark={StaticResource DarkTextColor}}" />
+            <Setter Property="Shell.TabBarUnselectedColor"
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightTextColor},
+                    Dark={StaticResource DarkTextColor}}" />
+            <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource PrimaryColor}" />
             <Setter Property="Shell.NavBarHasShadow" Value="False" />
             <Setter Property="Shell.FlyoutBehavior" Value="Disabled" />
         </Style>
@@ -57,16 +69,18 @@
         <!-- Page -->
         <Style x:Key="PageStyle" TargetType="ContentPage">
             <Setter Property="BackgroundColor"
-                    Value="{AppThemeBinding Light={StaticResource LightBackgroundColor},
-                     Dark={StaticResource DarkBackgroundColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightBackgroundColor},
+                    Dark={StaticResource DarkBackgroundColor}}" />
         </Style>
 
         <!-- Entry, editor and picker -->
         <Style x:Key="EditorStyle" TargetType="Editor">
             <Setter Property="BackgroundColor" Value="Transparent" />
             <Setter Property="TextColor"
-                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
-                     Dark={StaticResource DarkTextColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightTextColor},
+                    Dark={StaticResource DarkTextColor}}" />
             <Setter Property="PlaceholderColor" Value="LightGray" />
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="AutoSize" Value="TextChanges" />
@@ -75,24 +89,27 @@
         <Style x:Key="EntryStyle" TargetType="Entry">
             <Setter Property="BackgroundColor" Value="Transparent" />
             <Setter Property="TextColor"
-                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
-                     Dark={StaticResource DarkTextColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightTextColor},
+                    Dark={StaticResource DarkTextColor}}" />
             <Setter Property="PlaceholderColor" Value="LightGray" />
         </Style>
 
         <Style x:Key="PickerStyle" TargetType="Picker">
             <Setter Property="BackgroundColor" Value="Transparent" />
             <Setter Property="TextColor"
-                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
-                     Dark={StaticResource DarkTextColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightTextColor},
+                    Dark={StaticResource DarkTextColor}}" />
         </Style>
 
         <!-- Labels -->
         <Style x:Key="LabelStyle" TargetType="Label">
             <Setter Property="BackgroundColor" Value="Transparent" />
             <Setter Property="TextColor"
-                    Value="{AppThemeBinding Light={StaticResource LightTextColor},
-                     Dark={StaticResource DarkTextColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightTextColor},
+                    Dark={StaticResource DarkTextColor}}" />
             <Setter Property="VerticalTextAlignment" Value="Center" />
             <Setter Property="VerticalOptions" Value="Center" />
         </Style>
@@ -108,8 +125,8 @@
             <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
             <Setter Property="TextColor"
                     Value="{AppThemeBinding
-                     Light={StaticResource LightTextColor},
-                     Dark={StaticResource DarkTextColor}}" />
+                    Light={StaticResource LightTextColor},
+                    Dark={StaticResource DarkTextColor}}" />
         </Style>
 
         <Style x:Key="LoginButtonStyle" TargetType="Button">
@@ -119,12 +136,12 @@
             <Setter Property="HeightRequest" Value="44" />
             <Setter Property="TextColor"
                     Value="{AppThemeBinding
-                     Light={StaticResource LightBackgroundColor},
-                     Dark={StaticResource DarkBackgroundColor}}" />
+                    Light={StaticResource LightBackgroundColor},
+                    Dark={StaticResource DarkBackgroundColor}}" />
             <Setter Property="BackgroundColor"
                     Value="{AppThemeBinding
-                     Light={StaticResource LightTextColor},
-                     Dark={StaticResource DarkTextColor}}" />
+                    Light={StaticResource LightTextColor},
+                    Dark={StaticResource DarkTextColor}}" />
             <Setter Property="HorizontalOptions" Value="Center" />
         </Style>
 
@@ -161,6 +178,7 @@
             <Setter Property="Aspect" Value="AspectFill" />
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
         </Style>
 
         <Style x:Key="SmallImageStyle" TargetType="Image">
@@ -169,6 +187,7 @@
             <Setter Property="Aspect" Value="AspectFill" />
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
         </Style>
 
         <!-- Category selector -->
@@ -177,8 +196,9 @@
             <Setter Property="HeightRequest" Value="90" />
             <Setter Property="CornerRadius" Value="10" />
             <Setter Property="BackgroundColor"
-                    Value="{AppThemeBinding Light={StaticResource LightSecondaryColor},
-                     Dark={StaticResource DarkSecondaryColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightSecondaryColor},
+                    Dark={StaticResource DarkSecondaryColor}}" />
         </Style>
 
         <!-- Collections and items list views -->
@@ -187,23 +207,27 @@
             <Setter Property="HeightRequest" Value="90" />
             <Setter Property="CornerRadius" Value="10" />
             <Setter Property="BackgroundColor"
-                    Value="{AppThemeBinding Light={StaticResource LightBackgroundColor},
-                     Dark={StaticResource DarkBackgroundColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightBackgroundColor},
+                    Dark={StaticResource DarkBackgroundColor}}" />
             <Setter Property="BorderColor"
-                    Value="{AppThemeBinding Light={StaticResource LightSecondaryColor},
-                     Dark={StaticResource DarkSecondaryColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightSecondaryColor},
+                    Dark={StaticResource DarkSecondaryColor}}" />
         </Style>
 
         <Style x:Key="SwipeStyle" TargetType="SwipeView">
             <Setter Property="BackgroundColor"
-                    Value="{AppThemeBinding Light={StaticResource LightBackgroundColor},
-                     Dark={StaticResource DarkBackgroundColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightBackgroundColor},
+                    Dark={StaticResource DarkBackgroundColor}}" />
         </Style>
 
         <Style x:Key="SwipeItemStyle" TargetType="SwipeItemView">
             <Setter Property="BackgroundColor"
-                    Value="{AppThemeBinding Light={StaticResource LightBackgroundColor},
-                     Dark={StaticResource DarkBackgroundColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightBackgroundColor},
+                    Dark={StaticResource DarkBackgroundColor}}" />
         </Style>
 
         <!-- Items views -->
@@ -213,11 +237,13 @@
             <Setter Property="HeightRequest" Value="250" />
             <Setter Property="WidthRequest" Value="250" />
             <Setter Property="BackgroundColor"
-                    Value="{AppThemeBinding Light={StaticResource LightBackgroundColor},
-                     Dark={StaticResource DarkBackgroundColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightBackgroundColor},
+                    Dark={StaticResource DarkBackgroundColor}}" />
             <Setter Property="BorderColor"
-                    Value="{AppThemeBinding Light={StaticResource LightSecondaryColor},
-                     Dark={StaticResource DarkSecondaryColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightSecondaryColor},
+                    Dark={StaticResource DarkSecondaryColor}}" />
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="VerticalOptions" Value="CenterAndExpand" />
         </Style>
@@ -226,8 +252,9 @@
             <Setter Property="HideSingle" Value="False" />
             <Setter Property="IndicatorSize" Value="10" />
             <Setter Property="IndicatorColor"
-                    Value="{AppThemeBinding Light={StaticResource LightSecondaryColor},
-                     Dark={StaticResource DarkSecondaryColor}}" />
+                    Value="{AppThemeBinding
+                    Light={StaticResource LightSecondaryColor},
+                    Dark={StaticResource DarkSecondaryColor}}" />
             <Setter Property="SelectedIndicatorColor" Value="{StaticResource PrimaryColor}" />
         </Style>
 

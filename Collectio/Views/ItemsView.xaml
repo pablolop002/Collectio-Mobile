@@ -5,17 +5,21 @@
              xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
              xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
              xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
-             xmlns:utils="clr-namespace:Collectio.Utils;assembly=Collectio"
-             x:Class="Collectio.Views.ListItemsPage"
+             xmlns:searchHandlers="clr-namespace:Collectio.Utils.SearchHandlers;assembly=Collectio"
+             x:Class="Collectio.Views.ItemsView"
              Style="{StaticResource PageStyle}"
              Title="{Binding Title}"
              x:DataType="viewModels:ItemsViewModel">
+    
+    <ContentPage.BindingContext>
+        <viewModels:ItemsViewModel />
+    </ContentPage.BindingContext>
 
     <Shell.SearchHandler>
-        <utils:ItemsSearchHandler Placeholder="{x:Static culture:Strings.ItemSearch}"
+        <searchHandlers:ItemsSearchHandler Placeholder="{x:Static culture:Strings.ItemSearch}"
                                   ShowsResults="true"
                                   SearchBoxVisibility="Collapsible"
-                                  Collection="{Binding CollectionId}"
+                                  Collection="{Binding Collection.Id}"
                                   VerticalTextAlignment="Center"
                                   PlaceholderColor="{AppThemeBinding
                                             Light={StaticResource LightTextColor},
@@ -26,7 +30,7 @@
                                   TextColor="{AppThemeBinding
                                             Light={StaticResource LightTextColor},
                                             Dark={StaticResource DarkTextColor}}">
-            <utils:ItemsSearchHandler.ItemTemplate>
+            <searchHandlers:ItemsSearchHandler.ItemTemplate>
                 <DataTemplate x:DataType="models:Item">
                     <Grid Padding="10">
                         <Grid.ColumnDefinitions>
@@ -45,8 +49,8 @@
                         
                     </Grid>
                 </DataTemplate>
-            </utils:ItemsSearchHandler.ItemTemplate>
-        </utils:ItemsSearchHandler>
+            </searchHandlers:ItemsSearchHandler.ItemTemplate>
+        </searchHandlers:ItemsSearchHandler>
     </Shell.SearchHandler>
 
     <ContentPage.ToolbarItems>
@@ -64,7 +68,7 @@
                      Command="{Binding RefreshCommand}"
                      IsRefreshing="{Binding IsRefreshing}">
 
-            <CollectionView x:Name="ItemsView"
+            <CollectionView x:Name="ItemsCollectionView"
                             SelectionChanged="ItemsView_OnSelectionChanged" SelectionMode="Single"
                             ItemsSource="{Binding Items}">
 

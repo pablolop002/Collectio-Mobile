@@ -4,12 +4,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
              xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
-             x:Class="Collectio.Views.DetailItemPage"
+             x:Class="Collectio.Views.ItemDetailView"
              Title="{Binding Name}"
              Style="{StaticResource PageStyle}"
              x:DataType="models:Item">
+    
     <ContentPage.Content>
-
         <Grid Padding="10" RowSpacing="15">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -25,8 +25,10 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <CarouselView Grid.Row="0" ItemsSource="{Binding Images}"
-                              IndicatorView="Indicator"> <!-- Loop="False" -->
+                <CarouselView Grid.Row="0"
+                              ItemsSource="{Binding Images}"
+                              IndicatorView="Indicator"
+                              Loop="False">
                     <CarouselView.ItemTemplate>
                         <DataTemplate x:DataType="models:ItemImage">
                             <Frame Style="{StaticResource ImageFrameStyle}">
@@ -36,24 +38,33 @@
                         </DataTemplate>
                     </CarouselView.ItemTemplate>
                 </CarouselView>
-                <IndicatorView x:Name="Indicator" Grid.Row="1" Style="{StaticResource IndicatorViewStyle}" />
+                <IndicatorView x:Name="Indicator"
+                               Grid.Row="1"
+                               Style="{StaticResource IndicatorViewStyle}" />
             </Grid>
 
-            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Spacing="10">
-                <Label Text="{Binding Name}" Style="{StaticResource TitleLabelStyle}" />
-                <Label Text="{Binding Description}" Style="{StaticResource LabelStyle}" />
-                <Label x:Name="Subcategory" Style="{StaticResource LabelStyle}" />
-                <Label Text="{Binding CreatedAt}" Style="{StaticResource LabelStyle}" />
-                <Label Text="{Binding UpdatedAt}" Style="{StaticResource LabelStyle}" />
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="{x:Static culture:Strings.Private}" Style="{StaticResource LabelStyle}"
-                           HorizontalOptions="StartAndExpand" />
-                    <CheckBox IsChecked="{Binding Private}"
-                              Color="{StaticResource PrimaryColor}"
-                              IsEnabled="False" />
+            <ScrollView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <StackLayout Spacing="10">
+                    <Label Text="{Binding Name}"
+                           Style="{StaticResource TitleLabelStyle}" />
+                    <Label Text="{Binding Description}"
+                           Style="{StaticResource LabelStyle}" />
+                    <Label x:Name="Subcategory"
+                           Style="{StaticResource LabelStyle}" />
+                    <Label Text="{Binding CreatedAt}"
+                           Style="{StaticResource LabelStyle}" />
+                    <Label Text="{Binding UpdatedAt}"
+                           Style="{StaticResource LabelStyle}" />
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{x:Static culture:Strings.Private}"
+                               Style="{StaticResource LabelStyle}"
+                               HorizontalOptions="StartAndExpand" />
+                        <CheckBox IsChecked="{Binding Private}"
+                                  Color="{StaticResource PrimaryColor}"
+                                  IsEnabled="False" />
+                    </StackLayout>
                 </StackLayout>
-            </StackLayout>
-
+            </ScrollView>
         </Grid>
 
     </ContentPage.Content>

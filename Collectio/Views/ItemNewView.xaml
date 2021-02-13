@@ -3,11 +3,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
-             xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
-             x:Class="Collectio.Views.EditItemPage"
-             Title="{x:Static culture:Strings.EditItem}"
-             Style="{StaticResource PageStyle}"
-             x:DataType="models:Item">
+             x:Class="Collectio.Views.ItemNewView"
+             Title="{x:Static culture:Strings.NewItem}"
+             Style="{StaticResource PageStyle}">
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Clicked="Done_OnClicked">
             <ToolbarItem.IconImageSource>
@@ -15,6 +14,7 @@
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <ScrollView>
             <Grid x:Name="UiLayout" ColumnSpacing="10" RowSpacing="10" Padding="10">
@@ -28,8 +28,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" RowSpacing="5" x:Name="ImagesGroup"
-                      VerticalOptions="StartAndExpand">
+                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="ImagesGroup">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
@@ -47,22 +46,24 @@
 
                 <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="DetailsGroup"
                              VerticalOptions="Center">
-                    <Entry Text="{Binding Name}" Placeholder="{x:Static culture:Strings.Name}"
+                    <Entry x:Name="Name" Placeholder="{x:Static culture:Strings.Name}"
                            Style="{StaticResource EntryStyle}" />
                     <Picker x:Name="SubcategoryPicker" ItemDisplayBinding="{Binding Name}"
                             Title="{x:Static culture:Strings.Subcategory}"
                             Style="{StaticResource PickerStyle}" />
-                    <Editor Text="{Binding Description}"
+                    <Editor x:Name="Description"
                             Placeholder="{x:Static culture:Strings.Description}"
                             Style="{StaticResource EditorStyle}" />
                     <StackLayout Orientation="Horizontal">
                         <Label Text="{x:Static culture:Strings.Private}"
                                Style="{StaticResource LabelStyle}"
                                HorizontalOptions="StartAndExpand" />
-                        <CheckBox IsChecked="{Binding Private}" Color="{StaticResource PrimaryColor}" />
+                        <CheckBox x:Name="Private" Color="{StaticResource PrimaryColor}" />
                     </StackLayout>
                 </StackLayout>
+
             </Grid>
         </ScrollView>
     </ContentPage.Content>
+
 </ContentPage>

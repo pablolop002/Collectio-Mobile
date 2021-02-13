@@ -1,6 +1,3 @@
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using Collectio.Models;
 using MvvmHelpers;
 using MvvmHelpers.Commands;
@@ -10,10 +7,24 @@ namespace Collectio.ViewModels
     public class ItemsViewModel : BaseViewModel
     {
         private bool _isRefreshing;
+        private Collection _collection;
 
-        public ObservableCollection<Item> Items { get; private set; }
+        public ObservableRangeCollection<Item> Items { get; private set; }
+        
         public Command RefreshCommand { get; set; }
-        public int CollectionId { get; }
+
+        public Collection Collection
+        {
+            get => _collection;
+            set
+            {
+                if (value != null)
+                {
+                    Title = value.Name;
+                }
+                SetProperty(ref _collection, value);
+            }
+        }
 
         public bool IsRefreshing
         {
@@ -25,11 +36,17 @@ namespace Collectio.ViewModels
             }
         }
 
+        public ItemsViewModel()
+        {
+            Items = new ObservableRangeCollection<Item>();
+            RefreshCommand = new Command(RefreshEvent);
+            IsRefreshing = true;
+        }
+
         public ItemsViewModel(Collection collection)
         {
-            Title = collection.Name;
-            CollectionId = collection.Id;
-            Items = new ObservableCollection<Item>();
+            Collection = collection;
+            Items = new ObservableRangeCollection<Item>();
             RefreshCommand = new Command(RefreshEvent);
             IsRefreshing = true;
         }
@@ -39,10 +56,7 @@ namespace Collectio.ViewModels
             IsRefreshing = true;
 
             Items.Clear();
-            foreach (var item in App.DataRepo.GetAllItemsFromCategory(CollectionId.ToString(), true))
-            {
-                Items.Add(item);
-            }
+            Items.AddRange(App.DataRepo.GetAllItemsFromCategory(Collection.Id.ToString(), true));
 
             IsRefreshing = false;
         }

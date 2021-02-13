@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
+             xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
+             xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
+             x:Class="Collectio.Views.CollectionNewView"
+             Title="{ x:Static culture:Strings.NewCollection}"
+             Style="{StaticResource PageStyle}"
+             Shell.TabBarIsVisible="False"
+             x:DataType="viewModels:CollectionNewViewModel">
+
+    <ContentPage.BindingContext>
+        <viewModels:CollectionNewViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding SaveItemCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-S"
+                                 Glyph="{StaticResource IconDone}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <Grid Padding="10">
+            <CollectionView SelectionMode="Single"
+                            SelectedItem="{Binding SelectedCategory}"
+                            ItemsSource="{Binding Categories}"
+                            IsVisible="{Binding CategorySelection}">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="{OnIdiom Phone=1, Default=2}"
+                                     VerticalItemSpacing="10"
+                                     HorizontalItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Category">
+                        <Frame Style="{StaticResource CategorySelectorFrameStyle}">
+                            <Grid ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Ellipse Grid.Column="0" Style="{StaticResource SmallEllipseStyle}">
+                                    <Ellipse.Stroke>
+                                        <SolidColorBrush Color="Goldenrod" />
+                                    </Ellipse.Stroke>
+                                </Ellipse>
+
+                                <Image Grid.Column="0" Style="{StaticResource SmallImageStyle}">
+                                    <Image.Clip>
+                                        <EllipseGeometry Center="35,35"
+                                                         RadiusX="35"
+                                                         RadiusY="35" />
+                                    </Image.Clip>
+                                    <Image.Source>
+                                        <FileImageSource File="{Binding File}" />
+                                    </Image.Source>
+                                </Image>
+
+                                <Label Text="{Binding Name}" HorizontalTextAlignment="Center"
+                                       Style="{StaticResource TitleLabelStyle}" Grid.Column="1"
+                                       FontSize="Title" TextDecorations="None" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <Grid>
+                        <Label Text="{x:Static culture:Strings.NoGroups}"
+                               Style="{StaticResource LabelStyle}"
+                               HorizontalTextAlignment="Center" HorizontalOptions="Center" />
+                    </Grid>
+                </CollectionView.EmptyView>
+            </CollectionView>
+
+            <ScrollView IsVisible="{Binding CollectionDetails}">
+                <Grid RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="2*" />
+                    </Grid.RowDefinitions>
+
+                    <Ellipse Grid.Row="0"
+                             Style="{StaticResource BigEllipseStyle}">
+                        <Ellipse.Stroke>
+                            <SolidColorBrush Color="Goldenrod" />
+                        </Ellipse.Stroke>
+                    </Ellipse>
+
+                    <ImageButton Grid.Row="0"
+                                 Style="{StaticResource BigImageStyle}"
+                                 Command="{Binding SelectImageCommand}">
+                        <ImageButton.Source>
+                            <FileImageSource File="{Binding File}" />
+                        </ImageButton.Source>
+                        <ImageButton.Clip>
+                            <EllipseGeometry Center="120,120"
+                                             RadiusX="120"
+                                             RadiusY="120" />
+                        </ImageButton.Clip>
+                    </ImageButton>
+
+                    <Label Text="{Binding SelectedCategory.Name}"
+                           HorizontalOptions="Center"
+                           Grid.Row="1"
+                           Style="{StaticResource TitleLabelStyle}" />
+
+                    <Entry Text="{Binding Collection.Name}"
+                           VerticalOptions="Center"
+                           Grid.Row="2"
+                           Placeholder="{x:Static culture:Strings.Name}"
+                           Style="{StaticResource EntryStyle}" />
+
+                    <Editor Text="{Binding Collection.Description}"
+                            Grid.Row="3"
+                            Placeholder="{x:Static culture:Strings.Description}"
+                            Style="{StaticResource EditorStyle}" />
+
+                    <StackLayout Grid.Row="4" Orientation="Horizontal" VerticalOptions="Start" Padding="5, 0, 0, 0">
+
+                        <Label Text="{x:Static culture:Strings.Private}"
+                               HorizontalOptions="StartAndExpand"
+                               Style="{StaticResource LabelStyle}" />
+
+                        <CheckBox IsChecked="{Binding Collection.Private}"
+                                  HorizontalOptions="End"
+                                  VerticalOptions="Start"
+                                  Color="{StaticResource PrimaryColor}" />
+                    </StackLayout>
+
+                </Grid>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

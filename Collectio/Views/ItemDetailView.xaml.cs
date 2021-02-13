@@ -5,7 +5,7 @@ namespace Collectio.Views
 {
     [QueryProperty("Item", "item")]
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class DetailItemPage : ContentPage
+    public partial class ItemDetailView : ContentPage
     {
         public string Item
         {
@@ -17,7 +17,7 @@ namespace Collectio.Views
             }
         }
 
-        public DetailItemPage()
+        public ItemDetailView()
         {
             InitializeComponent();
             Shell.SetTabBarIsVisible(this, false);

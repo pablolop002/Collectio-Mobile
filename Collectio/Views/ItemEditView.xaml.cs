@@ -12,37 +12,26 @@ using Xamarin.Forms.Xaml;
 
 namespace Collectio.Views
 {
-    [QueryProperty("Collection", "collection")]
-    [QueryProperty("CopyFrom", "copyFrom")]
+    [QueryProperty("Item", "item")]
     [XamlCompilation(XamlCompilationOptions.Compile)]
     [SuppressMessage("ReSharper", "RedundantExtendsListEntry")]
-    public partial class NewItemPage : ContentPage
+    public partial class ItemEditView : ContentPage
     {
         private readonly double _size;
         private readonly int _maxSize = 3;
-        private Collection _collection;
+        private Item _item;
+
         private readonly List<KeyValuePair<string, KeyValuePair<string, ImageButton>>> _images =
-            new List<KeyValuePair<string, KeyValuePair<string, ImageButton>>>(6);
+            new List<KeyValuePair<string, KeyValuePair<string, ImageButton>>>();
 
-        public string Collection
+        private readonly List<string> _toDelete = new List<string>();
+
+        public string Item
         {
             set
             {
-                _collection = App.DataRepo.GetCollection(Uri.UnescapeDataString(value));
-                SubcategoryPicker.ItemsSource =
-                    new List<Subcategory>(App.DataRepo.GetSubcategoriesByCategoryId(_collection.CategoryId.ToString()));
-            }
-        }
-
-        public string CopyFrom
-        {
-            set
-            {
-                var item = App.DataRepo.GetItem(Uri.UnescapeDataString(value), true);
-                Name.Text = item.Name;
-                Description.Text = item.Description;
-                Private.IsChecked = item.Private;
-                foreach (var image in item.Images)
+                BindingContext = _item = App.DataRepo.GetItem(value, true);
+                foreach (var image in _item.Images)
                 {
                     _images.Add(new KeyValuePair<string, KeyValuePair<string, ImageButton>>(image.File,
                         new KeyValuePair<string, ImageButton>(image.Image, new ImageButton()
@@ -52,14 +41,27 @@ namespace Collectio.Views
                             WidthRequest = _size,
                             HeightRequest = _size
                         })));
-                    _images[_images.Count - 1].Value.Value.Clicked += Delete_OnClicked; 
+                    _images[_images.Count - 1].Value.Value.Clicked += Delete_OnClicked;
+                    
                     ImagesGroup.Children.Add(_images[_images.Count - 1].Value.Value, (_images.Count - 1) % _maxSize,
                         (_images.Count - 1) / _maxSize);
+                }
+
+                var subcategoryList =
+                    App.DataRepo.GetSubcategoriesByCategoryId(App.DataRepo
+                        .GetCollection(_item.CollectionId.ToString())
+                        .CategoryId.ToString()) as List<Subcategory>;
+                SubcategoryPicker.ItemsSource = subcategoryList;
+                if (SubcategoryPicker.ItemsSource != null && subcategoryList != null)
+                {
+                    SubcategoryPicker.SelectedIndex =
+                        SubcategoryPicker.ItemsSource.IndexOf(
+                            subcategoryList.Find(e => e.Id == _item.SubcategoryId));
                 }
             }
         }
 
-        public NewItemPage()
+        public ItemEditView()
         {
             InitializeComponent();
             Shell.SetTabBarIsVisible(this, false);
@@ -165,6 +167,7 @@ namespace Collectio.Views
             var aux = sender as ImageButton;
             var elem = _images.FindIndex(pair => pair.Value.Value == aux);
 
+            _toDelete.Add(_images[elem].Key);
             _images.Remove(_images[elem]);
             MainThread.BeginInvokeOnMainThread(ImagesGroup.Children.Clear);
 
@@ -180,40 +183,43 @@ namespace Collectio.Views
 
         private async void Done_OnClicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(Name.Text))
+            var original = App.DataRepo.GetItem(_item.Id.ToString(), true);
+
+            foreach (var image in _toDelete)
             {
-                await Shell.Current.DisplayAlert(Strings.Error, Strings.EmptyItemName, Strings.Ok);
-                return;
+                if (_item.Images.Exists(elem => elem.File == image))
+                {
+                    var img = _item.Images.Find(elem => elem.File == image);
+                    App.DataRepo.RemoveItemImage(img.Id.ToString());
+                    _item.Images.Remove(img);
+                }
+
+                FileSystemUtils.DeleteImage(image);
             }
 
-            var item = new Item
+            foreach (var image in _images.Where(image =>
+                !_item.Images.Exists(elem => elem.File == image.Key)))
             {
-                Name = Name.Text,
-                Description = Description.Text,
-                CollectionId = _collection.Id,
-                Private = Private.IsChecked,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
-                SubcategoryId = SubcategoryPicker.SelectedIndex != -1 ? ((Subcategory) SubcategoryPicker.SelectedItem).Id : -1
-            };
-
-            App.DataRepo.AddItem(ref item);
-
-            foreach (var itemImage in from image in _images
-                let correct = FileSystemUtils.SaveFileFromPath(image.Key, image.Value.Key, item.CollectionId, item.Id)
-                where correct
-                select new ItemImage()
+                FileSystemUtils.SaveFileFromPath(image.Key, image.Value.Key, _item.CollectionId, _item.Id);
+                var itemImage = new ItemImage()
                 {
-                    ItemId = item.Id,
+                    ItemId = _item.Id,
                     Image = image.Value.Key
-                })
-            {
+                };
+
                 App.DataRepo.AddItemImage(itemImage);
+                _item.Images.Add(itemImage);
+            }
+
+            if (!_item.Equals(original))
+            {
+                _item.UpdatedAt = DateTime.Now;
+                App.DataRepo.UpdateItem(_item);
             }
 
             FileSystemUtils.ClearTempPath();
 
-            await Shell.Current.GoToAsync($"..?collection={_collection.Id}&refresh=true");
+            await Shell.Current.GoToAsync($"..?collection={_item.CollectionId.ToString()}&refresh=true");
         }
     }
 }

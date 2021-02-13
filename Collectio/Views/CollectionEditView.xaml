@@ -3,14 +3,18 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
-             xmlns:models="clr-namespace:Collectio.Models;assembly=Collectio"
-             x:Class="Collectio.Views.EditCollectionPage"
+             xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
+             x:Class="Collectio.Views.CollectionEditView"
              Style="{DynamicResource PageStyle}"
              Title="{x:Static culture:Strings.EditCollection}"
-             x:DataType="models:Collection">
+             x:DataType="viewModels:CollectionEditViewModel">
+
+    <ContentPage.BindingContext>
+        <viewModels:CollectionEditViewModel />
+    </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Clicked="Done_OnClicked">
+        <ToolbarItem Command="{Binding SaveCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconDone}" />
             </ToolbarItem.IconImageSource>
@@ -32,11 +36,12 @@
                         <SolidColorBrush Color="Goldenrod" />
                     </Ellipse.Stroke>
                 </Ellipse>
-                
-                <ImageButton x:Name="Image" Grid.Row="0" Clicked="SelectImage_OnClicked"
+
+                <ImageButton Grid.Row="0"
+                             Command="{Binding ImageSelectorCommand}"
                              Style="{StaticResource BigImageStyle}">
                     <ImageButton.Source>
-                        <FileImageSource File="{Binding File}" />
+                        <FileImageSource File="{Binding Collection.File}" />
                     </ImageButton.Source>
                     <ImageButton.Clip>
                         <EllipseGeometry Center="120,120"
@@ -45,18 +50,23 @@
                     </ImageButton.Clip>
                 </ImageButton>
 
-                <Entry VerticalOptions="End" Text="{Binding Name}" Grid.Row="1"
+                <Entry Text="{Binding Collection.Name}"
+                       VerticalOptions="End"
+                       Grid.Row="1"
                        Style="{StaticResource EntryStyle}" />
 
-                <Editor Placeholder="{x:Static culture:Strings.Description}" Grid.Row="2"
-                        Text="{Binding Description}"
+                <Editor Placeholder="{x:Static culture:Strings.Description}"
+                        Text="{Binding Collection.Description}"
+                        Grid.Row="2"
                         Style="{StaticResource EditorStyle}" />
 
                 <StackLayout Grid.Row="3" Orientation="Horizontal" VerticalOptions="Start" Padding="5, 0, 0, 0">
-                    <Label Text="{x:Static culture:Strings.Private}" HorizontalOptions="StartAndExpand"
-                           Style="{StaticResource LabelStyle}" />
-                    <CheckBox HorizontalOptions="End" VerticalOptions="Start"
-                              IsChecked="{Binding Private}"
+                    <Label Text="{x:Static culture:Strings.Private}"
+                           Style="{StaticResource LabelStyle}"
+                           HorizontalOptions="StartAndExpand" />
+                    <CheckBox HorizontalOptions="End"
+                              VerticalOptions="Start"
+                              IsChecked="{Binding Collection.Private}"
                               Color="{StaticResource PrimaryColor}" />
                 </StackLayout>
 

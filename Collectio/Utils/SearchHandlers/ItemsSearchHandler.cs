@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using Collectio.Models;
 using Xamarin.Forms;
 
-namespace Collectio.Utils
+namespace Collectio.Utils.SearchHandlers
 {
     public class ItemsSearchHandler : SearchHandler
     {
-        public static readonly BindableProperty CollectionProperty =
-            BindableProperty.Create(nameof(Collection), typeof(int), typeof(SearchHandler), null,
-                BindingMode.OneTime);
+        public static readonly BindableProperty CollectionProperty = BindableProperty.Create(nameof(Collection),
+            typeof(int), typeof(SearchHandler), null, BindingMode.OneTime);
+
         public int Collection
         {
             get => (int) GetValue(CollectionProperty);

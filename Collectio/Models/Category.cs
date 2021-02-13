@@ -1,5 +1,5 @@
-using System.Collections.ObjectModel;
 using Collectio.Utils;
+using MvvmHelpers;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 
@@ -36,6 +36,6 @@ namespace Collectio.Models
 
         [Ignore] public string File => FileSystemUtils.GetGroupImage(Image);
         
-        [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableCollection<Collection> Collections { get; set; }
+        [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableRangeCollection<Collection> Collections { get; set; }
     }
 }

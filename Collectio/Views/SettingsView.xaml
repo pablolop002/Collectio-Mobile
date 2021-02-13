@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
+             xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
+             x:Class="Collectio.Views.SettingsView"
+             Title="{x:Static culture:Strings.Settings}"
+             Style="{StaticResource PageStyle}"
+             Shell.TabBarIsVisible="False"
+             x:DataType="viewModels:SettingsViewModel">
+
+    <ContentPage.BindingContext>
+        <viewModels:SettingsViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10" Spacing="10">
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{x:Static culture:Strings.AppCenter}"
+                           Style="{StaticResource TitleLabelStyle}"
+                           HorizontalOptions="StartAndExpand" />
+                    <CheckBox IsChecked="{Binding AppCenter}"
+                              Color="{StaticResource PrimaryColor}"
+                              VerticalOptions="FillAndExpand" />
+                </StackLayout>
+                <Label Text="{x:Static culture:Strings.AppCenterDescription}"
+                       Style="{StaticResource LabelStyle}" />
+
+                <Label Text="{x:Static culture:Strings.Comments}"
+                       Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.CommentsDescription}"
+                       Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.Comments}"
+                        Command="{Binding CommentsPageCommand}"
+                        Style="{StaticResource ButtonStyle}" />
+
+                <Label Text="{x:Static culture:Strings.Backup}"
+                       Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.BackupDescription}"
+                       Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.Backup}"
+                        Command="{Binding MakeBackupCommand}"
+                        Style="{StaticResource ButtonStyle}" />
+
+                <Label Text="{x:Static culture:Strings.RestoreBackup}"
+                       Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.RestoreBackupDescription}"
+                       Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.RestoreBackup}"
+                        Command="{Binding RestoreBackupCommand}"
+                        Style="{StaticResource ButtonStyle}" />
+
+                <Label Text="{x:Static culture:Strings.DeleteCache}"
+                       Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.DeleteCacheDescription}"
+                       Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.DeleteCache}"
+                        Command="{Binding DeleteCacheCommand}"
+                        Style="{StaticResource ButtonStyle}" />
+
+                <Label Text="{x:Static culture:Strings.DeleteData}"
+                       Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.DeleteDataDescription}"
+                       Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.DeleteData}"
+                        Command="{Binding DeleteDataCommand}"
+                        Style="{StaticResource ButtonStyle}" />
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>

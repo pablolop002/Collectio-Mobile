@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Collectio.Models;
 using Xamarin.Forms;
 
-namespace Collectio.Utils
+namespace Collectio.Utils.SearchHandlers
 {
     public class CollectionsSearchHandler : SearchHandler
     {

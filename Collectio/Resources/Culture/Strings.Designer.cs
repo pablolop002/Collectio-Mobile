@@ -458,5 +458,11 @@ namespace Collectio.Resources.Culture {
                 return ResourceManager.GetString("CommentNotComplete", resourceCulture);
             }
         }
+        
+        internal static string CategoryNotSelected {
+            get {
+                return ResourceManager.GetString("CategoryNotSelected", resourceCulture);
+            }
+        }
     }
 }

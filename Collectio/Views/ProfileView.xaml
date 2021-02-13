@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
+             xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
+             x:Class="Collectio.Views.ProfileView"
+             Title="{Binding Title}"
+             Style="{DynamicResource PageStyle}"
+             x:DataType="viewModels:ProfileViewModel">
+    
+    <ContentPage.BindingContext>
+        <viewModels:ProfileViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding SettingsCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconSettings}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid Padding="10" RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Ellipse Style="{StaticResource BigEllipseStyle}"
+                         IsVisible="{Binding LoggedIn}"
+                         Grid.Row="0">
+                    <Ellipse.Stroke>
+                        <SolidColorBrush Color="Goldenrod" />
+                    </Ellipse.Stroke>
+                </Ellipse>
+
+                <ImageButton Command="{Binding SelectImageCommand}"
+                             Style="{StaticResource BigImageStyle}"
+                             Grid.Row="0"
+                             IsVisible="{Binding LoggedIn}">
+                    <ImageButton.Source>
+                        <FileImageSource File="{Binding User.File}" />
+                    </ImageButton.Source>
+                    <ImageButton.Clip>
+                        <EllipseGeometry Center="120,120"
+                                         RadiusX="120"
+                                         RadiusY="120" />
+                    </ImageButton.Clip>
+                </ImageButton>
+
+                <StackLayout IsVisible="{Binding LoggedIn}" Grid.Row="1" VerticalOptions="Center">
+                    <Entry Text="{Binding User.Nickname}"
+                           Placeholder="{x:Static culture:Strings.Nickname}"
+                           Style="{StaticResource EntryStyle}" />
+                    <Entry Text="{Binding User.Mail}"
+                           Placeholder="{x:Static culture:Strings.Mail}"
+                           Style="{StaticResource EntryStyle}" />
+                </StackLayout>
+
+                <Button IsVisible="{Binding LoggedIn}"
+                        Text="{x:Static culture:Strings.Logout}"
+                        Style="{StaticResource LogoutButtonStyle}"
+                        Grid.Row="2" />
+
+                <Label IsVisible="{Binding NotLoggedIn}"
+                       Text="{x:Static culture:Strings.LoginBenefit}"
+                       Style="{StaticResource LabelStyle}"
+                       Grid.Row="1"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+
+                <Button IsVisible="{Binding NotLoggedIn}"
+                        Text="{x:Static culture:Strings.LoginApple}"
+                        Command="{Binding AppleLogInCommand}"
+                        Style="{StaticResource LoginButtonStyle}"
+                        Grid.Row="2">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FA-B"
+                                         Glyph="{StaticResource IconApple}"
+                                         Color="{AppThemeBinding
+                                         Light={StaticResource LightBackgroundColor},
+                                         Dark={StaticResource DarkBackgroundColor}}" />
+                    </Button.ImageSource>
+                </Button>
+
+                <Button IsVisible="{Binding NotLoggedIn}"
+                        Text="{x:Static culture:Strings.LoginGoogle}"
+                        Command="{Binding GoogleLogInCommand}"
+                        Style="{StaticResource LoginButtonStyle}"
+                        Grid.Row="3">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FA-B"
+                                         Glyph="{StaticResource IconGoogle}"
+                                         Color="{AppThemeBinding
+                                         Light={StaticResource LightBackgroundColor},
+                                         Dark={StaticResource DarkBackgroundColor}}" />
+                    </Button.ImageSource>
+                </Button>
+
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>
