@@ -78,7 +78,7 @@
         <value>Ajustes</value>
     </data>
     <data name="NoGroups" xml:space="preserve">
-        <value>Ups, parece que ocurrio un problema.
+        <value>Ups, parece que ocurrió un problema.
 No hay grupos disponibles.</value>
     </data>
     <data name="EditCollection" xml:space="preserve">
@@ -106,10 +106,10 @@ No hay grupos disponibles.</value>
         <value>Editar elemento</value>
     </data>
     <data name="DeleteCollection" xml:space="preserve">
-        <value>Eliminar una colección implica la eliminación de lodos los elementos que contiene y no podras recuperarlos</value>
+        <value>Eliminar una colección implica la eliminación de lodos los elementos que contiene y no podrás recuperarlos</value>
     </data>
     <data name="DeleteItem" xml:space="preserve">
-        <value>Eliminar un elemento y sus imagenes e implica que no podras recuperarlo</value>
+        <value>Eliminar un elemento y sus imágenes e implica que no podrás recuperarlo</value>
     </data>
     <data name="Edit" xml:space="preserve">
         <value>Editar</value>
@@ -121,10 +121,10 @@ No hay grupos disponibles.</value>
         <value>Duplicar</value>
     </data>
     <data name="DuplicateMessage" xml:space="preserve">
-        <value>Para duplicar un elemento deslizalo de derecha a izquierda para mostrar la opción</value>
+        <value>Para duplicar un elemento, desliza este de derecha a izquierda para mostrar la opción</value>
     </data>
     <data name="Subcategory" xml:space="preserve">
-        <value>Subcategoria</value>
+        <value>Subcategoría</value>
     </data>
     <data name="Backup" xml:space="preserve">
         <value>Copia de seguridad</value>
@@ -136,13 +136,13 @@ No hay grupos disponibles.</value>
         <value>Reporte de fallos</value>
     </data>
     <data name="AppCenterDescription" xml:space="preserve">
-        <value>Ayuda a mejorar la aplicación enviando informes de errores de forma automatica, siempre de forma anonima. Si dejas esta opción activa ayudaras en el desarrollo de la aplicación con mejoras y solución de errores sin hacer nada además de usar la aplicación</value>
+        <value>Ayuda a mejorar la aplicación enviando informes de errores de forma automática, siempre de forma anónima. Si dejas esta opción activa ayudaras en el desarrollo de la aplicación con mejoras y solución de errores sin hacer nada además de usar la aplicación</value>
     </data>
     <data name="RestoreBackup" xml:space="preserve">
         <value>Restaurar copia</value>
     </data>
     <data name="RestoreBackupDescription" xml:space="preserve">
-        <value>Restaura la última copia de seguridad manual realizada. ¡Advertencia, todos los datos de la aplicación que no esten en la copia serán eliminados!</value>
+        <value>Restaura la última copia de seguridad manual realizada. ¡Advertencia, todos los datos de la aplicación que no estén en la copia serán eliminados!</value>
     </data>
     <data name="Comments" xml:space="preserve">
         <value>Comentarios</value>
@@ -169,25 +169,25 @@ No hay grupos disponibles.</value>
         <value>Eliminar datos</value>
     </data>
     <data name="DeleteDataDescription" xml:space="preserve">
-        <value>Elimina todos los datos, lo que incluye la base de datos. ¡Advertencia: elimina todos los datos, tanto imagenes como la base de datos completa y no se puede recuperar si no dispones de una copia!</value>
+        <value>Elimina todos los datos, lo que incluye la base de datos. ¡Advertencia: elimina todos los datos, tanto imágenes como la base de datos completa y no se puede recuperar si no dispones de una copia!</value>
     </data>
     <data name="DeleteCache" xml:space="preserve">
         <value>Eliminar caché</value>
     </data>
     <data name="DeleteCacheDescription" xml:space="preserve">
-        <value>Elimina las copias locales de las imagenes, lo que implica que serán descargadas de nuevo en caso de necesidad. Solo esta disponible para usuarios con cuenta</value>
+        <value>Elimina las copias locales de las imágenes, lo que implica que serán descargadas de nuevo en caso de necesidad. Solo esta disponible para usuarios con cuenta</value>
     </data>
     <data name="DeleteDataCorrect" xml:space="preserve">
         <value>Se han eliminado todos los datos de forma correcta</value>
     </data>
     <data name="DeleteCacheCorrect" xml:space="preserve">
-        <value>Se han eliminado las copias locales de las imagenes de forma correcta</value>
+        <value>Se han eliminado las copias locales de las imágenes de forma correcta</value>
     </data>
     <data name="DeleteDataError" xml:space="preserve">
         <value>Error al eliminar los datos. Si sigues seguro de que quieres esto, prueba de nuevo más tarde</value>
     </data>
     <data name="DeleteCacheError" xml:space="preserve">
-        <value>Error al eliminar las copias locales de las imagenes. Prueba de nuevo más tarde</value>
+        <value>Error al eliminar las copias locales de las imágenes. Prueba de nuevo más tarde</value>
     </data>
     <data name="DisabledFunction" xml:space="preserve">
         <value>Función no disponible</value>
@@ -203,5 +203,29 @@ No hay grupos disponibles.</value>
     </data>
     <data name="ItemSearch" xml:space="preserve">
         <value>Busca entre los elementos de la colección</value>
+    </data>
+    <data name="LoginBenefit" xml:space="preserve">
+        <value>Iniciando sesión disfrutaras de una sincronización transparente de todas tus colecciones y sus elementos entre todos tus dispositivos.</value>
+    </data>
+    <data name="Mail" xml:space="preserve">
+        <value>Correo</value>
+    </data>
+    <data name="Nickname" xml:space="preserve">
+        <value>Apodo</value>
+    </data>
+    <data name="ProfileImage" xml:space="preserve">
+        <value>Imagen de perfil</value>
+    </data>
+    <data name="CommentAddition" xml:space="preserve">
+        <value>Proponer una nueva caracteristica/función</value>
+    </data>
+    <data name="CommentBugReport" xml:space="preserve">
+        <value>Reportar un fallo</value>
+    </data>
+    <data name="CommentExplain" xml:space="preserve">
+        <value>A continuación describe tu problema o idea de nueva caracteristica:</value>
+    </data>
+    <data name="CommentNotComplete" xml:space="preserve">
+        <value>No has seleccionado tipo de comentario</value>
     </data>
 </root>

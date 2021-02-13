@@ -128,4 +128,31 @@
     <data name="Public" xml:space="preserve">
         <value>Public</value>
     </data>
+    <data name="RestoreBackupError" xml:space="preserve">
+        <value>Error during backup restoration. Maybe the backup isn't complete or it can contain any error. If you're sure it's okey, please, try again later</value>
+    </data>
+    <data name="NoItems" xml:space="preserve">
+        <value>You don't have any element yet. Try adding one!</value>
+    </data>
+    <data name="NoCollections" xml:space="preserve">
+        <value>You don't have any collection. Try adding one!</value>
+    </data>
+    <data name="Nickname" xml:space="preserve">
+        <value>Nickname</value>
+    </data>
+    <data name="Mail" xml:space="preserve">
+        <value>Mail</value>
+    </data>
+    <data name="ProfileImage" xml:space="preserve">
+        <value>Profile image</value>
+    </data>
+    <data name="LoginBenefit" xml:space="preserve">
+        <value>Signing in you can take benefit of cross device sync of all your collections and items.</value>
+    </data>
+    <data name="ItemSearch" xml:space="preserve">
+        <value>Search inside your collection's items</value>
+    </data>
+    <data name="DuplicateMessage" xml:space="preserve">
+        <value>In order to duplicate an item, swipe it from right to left to display the option</value>
+    </data>
 </root>

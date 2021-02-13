@@ -8,15 +8,9 @@
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/Assets" />
       </configuration>
     </facet>
-    <facet type="android" name="Android Facet - Collectio.Android">
-      <configuration>
-        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/Properties/AndroidManifest.xml" />
-        <option name="RES_FOLDER_RELATIVE_PATH" value="/Resources" />
-        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/Assets" />
-      </configuration>
-    </facet>
   </component>
   <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../../Collectio.Android" />
     <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
