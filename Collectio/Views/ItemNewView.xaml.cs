@@ -6,6 +6,7 @@ using System.Linq;
 using Collectio.Models;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
+using Plugin.StoreReview;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -23,6 +24,12 @@ namespace Collectio.Views
         private Collection _collection;
         private readonly List<KeyValuePair<string, KeyValuePair<string, ImageButton>>> _images =
             new List<KeyValuePair<string, KeyValuePair<string, ImageButton>>>(6);
+        
+        private static int NewItemUsage
+        {
+            get => Preferences.Get(nameof(NewItemUsage), 0);
+            set => Preferences.Set(nameof(NewItemUsage), value);
+        }
 
         public string Collection
         {
@@ -212,6 +219,8 @@ namespace Collectio.Views
             }
 
             FileSystemUtils.ClearTempPath();
+            
+            if (NewItemUsage++ == 25) await CrossStoreReview.Current.RequestReview(false);
 
             await Shell.Current.GoToAsync($"..?collection={_collection.Id}&refresh=true");
         }
