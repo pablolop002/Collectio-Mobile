@@ -54,6 +54,20 @@ namespace Collectio.Repositories
             }
         }
 
+        #region Triggers
+
+        private void Triggers()
+        {
+            _database.Execute("create trigger update_items_on_itemsImage_insert after insert on ItemImages for each row update Items set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.ItemId;");
+            _database.Execute("create trigger update_items_on_itemsImage_update after update on ItemImages for each row update Items set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.ItemId;");
+            _database.Execute("create trigger update_items_on_itemsImage_delete after delete on ItemImages for each row update Items set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = old.ItemId;");
+            _database.Execute("create trigger update_collections_on_items_insert after insert on Items for each row update Collections set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.CollectionId;");
+            _database.Execute("create trigger update_collections_on_items_update after update on Items for each row update Collections set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.CollectionId;");
+            _database.Execute("create trigger update_collections_on_items_delete after delete on Items for each row update Collections set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = old.CollectionId;");
+        }
+
+        #endregion
+
         #region Backup and Delete
 
         public bool CreateBackup()
@@ -1115,7 +1129,7 @@ namespace Collectio.Repositories
         {
             var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonConvert.SerializeObject(user));
             var files = new[] {new FileResult(user.File)};
-            
+
             var aux = await RestService.PostRequest("user/api-keys/", form, files);
             var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
             if (response.Status.Equals("ok"))
@@ -1153,7 +1167,7 @@ namespace Collectio.Repositories
         public async Task EditApikey(Apikey apikey)
         {
             var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonConvert.SerializeObject(apikey));
-            
+
             var aux = await RestService.PostRequest("user/api-keys/", form);
             var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
             if (response.Status.Equals("ok"))
