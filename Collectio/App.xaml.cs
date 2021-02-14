@@ -35,7 +35,7 @@ namespace Collectio
 
             if (DeviceInfo.DeviceType != DeviceType.Physical) return;
 
-            AppCenter.Start("android=APPCENTER_DROID;ios=APPCENTER_IOS",
+            AppCenter.Start("android=APP_CENTER_DROID;ios=APP_CENTER_IOS",
                 typeof(Analytics), typeof(Crashes));
             AppCenter.LogLevel = LogLevel.Verbose;
 #if DEBUG
