@@ -9,18 +9,12 @@ namespace Collectio.Views
     {
         public string Item
         {
-            set
-            {
-                var item = App.DataRepo.GetItem(value, true);
-                BindingContext = item;
-                Subcategory.Text = App.DataRepo.GetSubcategory(item.SubcategoryId.ToString()).Name;
-            }
+            set => BindingContext = App.DataRepo.GetItem(value, true);
         }
 
         public ItemDetailView()
         {
             InitializeComponent();
-            Shell.SetTabBarIsVisible(this, false);
         }
     }
 }

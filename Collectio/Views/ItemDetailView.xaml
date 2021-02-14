@@ -7,6 +7,7 @@
              x:Class="Collectio.Views.ItemDetailView"
              Title="{Binding Name}"
              Style="{StaticResource PageStyle}"
+             Shell.TabBarIsVisible="False"
              x:DataType="models:Item">
     
     <ContentPage.Content>
@@ -49,7 +50,7 @@
                            Style="{StaticResource TitleLabelStyle}" />
                     <Label Text="{Binding Description}"
                            Style="{StaticResource LabelStyle}" />
-                    <Label x:Name="Subcategory"
+                    <Label Text="{Binding Subcategory.Name}"
                            Style="{StaticResource LabelStyle}" />
                     <Label Text="{Binding CreatedAt}"
                            Style="{StaticResource LabelStyle}" />
