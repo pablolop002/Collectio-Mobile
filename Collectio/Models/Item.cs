@@ -17,6 +17,8 @@ namespace Collectio.Models
 
         [ForeignKey(typeof(Subcategory))] public int SubcategoryId { get; set; }
 
+        [Ignore] public Subcategory Subcategory => App.DataRepo.GetSubcategory(SubcategoryId.ToString());
+
         public string Name { get; set; }
 
         public string Description { get; set; }
