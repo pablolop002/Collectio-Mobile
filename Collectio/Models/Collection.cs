@@ -2,6 +2,7 @@ using System;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
 using MvvmHelpers;
+using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 
@@ -25,7 +26,7 @@ namespace Collectio.Models
 
         public bool Private { get; set; }
 
-        [Ignore] public string PrivateText => Private ? Strings.Private : Strings.Public;
+        [Ignore, JsonIgnore] public string PrivateText => Private ? Strings.Private : Strings.Public;
 
         public DateTime CreatedAt { get; set; }
 
@@ -33,7 +34,7 @@ namespace Collectio.Models
 
         [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableRangeCollection<Item> Items { get; set; }
 
-        [Ignore] public string File => FileSystemUtils.GetCollectionImage(Image, Id);
+        [Ignore, JsonIgnore] public string File => FileSystemUtils.GetCollectionImage(Image, Id);
 
         public override bool Equals(object obj)
         {

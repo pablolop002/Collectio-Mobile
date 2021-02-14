@@ -1,5 +1,6 @@
 using Collectio.Utils;
 using MvvmHelpers;
+using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 
@@ -20,7 +21,7 @@ namespace Collectio.Models
         
         #endregion
 
-        [Ignore] public string Name
+        [Ignore, JsonIgnore] public string Name
         {
             get
             {
@@ -34,7 +35,7 @@ namespace Collectio.Models
             }
         }
 
-        [Ignore] public string File => FileSystemUtils.GetGroupImage(Image);
+        [Ignore, JsonIgnore] public string File => FileSystemUtils.GetGroupImage(Image);
         
         [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableRangeCollection<Collection> Collections { get; set; }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Collectio.Resources.Culture;
+using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 
@@ -17,7 +18,7 @@ namespace Collectio.Models
 
         [ForeignKey(typeof(Subcategory))] public int SubcategoryId { get; set; }
 
-        [Ignore] public Subcategory Subcategory => App.DataRepo.GetSubcategory(SubcategoryId.ToString());
+        [Ignore, JsonIgnore] public Subcategory Subcategory => App.DataRepo.GetSubcategory(SubcategoryId.ToString());
 
         public string Name { get; set; }
 
@@ -25,7 +26,7 @@ namespace Collectio.Models
 
         public bool Private { get; set; }
 
-        [Ignore] public string PrivateText => Private ? Strings.Private : Strings.Public;
+        [Ignore, JsonIgnore] public string PrivateText => Private ? Strings.Private : Strings.Public;
 
         public DateTime CreatedAt { get; set; }
 
@@ -33,7 +34,7 @@ namespace Collectio.Models
 
         [OneToMany(CascadeOperations = CascadeOperation.All)] public List<ItemImage> Images { get; set; }
 
-        [Ignore] public string File {
+        [Ignore, JsonIgnore] public string File {
             get
             {
                 if (Images == null) return "";

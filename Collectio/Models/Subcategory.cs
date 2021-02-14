@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 
@@ -15,13 +16,16 @@ namespace Collectio.Models
         #region Translations
         
         public string Spanish { get; set; }
+        
         public string English { get; set; }
+        
         public string Catalan { get; set; }
+        
         public string Basque { get; set; }
         
         #endregion
         
-        [Ignore] public string Name
+        [Ignore, JsonIgnore] public string Name
         {
             get
             {

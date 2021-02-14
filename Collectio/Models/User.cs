@@ -1,5 +1,6 @@
 using Collectio.Utils;
 using MvvmHelpers;
+using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 
@@ -23,6 +24,6 @@ namespace Collectio.Models
         
         [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableRangeCollection<Apikey> ApiKeys { get; set; }
 
-        [Ignore] public string File => FileSystemUtils.GetProfileImage(Image);
+        [Ignore, JsonIgnore] public string File => FileSystemUtils.GetProfileImage(Image);
     }
 }

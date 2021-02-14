@@ -1,7 +1,7 @@
 using System;
+using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using Xamarin.Essentials;
 
 namespace Collectio.Models
 {
@@ -19,6 +19,6 @@ namespace Collectio.Models
         
         public string UserDeviceName { get; set; }
 
-        [Ignore] public bool ThisDevice => Token.Equals(App.Token);
+        [Ignore, JsonIgnore] public bool ThisDevice => Token.Equals(App.Token);
     }
 }
