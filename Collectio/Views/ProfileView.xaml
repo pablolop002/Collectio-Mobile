@@ -102,6 +102,20 @@
                     </Button.ImageSource>
                 </Button>
 
+                <Button IsVisible="{Binding NotLoggedIn}"
+                        Text="{x:Static culture:Strings.LoginMicrosoft}"
+                        Command="{Binding MicrosoftLogInCommand}"
+                        Style="{StaticResource LoginButtonStyle}"
+                        Grid.Row="3">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FA-B"
+                                         Glyph="{StaticResource IconMicrosoft}"
+                                         Color="{AppThemeBinding
+                                         Light={StaticResource LightBackgroundColor},
+                                         Dark={StaticResource DarkBackgroundColor}}" />
+                    </Button.ImageSource>
+                </Button>
+
             </Grid>
         </ScrollView>
     </ContentPage.Content>

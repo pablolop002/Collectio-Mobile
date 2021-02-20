@@ -155,4 +155,7 @@
     <data name="DuplicateMessage" xml:space="preserve">
         <value>In order to duplicate an item, swipe it from right to left to display the option</value>
     </data>
+    <data name="LoginMicrosoft" xml:space="preserve">
+        <value>Sign in with Microsoft</value>
+    </data>
 </root>

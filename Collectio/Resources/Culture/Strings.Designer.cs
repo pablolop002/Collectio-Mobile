@@ -464,5 +464,11 @@ namespace Collectio.Resources.Culture {
                 return ResourceManager.GetString("CategoryNotSelected", resourceCulture);
             }
         }
+        
+        internal static string LoginMicrosoft {
+            get {
+                return ResourceManager.GetString("LoginMicrosoft", resourceCulture);
+            }
+        }
     }
 }

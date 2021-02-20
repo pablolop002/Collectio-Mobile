@@ -231,4 +231,7 @@ No hay grupos disponibles.</value>
     <data name="CategoryNotSelected" xml:space="preserve">
         <value>Para crear una colección primero tienes que seleccionar la categoria a la que pertenece.</value>
     </data>
+    <data name="LoginMicrosoft" xml:space="preserve">
+        <value>Iniciar sesión con Microsoft</value>
+    </data>
 </root>

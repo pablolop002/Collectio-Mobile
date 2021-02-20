@@ -9,8 +9,7 @@
              x:Class="Collectio.Views.CollectionsView"
              Style="{StaticResource PageStyle}"
              Title="{x:Static culture:Strings.Collections}"
-             x:DataType="viewModels:CollectionsViewModel"
-             x:Name="CollectionsPage">
+             x:DataType="viewModels:CollectionsViewModel">
 
     <ContentPage.BindingContext>
         <viewModels:CollectionsViewModel />
@@ -18,9 +17,12 @@
 
     <Shell.SearchHandler>
         <searchHandlers:CollectionsSearchHandler Placeholder="{x:Static culture:Strings.CollectionSearch}"
-                                                 ShowsResults="true"
+                                                 ShowsResults="True"
                                                  SearchBoxVisibility="Collapsible"
                                                  VerticalTextAlignment="Center"
+                                                 BackgroundColor="{AppThemeBinding
+                                                 Light={StaticResource LightBackgroundColor},
+                                                 Dark={StaticResource DarkBackgroundColor}}"
                                                  PlaceholderColor="{AppThemeBinding
                                                  Light={StaticResource LightTextColor},
                                                  Dark={StaticResource DarkTextColor}}"
@@ -46,9 +48,9 @@
                                 <FileImageSource File="{Binding File}" />
                             </Image.Source>
                         </Image>
+
                         <Label Grid.Column="1"
                                Text="{Binding Name}" />
-
                     </Grid>
                 </DataTemplate>
             </searchHandlers:CollectionsSearchHandler.ItemTemplate>
@@ -104,12 +106,9 @@
                 <CollectionView.GroupFooterTemplate>
                     <DataTemplate x:DataType="models:CollectionGroup">
                         <Grid Padding="0, 10">
-                            <Label
-                                Text="{Binding Count,
-                            StringFormat={x:Static culture:Strings.CollectionsCount}}"
-                                HorizontalOptions="Center"
-                                HorizontalTextAlignment="Center"
-                                Style="{StaticResource LabelStyle}" />
+                            <Label Style="{StaticResource LabelStyle}"
+                                   Text="{Binding Count,
+                                   StringFormat={x:Static culture:Strings.CollectionsCount}}" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.GroupFooterTemplate>
@@ -120,12 +119,11 @@
 
                             <SwipeView.LeftItems>
                                 <SwipeItems>
-                                    <SwipeItemView
-                                        Command="{Binding Source={RelativeSource 
-                                        AncestorType={x:Type viewModels:CollectionsViewModel}},
-                                        Path=EditCommand}"
-                                        CommandParameter="{Binding .}"
-                                        Style="{StaticResource SwipeItemStyle}">
+                                    <SwipeItemView CommandParameter="{Binding .}"
+                                                   Command="{Binding Source={RelativeSource 
+                                                   AncestorType={x:Type viewModels:CollectionsViewModel}},
+                                                   Path=EditCommand}"
+                                                   Style="{StaticResource SwipeItemStyle}">
                                         <Grid Padding="20, 0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*" />
@@ -151,12 +149,12 @@
                                                    Dark={StaticResource DarkTextColor}}" />
                                         </Grid>
                                     </SwipeItemView>
-                                    <SwipeItemView
-                                        Command="{Binding Source={RelativeSource 
-                                        AncestorType={x:Type viewModels:CollectionsViewModel}},
-                                        Path=DeleteCommand}"
-                                        CommandParameter="{Binding .}"
-                                        Style="{StaticResource SwipeItemStyle}">
+
+                                    <SwipeItemView CommandParameter="{Binding .}"
+                                                   Command="{Binding Source={RelativeSource 
+                                                   AncestorType={x:Type viewModels:CollectionsViewModel}},
+                                                   Path=DeleteCommand}"
+                                                   Style="{StaticResource SwipeItemStyle}">
                                         <Grid Padding="20, 0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*" />

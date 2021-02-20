@@ -5,19 +5,20 @@
              x:Class="Collectio.App">
     <Application.Resources>
         <!-- Icons -->
-        <x:String x:Key="IconHome">&#xf015;</x:String>
+        <x:String x:Key="IconAdd">&#xf067;</x:String>
+        <x:String x:Key="IconApple">&#xf179;</x:String>
+        <x:String x:Key="IconDelete">&#xf1f8;</x:String>
+        <x:String x:Key="IconDone">&#xf00c;</x:String>
+        <x:String x:Key="IconDuplicate">&#xf0c5;</x:String>
+        <x:String x:Key="IconEdit">&#xf044;</x:String>
         <x:String x:Key="IconFriends">&#xf0c0;</x:String>
+        <x:String x:Key="IconGoogle">&#xf1a0;</x:String>
+        <x:String x:Key="IconHome">&#xf015;</x:String>
+        <x:String x:Key="IconMicrosoft">&#xf3ca;</x:String>
         <x:String x:Key="IconProfile">&#xf007;</x:String>
         <x:String x:Key="IconSettings">&#xf085;</x:String>
-        <x:String x:Key="IconSync">&#xf021;</x:String>
-        <x:String x:Key="IconEdit">&#xf044;</x:String>
-        <x:String x:Key="IconDelete">&#xf1f8;</x:String>
-        <x:String x:Key="IconDuplicate">&#xf0c5;</x:String>
-        <x:String x:Key="IconAdd">&#xf067;</x:String>
-        <x:String x:Key="IconDone">&#xf00c;</x:String>
         <x:String x:Key="IconShare">&#xf14d;</x:String>
-        <x:String x:Key="IconApple">&#xf179;</x:String>
-        <x:String x:Key="IconGoogle">&#xf1a0;</x:String>
+        <x:String x:Key="IconSync">&#xf021;</x:String>
 
         <!-- General Colors -->
         <Color x:Key="PrimaryColor">DarkCyan</Color>

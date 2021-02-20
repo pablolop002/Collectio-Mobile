@@ -16,13 +16,15 @@ namespace Collectio.ViewModels
         private User _user;
 
         public ICommand AppleLogInCommand { get; }
-        
+
         public ICommand GoogleLogInCommand { get; }
-        
+
+        public ICommand MicrosoftLogInCommand { get; }
+
         public ICommand SelectImageCommand { get; }
-        
+
         public ICommand SettingsCommand { get; }
-        
+
         public ICommand ApiKeysCommand { get; }
 
         public User User
@@ -53,6 +55,7 @@ namespace Collectio.ViewModels
         {
             AppleLogInCommand = new AsyncCommand(AppleLogIn);
             GoogleLogInCommand = new AsyncCommand(GoogleLogIn);
+            MicrosoftLogInCommand = new AsyncCommand(MicrosoftLogIn);
             SelectImageCommand = new AsyncCommand(SelectImage);
             SettingsCommand = new Command(SettingsPage);
             ApiKeysCommand = new AsyncCommand(ApiKeysPage);
@@ -181,6 +184,29 @@ namespace Collectio.ViewModels
             catch (Exception ex)
             {
                 AppCenterUtils.ReportException(ex, "loginGoogle");
+            }
+        }
+
+        private async Task MicrosoftLogIn()
+        {
+            try
+            {
+                var authResult = await WebAuthenticator.AuthenticateAsync(
+                    new Uri(string.Format(RestServiceUtils.RestUrl, "/login/microsoft")),
+                    new Uri("collectio://"));
+
+
+                var accessToken = authResult?.AccessToken;
+                if (string.IsNullOrWhiteSpace(accessToken)) return;
+                await ProcessLogin(accessToken);
+            }
+            catch (TaskCanceledException ex)
+            {
+                AppCenterUtils.ReportException(ex, "loginMicrosoftCancelled");
+            }
+            catch (Exception ex)
+            {
+                AppCenterUtils.ReportException(ex, "loginMicrosoft");
             }
         }
 
