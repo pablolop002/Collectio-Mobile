@@ -20,10 +20,9 @@ namespace Collectio.ViewModels
                 if (value != null)
                 {
                     Xamarin.Forms.Shell.Current.GoToAsync($"items?collection={value.Id.ToString()}");
-                    value = null;
                 }
 
-                _selectedCollection = value;
+                _selectedCollection = null;
                 OnPropertyChanged();
             }
         }
@@ -135,7 +134,7 @@ namespace Collectio.ViewModels
             }
         }
 
-        private void Edit(Collection collection)
+        private static void Edit(Collection collection)
         {
             Xamarin.Forms.Shell.Current.GoToAsync($"editCollection?collection={collection.Id.ToString()}");
         }
