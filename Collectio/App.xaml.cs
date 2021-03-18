@@ -42,7 +42,6 @@ namespace Collectio
             AppCenter.SetEnabledAsync(false);
 #else
             AppCenter.SetEnabledAsync(Preferences.Get("AppCenter", true));
-            //AppCenter.SetUserId("256-characters");
 #endif
         }
 
