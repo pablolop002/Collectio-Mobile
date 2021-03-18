@@ -36,6 +36,9 @@ namespace Collectio.Models
 
         [Ignore, JsonIgnore] public string File => FileSystemUtils.GetCollectionImage(Image, Id);
 
+        [Ignore, JsonIgnore]
+        public string TempFile => System.IO.Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, "Temp", Image);
+
         public override bool Equals(object obj)
         {
             return obj is Collection other && Equals(other);
