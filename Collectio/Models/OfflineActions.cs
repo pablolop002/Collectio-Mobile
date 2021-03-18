@@ -11,5 +11,7 @@ namespace Collectio.Models
         public string ElementType { get; set; }
         
         public string ElementIdentifier { get; set; }
+        
+        public bool ImageUpdated { get; set; }
     }
 }
