@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,18 +15,29 @@ namespace Collectio.Repositories
 {
     public class DataRepository
     {
-        private static DateTime LastSynced
+        private static DateTime LastSyncedUser
         {
-            get => Preferences.Get("lastSynced", DateTime.Now);
-            set => Preferences.Set("lastSynced", value);
+            get => Preferences.Get("lastSyncedUser", DateTime.MinValue);
+            set => Preferences.Set("lastSyncedUser", value);
         }
 
-        private bool LoggedIn => Preferences.Get("LoggedIn", false);
+        private static DateTime LastSyncedApiKeys
+        {
+            get => Preferences.Get("lastSyncedApiKeys", DateTime.MinValue);
+            set => Preferences.Set("lastSyncedApiKeys", value);
+        }
+
+        private static DateTime LastSyncedCollections
+        {
+            get => Preferences.Get("lastSyncedCollections", DateTime.MinValue);
+            set => Preferences.Set("lastSyncedCollections", value);
+        }
+
+        private static bool LoggedIn => Preferences.Get("LoggedIn", false);
 
         private SQLiteConnection _database;
         public readonly RestServiceUtils RestService;
         private readonly string _databasePath;
-
 
         public DataRepository()
         {
@@ -46,6 +56,7 @@ namespace Collectio.Repositories
                 _database.CreateTable<OfflineActions>();
 
                 if (Preferences.Get("LoggedIn", false)) CreateUser();
+                Triggers();
                 CreateOrUpdateCategories();
             }
             catch (Exception ex)
@@ -58,12 +69,18 @@ namespace Collectio.Repositories
 
         private void Triggers()
         {
-            _database.Execute("create trigger update_items_on_itemsImage_insert after insert on ItemImages for each row update Items set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.ItemId;");
-            _database.Execute("create trigger update_items_on_itemsImage_update after update on ItemImages for each row update Items set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.ItemId;");
-            _database.Execute("create trigger update_items_on_itemsImage_delete after delete on ItemImages for each row update Items set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = old.ItemId;");
-            _database.Execute("create trigger update_collections_on_items_insert after insert on Items for each row update Collections set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.CollectionId;");
-            _database.Execute("create trigger update_collections_on_items_update after update on Items for each row update Collections set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.CollectionId;");
-            _database.Execute("create trigger update_collections_on_items_delete after delete on Items for each row update Collections set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = old.CollectionId;");
+            _database.Execute(
+                "create trigger update_items_on_itemsImage_insert after insert on ItemImages for each row update Items set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.ItemId;");
+            _database.Execute(
+                "create trigger update_items_on_itemsImage_update after update on ItemImages for each row update Items set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.ItemId;");
+            _database.Execute(
+                "create trigger update_items_on_itemsImage_delete after delete on ItemImages for each row update Items set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = old.ItemId;");
+            _database.Execute(
+                "create trigger update_collections_on_items_insert after insert on Items for each row update Collections set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.CollectionId;");
+            _database.Execute(
+                "create trigger update_collections_on_items_update after update on Items for each row update Collections set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = new.CollectionId;");
+            _database.Execute(
+                "create trigger update_collections_on_items_delete after delete on Items for each row update Collections set UpdatedAt = CURRENT_TIMESTAMP WHERE Id = old.CollectionId;");
         }
 
         #endregion
@@ -126,207 +143,6 @@ namespace Collectio.Repositories
             }
 
             CreateOrUpdateSubcategories();
-
-            /*var categories = new List<Category>()
-            {
-                new Category()
-                {
-                    Spanish = "Antigüedades",
-                    English = "Antiques",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 1
-                },
-                new Category()
-                {
-                    Spanish = "Arqueología e historia natural",
-                    English = "Archaeology & Natural Story",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 2
-                },
-                new Category()
-                {
-                    Spanish = "Arte",
-                    English = "Art",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 3
-                },
-                new Category()
-                {
-                    Spanish = "Artesanía",
-                    English = "Craftwork",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 4
-                },
-                new Category()
-                {
-                    Spanish = "Bebidas y envases",
-                    English = "Drinks & Bottles",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 5
-                },
-                new Category()
-                {
-                    Spanish = "Cámaras Fotográficas",
-                    English = "Cameras",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 6
-                },
-                new Category()
-                {
-                    Spanish = "Cine y Series",
-                    English = "Cinema & TV Shows",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 7
-                },
-                new Category()
-                {
-                    Spanish = "Medios de transporte",
-                    English = "",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 8
-                },
-                new Category()
-                {
-                    Spanish = "Comunicación y sonido",
-                    English = "",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 9
-                },
-                new Category()
-                {
-                    Spanish = "Costura y manualidades",
-                    English = "Sewing & Handicraft",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 10
-                },
-                new Category()
-                {
-                    Spanish = "Deportes y eventos",
-                    English = "Sports & Events",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 11
-                },
-                new Category()
-                {
-                    Spanish = "Informática y electrónica",
-                    English = "",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 12
-                },
-                new Category()
-                {
-                    Spanish = "Interiores y decoración",
-                    English = "",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 13
-                },
-                new Category()
-                {
-                    Spanish = "Joyería",
-                    English = "Fashion",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 14
-                },
-                new Category()
-                {
-                    Spanish = "Juguetes y Juegos",
-                    English = "Toys & Games",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 15
-                },
-                new Category()
-                {
-                    Spanish = "Libros, Cómics y Manga",
-                    English = "Books, comics & Manga",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 16
-                },
-                new Category()
-                {
-                    Spanish = "Militaría y Armas",
-                    English = "Military & Weaponry",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 17
-                },
-                new Category()
-                {
-                    Spanish = "Monedas y Billetes",
-                    English = "Coins & ",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 18
-                },
-                new Category()
-                {
-                    Spanish = "Música",
-                    English = "Music",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 19
-                },
-                new Category()
-                {
-                    Spanish = "Otros",
-                    English = "Other",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 20
-                },
-                new Category()
-                {
-                    Spanish = "Papelería",
-                    English = "",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 21
-                },
-                new Category()
-                {
-                    Spanish = "Relojes",
-                    English = "",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 22
-                },
-                new Category()
-                {
-                    Spanish = "Sellos",
-                    English = "Stamps",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 23
-                },
-                new Category()
-                {
-                    Spanish = "Textil",
-                    English = "",
-                    Catalan = "",
-                    Basque = "",
-                    Id = 24
-                },
-            };
-
-            foreach (var group in categories)
-            {
-                _database.InsertOrReplace(group);
-            }*/
         }
 
         public IEnumerable<Category> GetCategories()
@@ -355,16 +171,6 @@ namespace Collectio.Repositories
             return ret;
         }
 
-        public void AddOrUpdateCategories(ref IEnumerable<Category> categories)
-        {
-            _database.InsertOrReplace(categories);
-        }
-
-        public void DeleteCategory(string id)
-        {
-            _database.Delete<Category>(id);
-        }
-
         #endregion
 
         #region Subcategories
@@ -386,537 +192,6 @@ namespace Collectio.Repositories
                 await Xamarin.Forms.Shell.Current.DisplayAlert(Resources.Culture.Strings.Error,
                     response.Message, Resources.Culture.Strings.Ok);
             }
-
-            /*var subcategories = new List<Subcategory>()
-            {
-                new Subcategory()
-                {
-                    Id = 1,
-                    CategoryId = 1,
-                    Spanish = "Muebles antiguos",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 2,
-                    CategoryId = 1,
-                    Spanish = "Porcelana y cerámica",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 3,
-                    CategoryId = 1,
-                    Spanish = "Otros",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 4,
-                    CategoryId = 2,
-                    Spanish = "Fósiles",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 5,
-                    CategoryId = 2,
-                    Spanish = "Minerales y rocas",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 6,
-                    CategoryId = 5,
-                    Spanish = "Tapones",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 7,
-                    CategoryId = 5,
-                    Spanish = "Cervezas",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 8,
-                    CategoryId = 5,
-                    Spanish = "Vinos",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 9,
-                    CategoryId = 5,
-                    Spanish = "Placas de cava",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 10,
-                    CategoryId = 5,
-                    Spanish = "Cavas",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 11,
-                    CategoryId = 7,
-                    Spanish = "DVD",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 12,
-                    CategoryId = 7,
-                    Spanish = "VHS",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 13,
-                    CategoryId = 7,
-                    Spanish = "Blu-ray",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 14,
-                    CategoryId = 7,
-                    Spanish = "Material autografiado",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 15,
-                    CategoryId = 8,
-                    Spanish = "Coches",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 16,
-                    CategoryId = 8,
-                    Spanish = "Motocicletas",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 17,
-                    CategoryId = 8,
-                    Spanish = "Bicicletas",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 18,
-                    CategoryId = 9,
-                    Spanish = "Hi-Fi y radio",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 19,
-                    CategoryId = 9,
-                    Spanish = "Gramófonos",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 20,
-                    CategoryId = 9,
-                    Spanish = "Tocadiscos",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 21,
-                    CategoryId = 9,
-                    Spanish = "Teléfonos",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 22,
-                    CategoryId = 9,
-                    Spanish = "Televisores",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 23,
-                    CategoryId = 10,
-                    Spanish = "Dedales",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 24,
-                    CategoryId = 11,
-                    Spanish = "Material deportivo",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 25,
-                    CategoryId = 11,
-                    Spanish = "Ropa y complementos",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 26,
-                    CategoryId = 11,
-                    Spanish = "Material autografiado",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 27,
-                    CategoryId = 12,
-                    Spanish = "Ordenadores y accesorios",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 28,
-                    CategoryId = 12,
-                    Spanish = "Monitores",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 29,
-                    CategoryId = 12,
-                    Spanish = "Impresoras y accesorios",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 30,
-                    CategoryId = 12,
-                    Spanish = "Software",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 31,
-                    CategoryId = 13,
-                    Spanish = "Figuras",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 32,
-                    CategoryId = 13,
-                    Spanish = "Imanes",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 33,
-                    CategoryId = 15,
-                    Spanish = "Figuras",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 34,
-                    CategoryId = 15,
-                    Spanish = "Funkos",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 35,
-                    CategoryId = 15,
-                    Spanish = "Maquetas",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 36,
-                    CategoryId = 15,
-                    Spanish = "Material autografiado",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 37,
-                    CategoryId = 16,
-                    Spanish = "Cartografía",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 38,
-                    CategoryId = 16,
-                    Spanish = "Libros",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 39,
-                    CategoryId = 16,
-                    Spanish = "Cómics",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 40,
-                    CategoryId = 16,
-                    Spanish = "Libros - Arte y fotografía",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 41,
-                    CategoryId = 16,
-                    Spanish = "Material autografiado",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 42,
-                    CategoryId = 18,
-                    Spanish = "Monedas periodo antiguo",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 43,
-                    CategoryId = 18,
-                    Spanish = "Monedas periodo moderno",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 44,
-                    CategoryId = 18,
-                    Spanish = "Monedas España",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 45,
-                    CategoryId = 18,
-                    Spanish = "Monedas extranjeras",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 46,
-                    CategoryId = 18,
-                    Spanish = "Notafilia - Billetes",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 47,
-                    CategoryId = 19,
-                    Spanish = "Discos",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 48,
-                    CategoryId = 19,
-                    Spanish = "Vinilos",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 49,
-                    CategoryId = 19,
-                    Spanish = "Instrumentos musicales",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 50,
-                    CategoryId = 19,
-                    Spanish = "Material autografiado",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 51,
-                    CategoryId = 21,
-                    Spanish = "Cromos y álbumes",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 52,
-                    CategoryId = 21,
-                    Spanish = "Pegatinas",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 53,
-                    CategoryId = 21,
-                    Spanish = "Material autografiado",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 54,
-                    CategoryId = 21,
-                    Spanish = "Fotografías",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 55,
-                    CategoryId = 21,
-                    Spanish = "Postales",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 56,
-                    CategoryId = 22,
-                    Spanish = "Relojes de pulsera",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 57,
-                    CategoryId = 22,
-                    Spanish = "Relojes de pared",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-                new Subcategory()
-                {
-                    Id = 58,
-                    CategoryId = 22,
-                    Spanish = "Relojes de bolsillo",
-                    English = "",
-                    Catalan = "",
-                    Basque = ""
-                },
-            };
-
-            foreach (var subcategory in subcategories)
-            {
-                _database.InsertOrReplace(subcategory);
-            }*/
         }
 
         public IEnumerable<Subcategory> GetSubcategoriesByCategoryId(string categoryId)
@@ -929,30 +204,76 @@ namespace Collectio.Repositories
             return _database.Get<Subcategory>(id);
         }
 
-        public void AddOrUpdateSubcategories(ref IEnumerable<Subcategory> subcategories)
-        {
-            _database.InsertOrReplace(subcategories);
-        }
-
-        public void DeleteSubcategory(string id)
-        {
-            _database.Delete<Subcategory>(id);
-        }
-
         #endregion
+
+        public async Task UploadAllData()
+        {
+            var collections = _database.GetAllWithChildren<Collection>(collection => true, true);
+            foreach (var collection in collections)
+            {
+                var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(
+                    JsonConvert.SerializeObject(collection));
+                var aux = await RestService.PutRequest("/collections", form, new[] {new FileResult(collection.File)});
+                var response = JsonConvert.DeserializeObject<ResponseWs<int>>(aux);
+                if (response.Status.Equals("ok"))
+                {
+                    collection.ServerId = response.Data;
+                    _database.Update(collection);
+
+                    foreach (var item in collection.Items)
+                    {
+                        item.CollectionId = response.Data;
+                        var itemForm = JsonConvert.DeserializeObject<Dictionary<string, string>>(
+                            JsonConvert.SerializeObject(item));
+                        var itemAux =
+                            await RestService.PutRequest("/items", itemForm,
+                                item.Images.Select(itemImage => new FileResult(itemImage.File)).ToArray());
+                        var itemResponse = JsonConvert.DeserializeObject<ResponseWs<Dictionary<string, int>>>(itemAux);
+                        if (itemResponse.Status.Equals("ok"))
+                        {
+                            foreach (var ids in itemResponse.Data)
+                            {
+                                if (ids.Key.Equals("item"))
+                                {
+                                    item.ServerId = ids.Value;
+                                    _database.Update(item);
+                                }
+                                else
+                                {
+                                    var itemImage = item.Images.Find(e => e.Image.Equals(ids.Key));
+                                    itemImage.ServerId = ids.Value;
+                                    _database.Update(itemImage);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            _database.Insert(new OfflineActions()
+                            {
+                                Type = "insert",
+                                ElementType = "item",
+                                ElementIdentifier = item.Id.ToString()
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    _database.Insert(new OfflineActions()
+                    {
+                        Type = "insert",
+                        ElementType = "collection",
+                        ElementIdentifier = collection.Id.ToString()
+                    });
+                }
+            }
+        }
 
         #region Collection
 
         public Collection GetCollection(string id, bool withChildren = false)
         {
-            if (withChildren)
-            {
-                return _database.GetWithChildren<Collection>(id);
-            }
-            else
-            {
-                return _database.Get<Collection>(id);
-            }
+            return withChildren ? _database.GetWithChildren<Collection>(id) : _database.Get<Collection>(id);
         }
 
         public IEnumerable<Collection> GetAllCollections()
@@ -960,34 +281,131 @@ namespace Collectio.Repositories
             return _database.GetAllWithChildren<Collection>(c => true);
         }
 
-        public void AddCollection(ref Collection collection, bool recursive = false)
+        public void AddCollection(ref Collection collection, int? offlineAction = null)
         {
-            if (recursive)
+            _database.Insert(collection);
+
+            if (!LoggedIn) return;
+            AddCollectionServer(collection, offlineAction);
+        }
+
+        public async void AddCollectionServer(Collection collection, int? offlineAction)
+        {
+            var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(
+                JsonConvert.SerializeObject(collection));
+            var files = collection.Image == null ? null : new[] {new FileResult(collection.TempFile)};
+            var aux = await RestService.PutRequest("/collections", form, files);
+            var response = JsonConvert.DeserializeObject<ResponseWs<int?>>(aux);
+            if (response.Status.Equals("ok"))
             {
-                _database.InsertWithChildren(collection, true);
+                collection.ServerId = response.Data;
+                _database.Update(collection);
+
+                if (offlineAction != null)
+                {
+                    _database.Delete<OfflineActions>(offlineAction);
+                }
             }
             else
             {
-                _database.Insert(collection);
+                if (offlineAction != null) return;
+                _database.Insert(new OfflineActions()
+                {
+                    ElementIdentifier = collection.Id.ToString(),
+                    ElementType = "collection",
+                    Type = "insert"
+                });
             }
         }
 
-        public void UpdateCollection(Collection collection, bool recursive = false)
+        public async void UpdateCollection(Collection collection, int? offlineAction = null)
         {
-            if (recursive)
-            {
-                _database.UpdateWithChildren(collection);
-            }
-            else
+            var oldCollection = _database.Get<Collection>(collection.Id);
+
+            if (offlineAction == null)
             {
                 _database.Update(collection);
             }
+
+            if (!LoggedIn || collection.ServerId == null) return;
+
+            var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(
+                JsonConvert.SerializeObject(collection));
+            var files = collection.Image == oldCollection.Image
+                        || offlineAction != null && !_database.Get<OfflineActions>(offlineAction).ImageUpdated
+                ? null
+                : new[] {new FileResult(collection.File)};
+            var aux = await RestService.PostRequest("/collections", form, files);
+            var response = JsonConvert.DeserializeObject<ResponseWs<int?>>(aux);
+
+            if (response.Status.Equals("ok"))
+            {
+                if (offlineAction != null)
+                {
+                    _database.Delete<OfflineActions>(offlineAction);
+                }
+            }
+            else
+            {
+                if (offlineAction != null) return;
+                _database.Insert(new OfflineActions
+                {
+                    ElementIdentifier = collection.Id.ToString(),
+                    ElementType = "collection",
+                    Type = "update"
+                });
+            }
         }
 
-        public void RemoveCollection(string id)
+        public async Task RemoveCollection(string id, int? offlineAction = null)
         {
-            _database.Query<Item>("Delete from Item Where CollectionId = ?", id);
-            _database.Delete<Collection>(id);
+            var collection = GetCollection(id, true);
+
+            if (collection != null)
+            {
+                foreach (var item in collection.Items)
+                {
+                    foreach (var itemImage in item.Images)
+                    {
+                        _database.Delete(itemImage);
+                    }
+
+                    _database.Delete(item);
+                }
+
+                _database.Delete(collection);
+            }
+
+            if (!LoggedIn || offlineAction == null && collection?.ServerId == null) return;
+
+            string aux;
+            if (offlineAction == null)
+            {
+                aux = await RestService.DeleteRequest($"/collections/{collection.ServerId.ToString()}");
+            }
+            else
+            {
+                var action = _database.Get<OfflineActions>(offlineAction);
+                aux = await RestService.DeleteRequest($"/collections/{action.ElementIdentifier}");
+            }
+
+            var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
+
+            if (response.Status.Equals("ok"))
+            {
+                if (offlineAction == null) return;
+                _database.Delete<OfflineActions>(offlineAction);
+            }
+            else
+            {
+                if (offlineAction != null) return;
+                _database.Insert(new OfflineActions()
+                {
+                    ElementIdentifier = collection.ServerId.ToString(),
+                    ElementType = "collection",
+                    Type = "delete"
+                });
+            }
         }
 
         public IEnumerable<Collection> GetCollectionsByGroupId(string id)
@@ -1001,14 +419,7 @@ namespace Collectio.Repositories
 
         public Item GetItem(string id, bool withChildren = false)
         {
-            if (withChildren)
-            {
-                return _database.GetWithChildren<Item>(id);
-            }
-            else
-            {
-                return _database.Get<Item>(id);
-            }
+            return withChildren ? _database.GetWithChildren<Item>(id) : _database.Get<Item>(id);
         }
 
         public IEnumerable<Item> GetAllItemsFromCategory(string collectionId, bool withChildren = false)
@@ -1036,22 +447,88 @@ namespace Collectio.Repositories
             }
         }
 
-        public void UpdateItem(Item item, bool recursive = false)
+        public async void UpdateItem(Item item, int? offlineAction = null)
         {
-            if (recursive)
-            {
-                _database.UpdateWithChildren(item);
-            }
-            else
+            if (offlineAction == null)
             {
                 _database.Update(item);
             }
+
+            if (!LoggedIn || item.ServerId == null) return;
+
+            var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(
+                JsonConvert.SerializeObject(item));
+            //form.Add("CollectionServerId", _database.Get<Collection>(item.CollectionId).ServerId.ToString());
+            var files = offlineAction != null && !_database.Get<OfflineActions>(offlineAction).ImageUpdated
+                ? null
+                : new[] {new FileResult(item.File)};
+            var aux = await RestService.PostRequest("/items", form, files);
+            var response = JsonConvert.DeserializeObject<ResponseWs<int?>>(aux);
+
+            if (response.Status.Equals("ok"))
+            {
+                if (offlineAction != null)
+                {
+                    _database.Delete<OfflineActions>(offlineAction);
+                }
+            }
+            else
+            {
+                if (offlineAction != null) return;
+                _database.Insert(new OfflineActions
+                {
+                    ElementIdentifier = item.Id.ToString(),
+                    ElementType = "item",
+                    Type = "update"
+                });
+            }
         }
 
-        public void RemoveItem(string id)
+        public async Task RemoveItem(string id, int? offlineAction = null)
         {
-            _database.Query<ItemImage>("Delete from ItemImage Where ItemId = ?", id);
-            _database.Delete<Item>(id);
+            var item = GetItem(id, true);
+
+            if (item != null)
+            {
+                foreach (var itemImage in item.Images)
+                {
+                    _database.Delete(itemImage);
+                }
+
+                _database.Delete(item);
+            }
+
+            if (!LoggedIn || offlineAction == null && item?.ServerId == null) return;
+
+            string aux;
+
+            if (offlineAction == null)
+            {
+                aux = await RestService.DeleteRequest($"/items/{item.ServerId.ToString()}");
+            }
+            else
+            {
+                var action = _database.Get<OfflineActions>(offlineAction);
+                aux = await RestService.DeleteRequest($"/items/{action.ElementIdentifier}");
+            }
+
+            var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
+
+            if (response.Status.Equals("ok"))
+            {
+                if (offlineAction == null) return;
+                _database.Delete<OfflineActions>(offlineAction);
+            }
+            else
+            {
+                if (offlineAction != null) return;
+                _database.Insert(new OfflineActions
+                {
+                    ElementIdentifier = item.ServerId.ToString(),
+                    ElementType = "item",
+                    Type = "delete"
+                });
+            }
         }
 
         #endregion
@@ -1068,14 +545,54 @@ namespace Collectio.Repositories
             _database.Insert(itemImage);
         }
 
-        public void UpdateItemImage(ItemImage itemImage)
+        public void UpdateItemImage(ItemImage itemImage, int? offlineAction = null)
         {
-            _database.Update(itemImage);
+            if (offlineAction == null)
+            {
+                _database.Update(itemImage);
+            }
         }
 
-        public void RemoveItemImage(string id)
+        public async Task RemoveItemImage(string id, int? offlineAction = null)
         {
-            _database.Delete<ItemImage>(id);
+            var itemImage = GetItemImage(id);
+
+            if (itemImage != null)
+            {
+                _database.Delete(itemImage);
+            }
+
+            if (!LoggedIn || offlineAction == null && itemImage?.ServerId == null) return;
+
+            string aux;
+
+            if (offlineAction == null)
+            {
+                aux = await RestService.DeleteRequest($"/items/images/{itemImage.ServerId.ToString()}");
+            }
+            else
+            {
+                var action = _database.Get<OfflineActions>(offlineAction);
+                aux = await RestService.DeleteRequest($"/items/images/{action.ElementIdentifier}");
+            }
+
+            var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
+
+            if (response.Status.Equals("ok"))
+            {
+                if (offlineAction == null) return;
+                _database.Delete<OfflineActions>(offlineAction);
+            }
+            else
+            {
+                if (offlineAction != null) return;
+                _database.Insert(new OfflineActions()
+                {
+                    ElementIdentifier = itemImage.ServerId.ToString(),
+                    ElementType = "itemImage",
+                    Type = "delete"
+                });
+            }
         }
 
         #endregion
@@ -1087,33 +604,29 @@ namespace Collectio.Repositories
             return _database.Table<OfflineActions>().ToList();
         }
 
-        public void RemoveOfflineAction(int id)
-        {
-            _database.Delete<OfflineActions>(id);
-        }
-
         #endregion
 
         #region User
 
         private void CreateUser()
         {
-            _database.InsertOrReplace(new User()
+            _database.InsertOrReplace(new User
             {
                 Id = 1
             });
         }
 
-        public async Task<User> GetUser(int id = 1)
+        public async Task<User> GetUser(int id = 1, bool sync = true)
         {
-            if (DateTime.Now.Subtract(LastSynced).TotalMinutes.Equals(5))
+            if (sync && DateTime.Now.Subtract(LastSyncedUser).TotalMinutes > 5)
             {
                 var aux = await RestService.GetRequest("/user");
                 var response = JsonConvert.DeserializeObject<ResponseWs<User>>(aux);
                 if (response.Status.Equals("ok"))
                 {
-                    _database.DeleteAll<User>();
-                    _database.InsertOrReplace(response.Data);
+                    response.Data.Id = 1;
+                    _database.UpdateWithChildren(response.Data);
+                    LastSyncedUser = DateTime.Now;
                 }
                 else
                 {
@@ -1125,27 +638,47 @@ namespace Collectio.Repositories
             return _database.Get<User>(id);
         }
 
-        public async Task EditUser(User user)
+        public async Task UpdateUser(User user, int? offlineAction = null)
         {
-            var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonConvert.SerializeObject(user));
-            var files = new[] {new FileResult(user.File)};
-
-            var aux = await RestService.PostRequest("user/api-keys/", form, files);
-            var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
-            if (response.Status.Equals("ok"))
+            if (offlineAction == null)
             {
                 _database.Update(user);
             }
+            
+            var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonConvert.SerializeObject(user));
+            var files = new[] {new FileResult(user.File)};
+
+            var aux = await RestService.PostRequest("user/", form, files);
+            var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
+            if (response.Status.Equals("ok"))
+            {
+                if(offlineAction == null) return;
+                _database.Delete<OfflineActions>(offlineAction);
+            }
             else
             {
+                if (offlineAction != null) return;
+
+                _database.Insert(new OfflineActions()
+                {
+                    Type = "update",
+                    ElementIdentifier = user.Id.ToString(),
+                    ElementType = "user"
+                });
+                
                 await Xamarin.Forms.Shell.Current.DisplayAlert(Resources.Culture.Strings.Error, response.Message,
                     Resources.Culture.Strings.Ok);
             }
         }
 
+        public Apikey GetApikey(string token)
+        {
+            return _database.Get<Apikey>(token);
+        }
+
         public async Task<IEnumerable<Apikey>> GetApiKeys()
         {
-            if (LoggedIn && DateTime.Now.Subtract(LastSynced).TotalMinutes.Equals(5))
+            if (DateTime.Now.Subtract(LastSyncedApiKeys).TotalMinutes > 5)
             {
                 var aux = await RestService.GetRequest("/user/api-keys");
                 var response = JsonConvert.DeserializeObject<ResponseWs<IEnumerable<Apikey>>>(aux);
@@ -1153,6 +686,7 @@ namespace Collectio.Repositories
                 {
                     _database.DeleteAll<Apikey>();
                     _database.InsertAll(response.Data);
+                    LastSyncedApiKeys = DateTime.Now;
                 }
                 else
                 {
@@ -1164,33 +698,63 @@ namespace Collectio.Repositories
             return _database.Table<Apikey>().ToList();
         }
 
-        public async Task EditApikey(Apikey apikey)
+        public async Task UpdateApikey(Apikey apikey, int? offlineAction = null)
         {
+            if (offlineAction == null)
+            {
+                _database.Update(apikey);
+            }
+
             var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonConvert.SerializeObject(apikey));
 
             var aux = await RestService.PostRequest("user/api-keys/", form);
             var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
             if (response.Status.Equals("ok"))
             {
-                _database.Update(apikey);
+                if (offlineAction == null) return;
+                _database.Delete<OfflineActions>(offlineAction);
             }
             else
             {
+                if (offlineAction != null) return;
+                
+                _database.Insert(new OfflineActions()
+                {
+                    Type = "update",
+                    ElementIdentifier = apikey.Token,
+                    ElementType = "apikey"
+                });
+
                 await Xamarin.Forms.Shell.Current.DisplayAlert(Resources.Culture.Strings.Error,
                     response.Message, Resources.Culture.Strings.Ok);
             }
         }
 
-        public async Task DeleteApikey(string apikey)
+        public async Task RemoveApikey(string apikey, int? offlineAction = null)
         {
+            if (offlineAction == null)
+            {
+                _database.Delete<Apikey>(apikey);
+            }
+
             var aux = await RestService.DeleteRequest($"user/api-keys/{apikey}");
             var response = JsonConvert.DeserializeObject<ResponseWs<object>>(aux);
             if (response.Status.Equals("ok"))
             {
-                _database.Delete<Apikey>(apikey);
+                if (offlineAction == null) return;
+                _database.Delete<OfflineActions>(offlineAction);
             }
             else
             {
+                if (offlineAction != null) return;
+
+                _database.Insert(new OfflineActions()
+                {
+                    ElementIdentifier = apikey,
+                    ElementType = "apikey",
+                    Type = "delete"
+                });
+
                 await Xamarin.Forms.Shell.Current.DisplayAlert(Resources.Culture.Strings.Error,
                     response.Message, Resources.Culture.Strings.Ok);
             }
