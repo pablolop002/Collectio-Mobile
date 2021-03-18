@@ -22,6 +22,8 @@ namespace Collectio.Models
         
         public bool Google { get; set; }
         
+        public bool Microsoft { get; set; }
+        
         [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableRangeCollection<Apikey> ApiKeys { get; set; }
 
         [Ignore, JsonIgnore] public string File => FileSystemUtils.GetProfileImage(Image);
