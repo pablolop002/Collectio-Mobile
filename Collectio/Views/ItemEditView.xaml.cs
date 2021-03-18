@@ -6,6 +6,7 @@ using System.Linq;
 using Collectio.Models;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
+using Microsoft.AppCenter.Analytics;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -220,6 +221,7 @@ namespace Collectio.Views
             FileSystemUtils.ClearTempPath();
 
             await Shell.Current.GoToAsync($"..?collection={_item.CollectionId.ToString()}&refresh=true");
+            Analytics.TrackEvent("EditItem");
         }
     }
 }

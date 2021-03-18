@@ -6,6 +6,7 @@ using System.Linq;
 using Collectio.Models;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
+using Microsoft.AppCenter.Analytics;
 using Plugin.StoreReview;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -223,6 +224,7 @@ namespace Collectio.Views
             if (NewItemUsage++ == 25) await CrossStoreReview.Current.RequestReview(false);
 
             await Shell.Current.GoToAsync($"..?collection={_collection.Id}&refresh=true");
+            Analytics.TrackEvent("CreateItem");
         }
     }
 }

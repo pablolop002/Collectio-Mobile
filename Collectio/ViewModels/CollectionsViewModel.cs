@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Collectio.Models;
@@ -11,6 +12,7 @@ namespace Collectio.ViewModels
     public class CollectionsViewModel : BaseViewModel
     {
         private Collection _selectedCollection;
+        private ObservableRangeCollection<CollectionGroup> _collectionGroups;
 
         public Collection SelectedCollection
         {
@@ -27,7 +29,11 @@ namespace Collectio.ViewModels
             }
         }
 
-        public ObservableRangeCollection<CollectionGroup> CollectionGroups { get; set; }
+        public ObservableRangeCollection<CollectionGroup> CollectionGroups
+        {
+            get => _collectionGroups;
+            set => SetProperty(ref _collectionGroups, value);
+        }
 
         public ICommand RefreshCommand { get; set; }
 
@@ -63,6 +69,32 @@ namespace Collectio.ViewModels
             else if (answer == Strings.Import)
             {
                 await Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Import, "Próximamente", Strings.Ok);
+
+                var csv = await Xamarin.Essentials.FilePicker.PickAsync(new Xamarin.Essentials.PickOptions
+                {
+                    FileTypes = new Xamarin.Essentials.FilePickerFileType(
+                        new Dictionary<Xamarin.Essentials.DevicePlatform, IEnumerable<string>>
+                        {
+                            {
+                                Xamarin.Essentials.DevicePlatform.iOS,
+                                new[]
+                                {
+                                    "public.comma-separated-values-text", "public.delimited-values-text",
+                                    "public.tab-separated-values-text", "public.utf8-tab-separated-values-text"
+                                }
+                            }, // or general UTType values
+                            {Xamarin.Essentials.DevicePlatform.Android, new[] {".csv", "text/plain"}}
+                        })
+                });
+
+                if (csv == null) return;
+
+                using var stream = await csv.OpenReadAsync();
+                using var reader = new System.IO.StreamReader(stream);
+                using var csvReader =
+                    new CsvHelper.CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
+                var collection = csvReader.GetRecord<Collection>();
+
                 //await Xamarin.Forms.Shell.Current.GoToAsync("importCollection");
             }
         }
@@ -83,16 +115,16 @@ namespace Collectio.ViewModels
                         switch (offlineAction.ElementType)
                         {
                             case "collection":
-                                //App.DataRepo.DeleteCollection(int.Parse(offlineAction.ElementIdentifier), offlineAction.Id);
+                                await App.DataRepo.RemoveCollection(offlineAction.ElementIdentifier, offlineAction.Id);
                                 break;
                             case "item":
-                                //App.DataRepo.DeleteItem(int.Parse(offlineAction.ElementIdentifier), offlineAction.Id);
+                                await App.DataRepo.RemoveItem(offlineAction.ElementIdentifier, offlineAction.Id);
                                 break;
                             case "itemImage":
-                                //App.DataRepo.DeleteItemImage(int.Parse(offlineAction.ElementIdentifier), offlineAction.Id);
+                                await App.DataRepo.RemoveItemImage(offlineAction.ElementIdentifier, offlineAction.Id);
                                 break;
                             default:
-                                //App.DataRepo.DeleteApikey(offlineAction.ElementIdentifier, offlineAction.Id);
+                                await App.DataRepo.RemoveApikey(offlineAction.ElementIdentifier, offlineAction.Id);
                                 break;
                         }
 
@@ -101,16 +133,24 @@ namespace Collectio.ViewModels
                         switch (offlineAction.ElementType)
                         {
                             case "collection":
-                                //App.DataRepo.UpdateCollection(int.Parse(offlineAction.ElementIdentifier), offlineAction.Id);
+                                App.DataRepo.UpdateCollection(
+                                    App.DataRepo.GetCollection(offlineAction.ElementIdentifier), offlineAction.Id);
                                 break;
                             case "item":
-                                //App.DataRepo.UpdateItem(int.Parse(offlineAction.ElementIdentifier), offlineAction.Id);
+                                App.DataRepo.UpdateItem(App.DataRepo.GetItem(offlineAction.ElementIdentifier),
+                                    offlineAction.Id);
                                 break;
                             case "itemImage":
-                                //App.DataRepo.UpdateItemImage(int.Parse(offlineAction.ElementIdentifier), offlineAction.Id);
+                                App.DataRepo.UpdateItemImage(App.DataRepo.GetItemImage(offlineAction.ElementIdentifier),
+                                    offlineAction.Id);
+                                break;
+                            case "user":
+                                await App.DataRepo.UpdateUser(await App.DataRepo.GetUser(offlineAction.Id, false),
+                                    offlineAction.Id);
                                 break;
                             default:
-                                //App.DataRepo.UpdateApikey(offlineAction.ElementIdentifier, offlineAction.Id);
+                                await App.DataRepo.UpdateApikey(App.DataRepo.GetApikey(offlineAction.ElementIdentifier),
+                                    offlineAction.Id);
                                 break;
                         }
 
@@ -119,13 +159,14 @@ namespace Collectio.ViewModels
                         switch (offlineAction.ElementType)
                         {
                             case "collection":
-                                //App.DataRepo.AddCollection(int.Parse(offlineAction.ElementIdentifier), offlineAction.Id);
+                                App.DataRepo.AddCollectionServer(
+                                    App.DataRepo.GetCollection(offlineAction.ElementIdentifier), offlineAction.Id);
                                 break;
                             case "item":
-                                //App.DataRepo.AddItem(int.Parse(offlineAction.ElementIdentifier), offlineAction.Id);
+                                //App.DataRepo.AddItemServer(App.DataRepo.GetItem(offlineAction.ElementIdentifier), offlineAction.Id);
                                 break;
                             case "itemImage":
-                                //App.DataRepo.AddItemImage(int.Parse(offlineAction.ElementIdentifier), offlineAction.Id);
+                                //App.DataRepo.AddItemImageServer(App.DataRepo.GetItemImage(offlineAction.ElementIdentifier), offlineAction.Id);
                                 break;
                         }
 
@@ -145,7 +186,7 @@ namespace Collectio.ViewModels
                 Strings.Confirm, Strings.Cancel);
             if (!aux) return;
 
-            App.DataRepo.RemoveCollection(collection.Id.ToString());
+            await App.DataRepo.RemoveCollection(collection.Id.ToString());
             FileSystemUtils.DeleteCollection(collection.Id.ToString());
 
             IsBusy = true;
@@ -156,7 +197,8 @@ namespace Collectio.ViewModels
             IsBusy = true;
 
             CollectionGroups.Clear();
-            CollectionGroups.AddRange(App.DataRepo.GetCollectionGroups());
+            //CollectionGroups.AddRange(App.DataRepo.GetCollectionGroups());
+            CollectionGroups = new ObservableRangeCollection<CollectionGroup>(App.DataRepo.GetCollectionGroups());
 
             IsBusy = false;
         }

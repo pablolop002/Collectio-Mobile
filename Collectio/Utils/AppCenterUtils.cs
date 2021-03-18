@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 
 namespace Collectio.Utils
@@ -14,6 +15,11 @@ namespace Collectio.Utils
                 {"Message", ex.Message},
                 {"Source", ex.Source},
             });
+        }
+
+        public static void TrackAction(string action)
+        {
+            Analytics.TrackEvent(action);
         }
     }
 }

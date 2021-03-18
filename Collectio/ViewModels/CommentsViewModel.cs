@@ -1,6 +1,7 @@
 using System.Text;
 using System.Windows.Input;
 using Collectio.Resources.Culture;
+using Microsoft.AppCenter.Analytics;
 using MvvmHelpers;
 using MvvmHelpers.Commands;
 using Xamarin.Essentials;
@@ -57,6 +58,7 @@ namespace Collectio.ViewModels
             }
 
             Email.ComposeAsync($"Collectio Support: {CommentType[CommentTypeIndex]}", Body, "support@collectioapp.com");
+            Analytics.TrackEvent("SendComment");
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Collectio.Models;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
+using Microsoft.AppCenter.Analytics;
 using MvvmHelpers;
 using MvvmHelpers.Commands;
 using Plugin.StoreReview;
@@ -15,6 +16,7 @@ namespace Collectio.ViewModels
 {
     public class CollectionNewViewModel : BaseViewModel
     {
+        private IEnumerable<Category> _categories;
         private Category _selectedCategory;
         private Collection _collection;
         private bool _categorySelection = true;
@@ -22,7 +24,11 @@ namespace Collectio.ViewModels
         private string _imageName = string.Empty;
         private string _file = string.Empty;
 
-        public IEnumerable<Category> Categories => App.DataRepo.GetCategories();
+        public IEnumerable<Category> Categories
+        {
+            get => _categories;
+            set => SetProperty(ref _categories, value);
+        }
 
         private static int NewCollectionUsage
         {
@@ -82,6 +88,7 @@ namespace Collectio.ViewModels
             SaveItemCommand = new AsyncCommand(SaveItem);
             SelectImageCommand = new AsyncCommand(SelectImage);
             Collection = new Collection();
+            Categories = App.DataRepo.GetCategories();
         }
 
         private async Task SelectImage()
@@ -177,6 +184,7 @@ namespace Collectio.ViewModels
             if (NewCollectionUsage++ == 5) await CrossStoreReview.Current.RequestReview(false);
 
             await Xamarin.Forms.Shell.Current.GoToAsync("..?refresh=true");
+            Analytics.TrackEvent("CreateCollection");
         }
     }
 }

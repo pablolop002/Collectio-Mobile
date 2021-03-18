@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Collectio.Models;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
+using Microsoft.AppCenter.Analytics;
 using MvvmHelpers;
 using MvvmHelpers.Commands;
 using Xamarin.Essentials;
@@ -163,6 +165,14 @@ namespace Collectio.ViewModels
             {
                 AppCenterUtils.ReportException(ex, "loginApple");
             }
+            finally
+            {
+                Analytics.TrackEvent("Login", new Dictionary<string, string>
+                {
+                    {"Method", "Apple"},
+                    {"Correct", LoggedIn.ToString()}
+                });
+            }
         }
 
         private async Task GoogleLogIn()
@@ -185,6 +195,14 @@ namespace Collectio.ViewModels
             {
                 AppCenterUtils.ReportException(ex, "loginGoogle");
             }
+            finally
+            {
+                Analytics.TrackEvent("Login", new Dictionary<string, string>
+                {
+                    {"Method", "Google"},
+                    {"Correct", LoggedIn.ToString()}
+                });
+            }
         }
 
         private async Task MicrosoftLogIn()
@@ -194,7 +212,6 @@ namespace Collectio.ViewModels
                 var authResult = await WebAuthenticator.AuthenticateAsync(
                     new Uri(string.Format(RestServiceUtils.RestUrl, "/login/microsoft")),
                     new Uri("collectio://"));
-
 
                 var accessToken = authResult?.AccessToken;
                 if (string.IsNullOrWhiteSpace(accessToken)) return;
@@ -207,6 +224,14 @@ namespace Collectio.ViewModels
             catch (Exception ex)
             {
                 AppCenterUtils.ReportException(ex, "loginMicrosoft");
+            }
+            finally
+            {
+                Analytics.TrackEvent("Login", new Dictionary<string, string>
+                {
+                    {"Method", "Microsoft"},
+                    {"Correct", LoggedIn.ToString()}
+                });
             }
         }
 

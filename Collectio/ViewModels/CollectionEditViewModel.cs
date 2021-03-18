@@ -5,10 +5,10 @@ using System.Windows.Input;
 using Collectio.Models;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
+using Microsoft.AppCenter.Analytics;
 using MvvmHelpers;
 using MvvmHelpers.Commands;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace Collectio.ViewModels
 {
@@ -63,7 +63,7 @@ namespace Collectio.ViewModels
                     }
                     catch (PermissionException ex)
                     {
-                        await Shell.Current.DisplayAlert(Strings.Error, ex.Message, Strings.Ok);
+                        await Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Error, ex.Message, Strings.Ok);
                     }
                 });
             }
@@ -90,7 +90,7 @@ namespace Collectio.ViewModels
                     }
                     catch (PermissionException ex)
                     {
-                        await Shell.Current.DisplayAlert(Strings.Error, ex.Message, Strings.Ok);
+                        await Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Error, ex.Message, Strings.Ok);
                     }
                 });
             }
@@ -119,6 +119,7 @@ namespace Collectio.ViewModels
             }
 
             await Xamarin.Forms.Shell.Current.GoToAsync("..?refresh=true");
+            Analytics.TrackEvent("CreateCollection");
         }
     }
 }
