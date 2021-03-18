@@ -29,6 +29,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Ellipse Style="{StaticResource BigEllipseStyle}"
@@ -106,7 +107,7 @@
                         Text="{x:Static culture:Strings.LoginMicrosoft}"
                         Command="{Binding MicrosoftLogInCommand}"
                         Style="{StaticResource LoginButtonStyle}"
-                        Grid.Row="3">
+                        Grid.Row="4">
                     <Button.ImageSource>
                         <FontImageSource FontFamily="FA-B"
                                          Glyph="{StaticResource IconMicrosoft}"
