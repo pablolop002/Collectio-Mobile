@@ -26,7 +26,7 @@ namespace Collectio.Utils.SearchHandlers
             }
             else
             {
-                ItemsSource = App.DataRepo.GetAllItemsFromCategory(Collection.ToString())
+                ItemsSource = App.DataRepo.GetAllItemsFromCollection(Collection.ToString())
                     .Where(item => item.Name.ToLower().Contains(newValue.ToLower())).ToList();
             }
         }
