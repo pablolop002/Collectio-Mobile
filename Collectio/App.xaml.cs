@@ -16,7 +16,7 @@ namespace Collectio
     public partial class App : Application
     {
         public static DataRepository DataRepo { get; private set; }
-        
+
         public static string Token { get; set; }
 
         public App()
