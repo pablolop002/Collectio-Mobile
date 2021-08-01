@@ -32,7 +32,7 @@ namespace Collectio.Utils
         /// </summary>
         public RestServiceUtils()
         {
-            _client = new HttpClient()
+            _client = new HttpClient
             {
                 Timeout = new TimeSpan(0, 0, 30)
             };
@@ -56,12 +56,12 @@ namespace Collectio.Utils
         /// </summary>
         public async Task InsertToken()
         {
-            if (_client.DefaultRequestHeaders.Contains("Token"))
+            if (_client.DefaultRequestHeaders.Contains("Apikey"))
             {
-                _client.DefaultRequestHeaders.Remove("Token");
+                _client.DefaultRequestHeaders.Remove("Apikey");
             }
 
-            _client.DefaultRequestHeaders.Add("Token", await Xamarin.Essentials.SecureStorage.GetAsync("Token"));
+            _client.DefaultRequestHeaders.Add("Apikey", await Xamarin.Essentials.SecureStorage.GetAsync("Token"));
         }
 
         /// <summary>
@@ -74,8 +74,7 @@ namespace Collectio.Utils
                 _client.DefaultRequestHeaders.Remove("lang");
             }
 
-            _client.DefaultRequestHeaders.Add("lang",
-                Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName);
+            _client.DefaultRequestHeaders.Add("lang", Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName);
         }
 
         /// <summary>
@@ -97,17 +96,17 @@ namespace Collectio.Utils
                     return await response.Content.ReadAsStringAsync();
                 }
 
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = "ConnectionError"});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = "ConnectionError"});
             }
             catch (HttpRequestException ex)
             {
                 AppCenterUtils.ReportException(ex, "HttpRequestExceptionGet");
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = ex.Message});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = ex.Message});
             }
             catch (Exception ex)
             {
                 AppCenterUtils.ReportException(ex, "GeneralExceptionGet");
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = ex.Message});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = ex.Message});
             }
         }
 
@@ -135,17 +134,17 @@ namespace Collectio.Utils
                     return await response.Content.ReadAsStringAsync();
                 }
 
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = "ConnectionError"});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = "ConnectionError"});
             }
             catch (HttpRequestException ex)
             {
                 AppCenterUtils.ReportException(ex, "HttpRequestException");
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = ex.Message});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = ex.Message});
             }
             catch (Exception ex)
             {
                 AppCenterUtils.ReportException(ex, "GeneralException");
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = ex.Message});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = ex.Message});
             }
             finally
             {
@@ -177,17 +176,17 @@ namespace Collectio.Utils
                     return await response.Content.ReadAsStringAsync();
                 }
 
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = "ConnectionError"});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = "ConnectionError"});
             }
             catch (HttpRequestException ex)
             {
                 AppCenterUtils.ReportException(ex, "HttpRequestException");
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = ex.Message});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = ex.Message});
             }
             catch (Exception ex)
             {
                 AppCenterUtils.ReportException(ex, "GeneralException");
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = ex.Message});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = ex.Message});
             }
             finally
             {
@@ -214,17 +213,17 @@ namespace Collectio.Utils
                     return await response.Content.ReadAsStringAsync();
                 }
 
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = "ConnectionError"});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = "ConnectionError"});
             }
             catch (HttpRequestException ex)
             {
                 AppCenterUtils.ReportException(ex, "HttpRequestExceptionGet");
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = ex.Message});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = ex.Message});
             }
             catch (Exception ex)
             {
                 AppCenterUtils.ReportException(ex, "GeneralExceptionGet");
-                return JsonConvert.SerializeObject(new ResponseWs<int?>() {Status = "ko", Message = ex.Message});
+                return JsonConvert.SerializeObject(new ResponseWs<int?> {Status = "ko", Message = ex.Message});
             }
         }
 
@@ -248,7 +247,9 @@ namespace Collectio.Utils
                     return stream;
                 }
                 else
+                {
                     return null;
+                }
             }
             catch (Exception ex)
             {
