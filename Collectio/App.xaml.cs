@@ -58,6 +58,7 @@ namespace Collectio
                 {
                     "en" => new CultureInfo("en"),
                     "ca" => new CultureInfo("ca"),
+                    //"eu" => new CultureInfo("eu"),
                     _ => new CultureInfo("es")
                 };
         }
