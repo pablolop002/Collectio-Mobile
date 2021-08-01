@@ -7,7 +7,9 @@ namespace Collectio.Droid.Utils
 {
     public class AndroidNativeFunctions : INativeFunctions
     {
-        public Stream ConvertToJpeg(Stream stream)
+        private readonly int _quality = 50;
+        
+        public MemoryStream ConvertToJpeg(Stream stream)
         {
             //Convert image stream into byte array
             var image = new byte[stream.Length];
@@ -20,7 +22,22 @@ namespace Collectio.Droid.Utils
             var outStream = new MemoryStream();
  
             //Save the image as Jpeg
-            resultBitmap?.Compress(Bitmap.CompressFormat.Jpeg, 100, outStream);
+            resultBitmap?.Compress(Bitmap.CompressFormat.Jpeg, _quality, outStream);
+
+            //Return the Jpeg image as stream
+            return outStream;
+        }
+
+        public MemoryStream CompressJpeg(Stream stream)
+        {
+            //Load the bitmap
+            var resultBitmap = BitmapFactory.DecodeStream(stream);
+            
+            //Create memory stream
+            var outStream = new MemoryStream();
+ 
+            //Save the image as Jpeg
+            resultBitmap?.Compress(Bitmap.CompressFormat.Jpeg, _quality, outStream);
 
             //Return the Jpeg image as stream
             return outStream;

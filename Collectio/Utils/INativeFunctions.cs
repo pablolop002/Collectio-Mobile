@@ -4,6 +4,8 @@ namespace Collectio.Utils
 {
     public interface INativeFunctions
     {
-        Stream ConvertToJpeg(Stream stream);
+        MemoryStream ConvertToJpeg(Stream stream);
+        
+        MemoryStream CompressJpeg(Stream stream);
     }
 }
