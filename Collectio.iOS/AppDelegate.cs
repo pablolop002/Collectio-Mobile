@@ -20,7 +20,7 @@ namespace Collectio.iOS
         {
             Xamarin.Forms.Forms.Init();
             Xamarin.Forms.Nuke.FormsHandler.Init(debug: false);
-            
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
@@ -29,7 +29,9 @@ namespace Collectio.iOS
         public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
         {
             if (Xamarin.Essentials.Platform.OpenUrl(app, url, options))
+            {
                 return true;
+            }
 
             return base.OpenUrl(app, url, options);
         }
@@ -37,10 +39,8 @@ namespace Collectio.iOS
         public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity,
             UIApplicationRestorationHandler completionHandler)
         {
-            if (Xamarin.Essentials.Platform.ContinueUserActivity(application, userActivity, completionHandler))
-                return true;
-
-            return base.ContinueUserActivity(application, userActivity, completionHandler);
+            return Xamarin.Essentials.Platform.ContinueUserActivity(application, userActivity, completionHandler) ||
+                   base.ContinueUserActivity(application, userActivity, completionHandler);
         }
     }
 }

@@ -133,6 +133,24 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPhone_Notifications_20_2x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPhone_Notifications_20_3x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPhone_Settings_29_2x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPhone_Settings_29_3x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPhone_Spotlight_40_2x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPhone_Spotlight_40_3x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPhone_App_60_2x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPhone_App_60_3x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPad_Notifications_20_1x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPad_Notifications_20_2x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPad_Settings_29_1x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPad_Settings_29_2x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\App_store_1024_1x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPad_Spotlight_40_1x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPad_Spotlight_40_2x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPad_App_76_1x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPad_App_76_2x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iPad_Pro_App_83.5_2x.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -164,9 +182,15 @@
     <BundleResource Include="Resources\ca.lproj\InfoPlist.strings" />
     <BundleResource Include="Resources\en.lproj\InfoPlist.strings" />
     <BundleResource Include="Resources\es.lproj\InfoPlist.strings" />
+    <BundleResource Include="Resources\iPad_Mini_Settings_29_2x.png" />
+    <BundleResource Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="appcenter-post-clone.sh" />
+  </ItemGroup>
+  <ItemGroup>
+    <ITunesArtwork Include="iTunesArtwork%402x" />
+    <ITunesArtwork Include="iTunesArtwork" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
