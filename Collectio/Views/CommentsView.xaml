@@ -3,10 +3,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:Collectio.ViewModels;assembly=Collectio"
+             xmlns:culture="clr-namespace:Collectio.Resources.Culture;assembly=Collectio"
              x:Class="Collectio.Views.CommentsView"
              Style="{StaticResource PageStyle}"
              x:DataType="viewModels:CommentsViewModel"
-             Shell.TabBarIsVisible="False">
+             Shell.TabBarIsVisible="False"
+             Title="{x:Static culture:Strings.Comments}">
     
     <ContentPage.BindingContext>
         <viewModels:CommentsViewModel/>
