@@ -87,6 +87,13 @@
             <Setter Property="AutoSize" Value="TextChanges" />
         </Style>
 
+        <Style x:Key="EditorFailStyle" TargetType="Editor">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="Red" />
+            <Setter Property="PlaceholderColor" Value="Red" />
+        </Style>
+
+
         <Style x:Key="EntryStyle" TargetType="Entry">
             <Setter Property="BackgroundColor" Value="Transparent" />
             <Setter Property="TextColor"
@@ -96,12 +103,23 @@
             <Setter Property="PlaceholderColor" Value="LightGray" />
         </Style>
 
+        <Style x:Key="EntryFailStyle" TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="Red" />
+            <Setter Property="PlaceholderColor" Value="Red" />
+        </Style>
+
         <Style x:Key="PickerStyle" TargetType="Picker">
             <Setter Property="BackgroundColor" Value="Transparent" />
             <Setter Property="TextColor"
                     Value="{AppThemeBinding
                     Light={StaticResource LightTextColor},
                     Dark={StaticResource DarkTextColor}}" />
+        </Style>
+
+        <Style x:Key="PickerFailStyle" TargetType="Picker">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="Red" />
         </Style>
 
         <!-- Labels -->
