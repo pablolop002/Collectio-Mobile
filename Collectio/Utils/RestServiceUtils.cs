@@ -290,7 +290,10 @@ namespace Collectio.Utils
             {
                 foreach (var element in form)
                 {
-                    content.Add(new StringContent(element.Value, Encoding.UTF8), element.Key);
+                    if (!string.IsNullOrWhiteSpace(element.Key) && !string.IsNullOrWhiteSpace(element.Value))
+                    {
+                        content.Add(new StringContent(element.Value, Encoding.UTF8), element.Key);
+                    }
                 }
             }
 
