@@ -109,13 +109,20 @@ namespace Collectio.Repositories
             return ret;
         }
 
-        public bool DeleteAllData()
+        public bool DeleteAllData(bool withUser = false)
         {
-            _database.Close();
+            _database.DropTable<ItemImage>();
+            _database.DropTable<Item>();
+            _database.DropTable<Collection>();
+            _database.CreateTable<Collection>();
+            _database.CreateTable<Item>();
+            _database.CreateTable<ItemImage>();
+            if (withUser)
+            {
+                CreateUser();
+            }
 
-            var ret = FileSystemUtils.DeleteAllData(_databasePath);
-
-            _database = new SQLiteConnection(_databasePath);
+            var ret = FileSystemUtils.DeleteAllData();
 
             return ret;
         }
