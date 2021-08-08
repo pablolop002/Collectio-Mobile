@@ -256,10 +256,10 @@ namespace Collectio.Utils
                 AppCenterUtils.ReportException(ex, "GetFile");
                 return null;
             }
-            finally
+            /*finally
             {
                 _client.CancelPendingRequests();
-            }
+            }*/
         }
 
         /// <summary>
