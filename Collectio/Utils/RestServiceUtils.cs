@@ -282,10 +282,8 @@ namespace Collectio.Utils
                     await stream.ReadAsync(fileBytes, 0, fileBytes.Length);
                     var fileContent = new ByteArrayContent(fileBytes);
                     fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.value.ContentType);
-                    content.Add(fileContent, $"file{file.pos}", file.value.FileName);
+                    content.Add(fileContent, "Images", file.value.FileName);
                 }
-
-                content.Add(new StringContent(files.Length.ToString(), Encoding.UTF8), "FilesNumber");
             }
 
             if (form != null)
