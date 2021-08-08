@@ -55,7 +55,7 @@ namespace Collectio.Repositories
                 _database.CreateTable<ItemImage>();
                 _database.CreateTable<OfflineActions>();
 
-                if (Preferences.Get("LoggedIn", false)) CreateUser();
+                if (!Preferences.Get("LoggedIn", false)) CreateUser();
                 Triggers();
                 CreateOrUpdateCategories();
             }
