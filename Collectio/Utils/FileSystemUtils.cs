@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace Collectio.Utils
@@ -90,8 +91,21 @@ namespace Collectio.Utils
 
         #region Save
 
-        public static string TempSave(MemoryStream stream, string fileName)
+        public static string TempSave(MemoryStream stream, string fileName, bool withCompression = true)
         {
+            /*if (withCompression)
+            {
+                if (fileName.EndsWith(".png"))
+                {
+                    stream = Xamarin.Forms.DependencyService.Get<INativeFunctions>().ConvertToJpeg(stream);
+                    fileName = fileName.Replace(".png", ".jpg");
+                }
+                else
+                {
+                    stream = Xamarin.Forms.DependencyService.Get<INativeFunctions>().CompressJpeg(stream);
+                }
+            }*/
+
             var path = Path.Combine(FileSystem.AppDataDirectory, "Temp");
 
             try
@@ -175,6 +189,124 @@ namespace Collectio.Utils
             catch (Exception ex)
             {
                 AppCenterUtils.ReportException(ex, "FileCreationFromStream");
+                return false;
+            }
+        }
+
+        public static async Task<bool> SaveCategoryImage(string fileName)
+        {
+            var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
+            path = Path.Combine(path, "Categories");
+
+            try
+            {
+                Directory.CreateDirectory(path);
+                path = Path.Combine(path, fileName);
+
+                var response =
+                    await App.DataRepo.RestService.GetImageRequest(string.Format(RestServiceUtils.RestUrl,
+                        $"/categories/{fileName}"));
+
+                if (response != null)
+                {
+                    File.WriteAllBytes(path, response.ToArray());
+
+                    response.Close();
+                    response.Dispose();
+
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                AppCenterUtils.ReportException(ex, "CategoryImageCreationFromStream");
+                return false;
+            }
+        }
+
+        public static async Task<bool> SaveFileFromServer(string fileName, int? user, int? collection = null,
+            int? item = null)
+        {
+            if (user == null)
+            {
+                return false;
+            }
+
+            var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
+            if (collection != null)
+            {
+                path = Path.Combine(path, $"Collection{collection.ToString()}");
+                if (item != null) path = Path.Combine(path, $"Item{item.ToString()}");
+            }
+
+            try
+            {
+                Directory.CreateDirectory(path);
+                path = Path.Combine(path, fileName);
+
+                var route = $"/images/user{user.ToString()}";
+
+                if (collection != null)
+                {
+                    route += $"/collection{collection.ToString()}";
+
+                    if (item != null)
+                    {
+                        route += $"/item{item.ToString()}";
+                    }
+                }
+
+                route += $"/{fileName}";
+
+                var response = await App.DataRepo.RestService.GetImageRequest(route);
+
+                if (response != null)
+                {
+                    File.WriteAllBytes(path, response.ToArray());
+
+                    response.Close();
+                    response.Dispose();
+
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                AppCenterUtils.ReportException(ex, "FileCreationFromServer");
+                return false;
+            }
+        }
+
+        public static async Task<bool> SaveDefaultProfile()
+        {
+            var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
+
+            try
+            {
+                Directory.CreateDirectory(path);
+                path = Path.Combine(path, "default_image.png");
+
+                var response = await App.DataRepo.RestService.GetImageRequest("/images/default_image.png");
+
+                if (response != null)
+                {
+                    File.WriteAllBytes(path, response.ToArray());
+
+                    response.Close();
+                    response.Dispose();
+
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                AppCenterUtils.ReportException(ex, "FileCreationFromServer");
                 return false;
             }
         }
