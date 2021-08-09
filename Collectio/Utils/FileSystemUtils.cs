@@ -395,7 +395,10 @@ namespace Collectio.Utils
 
         public static void DeleteImage(string imageDir)
         {
-            File.Delete(imageDir);
+            if (File.Exists(imageDir))
+            {
+                File.Delete(imageDir);
+            }
         }
 
         public static void DeleteCollection(string collection)
