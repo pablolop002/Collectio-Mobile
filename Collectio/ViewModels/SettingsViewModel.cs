@@ -62,6 +62,7 @@ namespace Collectio.ViewModels
             {
                 Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Backup,
                     App.DataRepo.CreateBackup() ? Strings.BackupCorrect : Strings.BackupError, Strings.Ok);
+                AppCenterUtils.TrackAction("MakeBackup");
             }
             catch (Exception ex)
             {
@@ -83,6 +84,7 @@ namespace Collectio.ViewModels
                 Xamarin.Forms.Shell.Current.DisplayAlert(Strings.RestoreBackup,
                     App.DataRepo.RestoreBackup() ? Strings.RestoreBackupCorrect : Strings.RestoreBackupError,
                     Strings.Ok);
+                AppCenterUtils.TrackAction("RestoreBackup");
             }
             catch (Exception ex)
             {
@@ -101,6 +103,7 @@ namespace Collectio.ViewModels
                 await Xamarin.Forms.Shell.Current.DisplayAlert(Strings.DeleteData,
                     App.DataRepo.DeleteAllData() ? Strings.DeleteDataCorrect : Strings.DeleteDataError,
                     Strings.Ok);
+                AppCenterUtils.TrackAction("DeleteData");
             }
             catch (Exception ex)
             {
@@ -124,6 +127,7 @@ namespace Collectio.ViewModels
                 Xamarin.Forms.Shell.Current.DisplayAlert(Strings.DeleteCache,
                     FileSystemUtils.DeleteCache() ? Strings.DeleteCacheCorrect : Strings.DeleteCacheError,
                     Strings.Ok);
+                AppCenterUtils.TrackAction("DeleteCache");
             }
             catch (Exception ex)
             {
