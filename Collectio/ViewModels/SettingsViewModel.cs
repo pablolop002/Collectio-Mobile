@@ -58,6 +58,12 @@ namespace Collectio.ViewModels
 
         private void MakeBackup()
         {
+            if (Preferences.Get("LoggedIn", false))
+            {
+                Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Error, Strings.DisabledFunction, Strings.Ok);
+                return;
+            }
+            
             try
             {
                 Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Backup,
