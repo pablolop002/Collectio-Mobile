@@ -100,7 +100,7 @@
 
                     <ImageButton Grid.Row="0"
                                  Style="{StaticResource BigImageStyle}"
-                                 Command="{Binding SelectImageCommand}">
+                                 Command="{Binding ChangeImageCommand}">
                         <ImageButton.Source>
                             <FileImageSource File="{Binding File}" />
                         </ImageButton.Source>
