@@ -19,5 +19,11 @@ namespace Collectio.Views
         {
             InitializeComponent();
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            if(!((CollectionsViewModel) BindingContext).IsBusy) ((CollectionsViewModel) BindingContext).IsBusy = true;
+        }
     }
 }
