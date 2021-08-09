@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Collectio.Resources.Culture;
 using Collectio.Utils;
-using MvvmHelpers;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -10,11 +10,13 @@ namespace Collectio.Models
 {
     public class Collection
     {
-        [PrimaryKey, AutoIncrement] public int Id { get; set; }
+        [PrimaryKey, AutoIncrement, JsonIgnore] public int Id { get; set; }
 
         [Unique] public int? ServerId { get; set; }
-        
-        [ForeignKey(typeof(User))] public int? UserId { get; set; }
+
+        [ForeignKey(typeof(User)), JsonIgnore] public int? UserId { get; set; } = 1;
+
+        public int? UserServerId { get; set; }
 
         [Indexed, ForeignKey(typeof(Category))] public int CategoryId { get; set; }
 
@@ -32,7 +34,7 @@ namespace Collectio.Models
 
         public DateTime UpdatedAt { get; set; }
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableRangeCollection<Item> Items { get; set; }
+        [OneToMany(CascadeOperations = CascadeOperation.All)] public List<Item> Items { get; set; }
 
         [Ignore, JsonIgnore] public string File => FileSystemUtils.GetCollectionImage(Image, Id);
 
