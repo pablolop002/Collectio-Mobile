@@ -25,7 +25,7 @@ namespace Collectio.ViewModels
         }
 
         public ICommand ImageSelectorCommand { get; }
-        
+
         public ICommand SaveCommand { get; }
 
         public CollectionEditViewModel()
@@ -36,8 +36,8 @@ namespace Collectio.ViewModels
 
         private async Task ImageSelector()
         {
-            var selection = await Xamarin.Forms.Shell.Current.DisplayActionSheet(Strings.ImageOrigin, Strings.Cancel, null,
-                Strings.Camera, Strings.Gallery);
+            var selection = await Xamarin.Forms.Shell.Current.DisplayActionSheet(Strings.ImageOrigin, Strings.Cancel,
+                null, Strings.Camera, Strings.Gallery);
 
             if (selection == null || selection == Strings.Cancel) return;
             if (selection == Strings.Camera)
@@ -98,15 +98,12 @@ namespace Collectio.ViewModels
 
         private async Task SaveItem()
         {
+            IsBusy = true;
+
             var original = App.DataRepo.GetCollection(_collection.Id.ToString());
 
             if (!string.IsNullOrWhiteSpace(_imageName))
             {
-                if (!string.IsNullOrWhiteSpace(original.Image))
-                {
-                    FileSystemUtils.DeleteImage(original.File);
-                }
-
                 _collection.Image = _imageName;
                 FileSystemUtils.SaveFileFromPath(_file, _imageName, _collection.Id);
                 FileSystemUtils.ClearTempPath();
@@ -115,11 +112,25 @@ namespace Collectio.ViewModels
             if (!_collection.Equals(original))
             {
                 _collection.UpdatedAt = DateTime.Now;
-                App.DataRepo.UpdateCollection(_collection);
+                if (await App.DataRepo.UpdateCollection(_collection))
+                {
+                    if (!string.IsNullOrWhiteSpace(original.Image) && !string.IsNullOrWhiteSpace(_imageName))
+                    {
+                        FileSystemUtils.DeleteImage(original.File);
+                    }
+
+                    await Xamarin.Forms.Shell.Current.GoToAsync("..?refresh=true");
+                }
+                else
+                {
+                    await Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Error, "Strings.UpdateCollectionError",
+                        Strings.Ok);
+                }
+
+                Analytics.TrackEvent("UpdateCollection");
             }
 
-            await Xamarin.Forms.Shell.Current.GoToAsync("..?refresh=true");
-            Analytics.TrackEvent("CreateCollection");
+            IsBusy = false;
         }
     }
 }
