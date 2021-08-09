@@ -205,12 +205,50 @@ namespace Collectio.Views
 
             var original = App.DataRepo.GetItem(_item.Id.ToString(), true);
 
-            foreach (var image in _toDelete)
+            var toDelete = _toDelete.Select(image => _item.Images.Find(elem => elem.File == image)).ToList();
+            var toAdd = _images.Where(image => !_item.Images.Exists(elem => elem.File == image.Key))
+                .Select(image => new ItemImage { ItemId = _item.Id, Image = image.Value.Key }).ToList();
+
+            if (!_item.Equals(original) || toDelete.Count > 0 || toAdd.Count > 0)
+            {
+                _item.UpdatedAt = DateTime.Now;
+
+                if (await App.DataRepo.UpdateItem(_item /*, toAdd, toDelete*/))
+                {
+                    foreach (var image in toDelete)
+                    {
+                        if (await App.DataRepo.RemoveItemImage(image.Id.ToString()))
+                        {
+                            FileSystemUtils.DeleteImage(image.File);
+                        }
+                    }
+
+                    foreach (var image in toAdd)
+                    {
+                        if (await App.DataRepo.AddItemImage(image))
+                        {
+                            FileSystemUtils.SaveFileFromPath(image.TempFile, image.Image, _item.CollectionId,
+                                image.ItemId);
+                        }
+                    }
+
+                    FileSystemUtils.ClearTempPath();
+
+                    Analytics.TrackEvent("EditItem");
+                    await Shell.Current.GoToAsync($"..?collection={_item.CollectionId.ToString()}&refresh=true");
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert(Strings.Error, "Strings.EditItemError", Strings.Ok);
+                }
+            }
+
+            /*foreach (var image in _toDelete)
             {
                 if (_item.Images.Exists(elem => elem.File == image))
                 {
                     var img = _item.Images.Find(elem => elem.File == image);
-                    App.DataRepo.RemoveItemImage(img.Id.ToString());
+                    await App.DataRepo.RemoveItemImage(img.Id.ToString());
                     _item.Images.Remove(img);
                 }
 
@@ -221,7 +259,7 @@ namespace Collectio.Views
                 !_item.Images.Exists(elem => elem.File == image.Key)))
             {
                 FileSystemUtils.SaveFileFromPath(image.Key, image.Value.Key, _item.CollectionId, _item.Id);
-                var itemImage = new ItemImage()
+                var itemImage = new ItemImage
                 {
                     ItemId = _item.Id,
                     Image = image.Value.Key
@@ -234,13 +272,13 @@ namespace Collectio.Views
             if (!_item.Equals(original))
             {
                 _item.UpdatedAt = DateTime.Now;
-                App.DataRepo.UpdateItem(_item);
+                await App.DataRepo.UpdateItem(_item);
             }
 
             FileSystemUtils.ClearTempPath();
 
             await Shell.Current.GoToAsync($"..?collection={_item.CollectionId.ToString()}&refresh=true");
-            Analytics.TrackEvent("EditItem");
+            Analytics.TrackEvent("EditItem");*/
         }
     }
 }
