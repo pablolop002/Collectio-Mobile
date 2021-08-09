@@ -10,11 +10,13 @@ namespace Collectio.Models
 {
     public class Item
     {
-        [PrimaryKey, AutoIncrement] public int Id { get; set; }
+        [PrimaryKey, AutoIncrement, JsonIgnore] public int Id { get; set; }
 
         [Unique] public int? ServerId { get; set; }
 
-        [ForeignKey(typeof(Collection)), Indexed] public int CollectionId { get; set; }
+        [ForeignKey(typeof(Collection)), Indexed, JsonIgnore] public int CollectionId { get; set; }
+        
+        public int? CollectionServerId { get; set; }
 
         [ForeignKey(typeof(Subcategory))] public int SubcategoryId { get; set; }
 
@@ -25,6 +27,24 @@ namespace Collectio.Models
         public string Description { get; set; }
 
         public bool Private { get; set; }
+
+        #region SubcategoryFields
+
+        public string Author { get; set; }
+        
+        public string Color { get; set; }
+        
+        public string Size { get; set; }
+        
+        public string Isbn { get; set; }
+        
+        public string Medium { get; set; }
+        
+        public string Condition { get; set; }
+        
+        public string ScientificName { get; set; }
+
+        #endregion
 
         [Ignore, JsonIgnore] public string PrivateText => Private ? Strings.Private : Strings.Public;
 
