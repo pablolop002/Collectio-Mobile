@@ -333,7 +333,7 @@ namespace Collectio.Utils
 
         public static string GetProfileImage(string fileName)
         {
-            if (string.IsNullOrWhiteSpace(fileName)) return "";
+            if (string.IsNullOrWhiteSpace(fileName)) return null;
 
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
             path = Path.Combine(path, fileName);
@@ -348,7 +348,7 @@ namespace Collectio.Utils
 
         public static string GetCollectionImage(string fileName, int collection)
         {
-            if (string.IsNullOrWhiteSpace(fileName)) return "";
+            if (string.IsNullOrWhiteSpace(fileName)) return null;
 
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
             path = Path.Combine(path, $"Collection{collection.ToString()}");
@@ -364,7 +364,7 @@ namespace Collectio.Utils
 
         public static string GetItemImage(string fileName, int itemId)
         {
-            if (string.IsNullOrWhiteSpace(fileName)) return "";
+            if (string.IsNullOrWhiteSpace(fileName)) return null;
 
             var item = App.DataRepo.GetItem(itemId.ToString());
 
