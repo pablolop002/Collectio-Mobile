@@ -93,7 +93,7 @@
                     <DataTemplate x:DataType="models:CollectionGroup">
                         <Frame HasShadow="False"
                                BackgroundColor="{StaticResource PrimaryColor}"
-                               Padding="5"
+                               Padding="5,10"
                                CornerRadius="5">
                             <Label Text="{Binding Name}"
                                    Style="{StaticResource TitleLabelStyle}"
