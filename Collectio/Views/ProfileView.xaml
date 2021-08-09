@@ -8,7 +8,7 @@
              Title="{Binding Title}"
              Style="{DynamicResource PageStyle}"
              x:DataType="viewModels:ProfileViewModel">
-    
+
     <ContentPage.BindingContext>
         <viewModels:ProfileViewModel />
     </ContentPage.BindingContext>
@@ -45,7 +45,7 @@
                              Grid.Row="0"
                              IsVisible="{Binding LoggedIn}">
                     <ImageButton.Source>
-                        <FileImageSource File="{Binding User.File}" />
+                        <UriImageSource Uri="{Binding User.Image}" />
                     </ImageButton.Source>
                     <ImageButton.Clip>
                         <EllipseGeometry Center="120,120"
@@ -54,17 +54,34 @@
                     </ImageButton.Clip>
                 </ImageButton>
 
-                <StackLayout IsVisible="{Binding LoggedIn}" Grid.Row="1" VerticalOptions="Center">
+                <StackLayout IsVisible="{Binding LoggedIn}"
+                             VerticalOptions="Center"
+                             Grid.Row="1"
+                             Spacing="10">
                     <Entry Text="{Binding User.Nickname}"
+                           IsEnabled="{Binding IsNotBusy}"
                            Placeholder="{x:Static culture:Strings.Nickname}"
                            Style="{StaticResource EntryStyle}" />
+
                     <Entry Text="{Binding User.Mail}"
+                           IsEnabled="{Binding IsNotBusy}"
                            Placeholder="{x:Static culture:Strings.Mail}"
                            Style="{StaticResource EntryStyle}" />
+
+                    <Button Text="{x:Static culture:Strings.Save}"
+                            IsEnabled="{Binding IsNotBusy}"
+                            Command="{Binding SaveUserCommand}"
+                            Style="{StaticResource ButtonStyle}" />
+
+                    <!-- <Button Text="{x:Static culture:Strings.ApiKeys}"
+                            IsEnabled="{Binding IsNotBusy}"
+                            Command="{Binding ApiKeysCommand}"
+                            Style="{StaticResource ButtonStyle}" /> -->
                 </StackLayout>
 
                 <Button IsVisible="{Binding LoggedIn}"
                         Text="{x:Static culture:Strings.Logout}"
+                        Command="{Binding LogOutCommand}"
                         Style="{StaticResource LogoutButtonStyle}"
                         Grid.Row="2" />
 
