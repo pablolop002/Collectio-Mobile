@@ -88,7 +88,7 @@ namespace Collectio.ViewModels
             IsRefreshing = true;
 
             Items.Clear();
-            Items.AddRange(App.DataRepo.GetAllItemsFromCategory(Collection.Id.ToString(), true));
+            Items.AddRange(App.DataRepo.GetAllItemsFromCollection(Collection.Id.ToString(), true));
 
             IsRefreshing = false;
         }
@@ -132,8 +132,10 @@ namespace Collectio.ViewModels
                 Strings.Confirm, Strings.Cancel);
             if (!aux) return;
 
-            App.DataRepo.RemoveItem(item.Id.ToString());
-            FileSystemUtils.DeleteItem(item.CollectionId.ToString(), item.Id.ToString());
+            if (await App.DataRepo.RemoveItem(item.Id.ToString()))
+            {
+                FileSystemUtils.DeleteItem(item.CollectionId.ToString(), item.Id.ToString());
+            }
 
             IsRefreshing = true;
         }
