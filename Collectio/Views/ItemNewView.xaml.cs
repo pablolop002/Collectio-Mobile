@@ -214,7 +214,6 @@ namespace Collectio.Views
                 Private = Private.IsChecked,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
-                Images = new List<ItemImage>(),
                 SubcategoryId = ((Subcategory)SubcategoryPicker.SelectedItem).Id
             };
 
@@ -233,6 +232,8 @@ namespace Collectio.Views
                 await Shell.Current.DisplayAlert(Strings.Error, "Strings.CollectionSavedError", Strings.Ok);
                 return;
             }
+
+            item.Images = new List<ItemImage>();
 
             foreach (var itemImage in _images.Select(image => new ItemImage
             {
