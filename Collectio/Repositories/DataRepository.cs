@@ -1434,15 +1434,21 @@ namespace Collectio.Repositories
             }
 
             if (collection == null) return true;
+            
+            FileSystemUtils.DeleteCollection(collection.Id.ToString());
 
-            foreach (var item in collection.Items)
+            if (collection.Items != null)
             {
-                foreach (var itemImage in item.Images)
+                foreach (var item in collection.Items)
                 {
-                    _database.Delete(itemImage);
-                }
+                    if (item.Images == null) continue;
+                    foreach (var itemImage in item.Images)
+                    {
+                        _database.Delete(itemImage);
+                    }
 
-                _database.Delete(item);
+                    _database.Delete(item);
+                }
             }
 
             _database.Delete(collection);
@@ -1490,7 +1496,8 @@ namespace Collectio.Repositories
                 var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonConvert.SerializeObject(item));
                 if (form != null && form.ContainsKey("CollectionServerId"))
                 {
-                    if (string.IsNullOrWhiteSpace(form["CollectionServerId"]) || !form["CollectionServerId"].Equals(collection.ServerId.ToString()))
+                    if (string.IsNullOrWhiteSpace(form["CollectionServerId"]) ||
+                        !form["CollectionServerId"].Equals(collection.ServerId.ToString()))
                     {
                         form["CollectionServerId"] = collection.ServerId.ToString();
                         item.CollectionServerId = collection.ServerId;
@@ -1569,7 +1576,8 @@ namespace Collectio.Repositories
 
                 if (form.ContainsKey("CollectionServerId"))
                 {
-                    if (string.IsNullOrWhiteSpace(form["CollectionServerId"]) || !form["CollectionServerId"].Equals(collection.ServerId.ToString()))
+                    if (string.IsNullOrWhiteSpace(form["CollectionServerId"]) ||
+                        !form["CollectionServerId"].Equals(collection.ServerId.ToString()))
                     {
                         form["CollectionServerId"] = collection.ServerId.ToString();
                         item.CollectionServerId = collection.ServerId;
@@ -1660,7 +1668,8 @@ namespace Collectio.Repositories
                                         JsonConvert.SerializeObject(itemImage));
                                 if (itemImageForm != null && itemImageForm.ContainsKey("ItemServerId"))
                                 {
-                                    if (string.IsNullOrWhiteSpace(itemImageForm["ItemServerId"]) ||!itemImageForm["ItemServerId"].Equals(item.ServerId.ToString()))
+                                    if (string.IsNullOrWhiteSpace(itemImageForm["ItemServerId"]) ||
+                                        !itemImageForm["ItemServerId"].Equals(item.ServerId.ToString()))
                                     {
                                         itemImageForm["ItemServerId"] = item.ServerId.ToString();
                                         itemImage.ItemServerId = item.ServerId;
@@ -1731,7 +1740,7 @@ namespace Collectio.Repositories
 
         public async Task<bool> RemoveItem(string id)
         {
-            var item = GetItem(id);
+            var item = GetItem(id, true);
 
             if (LoggedIn && item.ServerId != null)
             {
@@ -1743,6 +1752,16 @@ namespace Collectio.Repositories
                     return false;
                 }
             }
+
+            if (item.Images != null)
+            {
+                foreach (var itemImage in item.Images)
+                {
+                    _database.Delete(itemImage);
+                }
+            }
+            
+            FileSystemUtils.DeleteItem(item.CollectionId.ToString(), item.Id.ToString());
 
             _database.Delete(item);
             return true;
@@ -1804,12 +1823,14 @@ namespace Collectio.Repositories
 
                 if (response is { Status: "ok" })
                 {
+                    FileSystemUtils.DeleteImage(itemImage.File);
                     _database.Delete(itemImage);
                     return true;
                 }
             }
             else
             {
+                FileSystemUtils.DeleteImage(itemImage.File);
                 _database.Delete(itemImage);
                 return true;
             }
