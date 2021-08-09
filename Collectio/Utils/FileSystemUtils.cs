@@ -315,12 +315,12 @@ namespace Collectio.Utils
 
         #region Get
 
-        public static string GetGroupImage(string fileName)
+        public static string GetCategoryImage(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName)) return "";
 
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
-            path = Path.Combine(path, "Groups");
+            path = Path.Combine(path, "Categories");
             path = Path.Combine(path, fileName);
 
             if (!File.Exists(path))
