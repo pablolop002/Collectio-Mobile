@@ -186,8 +186,15 @@ namespace Collectio.ViewModels
                 Strings.Confirm, Strings.Cancel);
             if (!aux) return;
 
-            await App.DataRepo.RemoveCollection(collection.Id.ToString());
-            FileSystemUtils.DeleteCollection(collection.Id.ToString());
+            if (await App.DataRepo.RemoveCollection(collection.Id.ToString()))
+            {
+                FileSystemUtils.DeleteCollection(collection.Id.ToString());
+            }
+            else
+            {
+                await Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Error, "Strings.DeleteCollectionError",
+                    Strings.Ok);
+            }
 
             IsBusy = true;
         }
