@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -40,7 +39,5 @@ namespace Collectio.Models
                 };
             }
         }
-        
-        [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableCollection<Item> Items { get; set; }
     }
 }

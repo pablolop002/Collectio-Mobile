@@ -9,16 +9,19 @@ namespace Collectio.Models
     public class Category
     {
         [PrimaryKey, AutoIncrement] public int Id { get; set; }
-        
+
         public string Image { get; set; }
 
         #region Translations
-        
+
         public string Spanish { get; set; }
+
         public string English { get; set; }
+
         public string Catalan { get; set; }
+
         public string Basque { get; set; }
-        
+
         #endregion
 
         [Ignore, JsonIgnore] public string Name
@@ -36,7 +39,5 @@ namespace Collectio.Models
         }
 
         [Ignore, JsonIgnore] public string File => FileSystemUtils.GetGroupImage(Image);
-        
-        [OneToMany(CascadeOperations = CascadeOperation.All)] public ObservableRangeCollection<Collection> Collections { get; set; }
     }
 }
