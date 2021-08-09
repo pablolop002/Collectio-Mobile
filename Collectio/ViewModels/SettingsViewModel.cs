@@ -12,15 +12,19 @@ namespace Collectio.ViewModels
     public class SettingsViewModel : BaseViewModel
     {
         public ICommand CommentsPageCommand { get; }
-        
+
         public ICommand DeleteCacheCommand { get; }
-        
+
         public ICommand DeleteDataCommand { get; }
-        
+
         public ICommand MakeBackupCommand { get; }
-        
+
         public ICommand RestoreBackupCommand { get; }
-        
+
+        //public ICommand SupportCommand { get; }
+
+        public ICommand SyncCategoriesCommand { get; }
+
         public bool AppCenter
         {
             get => Preferences.Get("AppCenter", true);
@@ -39,6 +43,17 @@ namespace Collectio.ViewModels
             DeleteDataCommand = new AsyncCommand(DeleteData);
             MakeBackupCommand = new Command(MakeBackup);
             RestoreBackupCommand = new Command(RestoreBackup);
+            //SupportCommand = new AsyncCommand(Support);
+            SyncCategoriesCommand = new AsyncCommand(SyncCategories);
+        }
+
+        private async Task SyncCategories()
+        {
+            await Xamarin.Forms.Shell.Current.DisplayAlert(Strings.SyncCategories,
+                await App.DataRepo.CreateOrUpdateCategories()
+                    ? Strings.CategoriesSynced
+                    : Strings.CategoriesNotSynced, Strings.Ok);
+            AppCenterUtils.TrackAction("SyncCategories");
         }
 
         private void MakeBackup()
@@ -121,5 +136,53 @@ namespace Collectio.ViewModels
         {
             Xamarin.Forms.Shell.Current.GoToAsync("comments");
         }
+
+        /*private async Task Support()
+        {
+            var billing = CrossInAppBilling.Current;
+            try
+            {
+                var connected = await billing.ConnectAsync();
+                if (!connected)
+                    return;
+
+                var productsInfo = (await billing.GetProductInfoAsync(ItemType.InAppPurchase)).ToList();
+                var response = await Xamarin.Forms.Shell.Current.DisplayActionSheet(Strings.Support, Strings.Cancel,
+                    null,
+                    productsInfo.Select(productInfo => $"{productInfo.Name} - {productInfo.LocalizedPrice}").ToArray());
+
+                if (response == null || response == Strings.Cancel) return;
+
+                var product = productsInfo.First(p => p.LocalizedPrice == response);
+
+                var purchase = await billing.PurchaseAsync(product.ProductId, ItemType.InAppPurchase);
+
+                if (purchase != null && purchase.State == PurchaseState.Purchased)
+                {
+                    //purchased, we can now consume the item or do it later
+
+                    //If we are on iOS we are done, else try to consume the purchase
+                    if (DeviceInfo.Platform == DevicePlatform.iOS || DeviceInfo.Platform == DevicePlatform.macOS)
+                        return;
+
+                    var consumedItem = await CrossInAppBilling.Current.ConsumePurchaseAsync(purchase.ProductId,
+                        purchase.PurchaseToken);
+
+                    if (consumedItem)
+                    {
+                        //Consumed!!
+                        AppCenterUtils.TrackAction("Donation");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AppCenterUtils.ReportException(ex, "Donations");
+            }
+            finally
+            {
+                await billing.DisconnectAsync();
+            }
+        }*/
     }
 }
