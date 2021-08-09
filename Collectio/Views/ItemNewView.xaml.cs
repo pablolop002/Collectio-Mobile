@@ -218,19 +218,38 @@ namespace Collectio.Views
                 SubcategoryId = ((Subcategory)SubcategoryPicker.SelectedItem).Id
             };
 
-            App.DataRepo.AddItem(ref item);
-
-            foreach (var itemImage in from image in _images
-                let correct = FileSystemUtils.SaveFileFromPath(image.Key, image.Value.Key, item.CollectionId, item.Id)
-                where correct
-                select new ItemImage()
-                {
-                    ItemId = item.Id,
-                    Image = image.Value.Key
-                })
+            /*foreach (var itemImage in _images.Select(image => new ItemImage
             {
-                App.DataRepo.AddItemImage(itemImage);
+                Image = image.Value.Key
+            }))
+            {
+                item.Images.Add(itemImage);
+            }*/
+
+            var itemId = await App.DataRepo.AddItem(item);
+
+            if (itemId == -1)
+            {
+                await Shell.Current.DisplayAlert(Strings.Error, "Strings.CollectionSavedError", Strings.Ok);
+                return;
             }
+
+            foreach (var itemImage in _images.Select(image => new ItemImage
+            {
+                Image = image.Value.Key,
+                ItemId = itemId
+            }))
+            {
+                if (await App.DataRepo.AddItemImage(itemImage))
+                {
+                    FileSystemUtils.SaveFileFromPath(itemImage.TempFile, itemImage.Image, item.CollectionId, itemId);
+                }
+            }
+
+            /*foreach (var image in item.Images)
+            {
+                FileSystemUtils.SaveFileFromPath(image.TempFile, image.Image, item.CollectionId, itemId);
+            }*/
 
             FileSystemUtils.ClearTempPath();
 
