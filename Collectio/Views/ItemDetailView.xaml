@@ -26,10 +26,12 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
+                
                 <CarouselView Grid.Row="0"
                               ItemsSource="{Binding Images}"
                               IndicatorView="Indicator"
                               Loop="False">
+                    
                     <CarouselView.ItemTemplate>
                         <DataTemplate x:DataType="models:ItemImage">
                             <Frame Style="{StaticResource ImageFrameStyle}">
@@ -38,7 +40,9 @@
                             </Frame>
                         </DataTemplate>
                     </CarouselView.ItemTemplate>
+                    
                 </CarouselView>
+                
                 <IndicatorView x:Name="Indicator"
                                Grid.Row="1"
                                Style="{StaticResource IndicatorViewStyle}" />
