@@ -12,6 +12,8 @@ namespace Collectio.Models
         [ForeignKey(typeof(Category))] public int CategoryId { get; set; }
         
         public string Image { get; set; }
+        
+        public string Fields { get; set; }
 
         #region Translations
         
