@@ -60,7 +60,9 @@
                         <Label Text="{x:Static culture:Strings.Private}"
                                Style="{StaticResource LabelStyle}"
                                HorizontalOptions="StartAndExpand" />
-                        <CheckBox IsChecked="{Binding Private}" Color="{StaticResource PrimaryColor}" />
+                        <CheckBox x:Name="PrivateSelector"
+                                  IsChecked="{Binding Private}"
+                                  Color="{StaticResource PrimaryColor}" />
                     </StackLayout>
                 </StackLayout>
             </Grid>

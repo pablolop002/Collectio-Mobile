@@ -32,6 +32,13 @@ namespace Collectio.Views
             set
             {
                 BindingContext = _item = App.DataRepo.GetItem(value, true);
+
+                if (App.DataRepo.GetCollection(_item.CollectionId.ToString()).Private)
+                {
+                    PrivateSelector.IsEnabled = false;
+                    PrivateSelector.IsChecked = true;
+                }
+
                 foreach (var image in _item.Images)
                 {
                     _images.Add(new KeyValuePair<string, KeyValuePair<string, ImageButton>>(image.File,
@@ -43,7 +50,7 @@ namespace Collectio.Views
                             HeightRequest = _size
                         })));
                     _images[_images.Count - 1].Value.Value.Clicked += Delete_OnClicked;
-                    
+
                     ImagesGroup.Children.Add(_images[_images.Count - 1].Value.Value, (_images.Count - 1) % _maxSize,
                         (_images.Count - 1) / _maxSize);
                 }
@@ -105,7 +112,7 @@ namespace Collectio.Views
                                 await stream.CopyToAsync(memStream);
                                 var image = FileSystemUtils.TempSave(memStream, photo.FileName);
                                 _images.Add(new KeyValuePair<string, KeyValuePair<string, ImageButton>>(image,
-                                    new KeyValuePair<string, ImageButton>(photo.FileName, new ImageButton()
+                                    new KeyValuePair<string, ImageButton>(photo.FileName, new ImageButton
                                     {
                                         Source = image,
                                         Aspect = Aspect.AspectFill,
@@ -141,7 +148,7 @@ namespace Collectio.Views
                                 await stream.CopyToAsync(memStream);
                                 var image = FileSystemUtils.TempSave(memStream, photo.FileName);
                                 _images.Add(new KeyValuePair<string, KeyValuePair<string, ImageButton>>(image,
-                                    new KeyValuePair<string, ImageButton>(photo.FileName, new ImageButton()
+                                    new KeyValuePair<string, ImageButton>(photo.FileName, new ImageButton
                                     {
                                         Source = image,
                                         Aspect = Aspect.AspectFill,
