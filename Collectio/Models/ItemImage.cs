@@ -7,11 +7,13 @@ namespace Collectio.Models
 {
     public class ItemImage
     {
-        [PrimaryKey, AutoIncrement] public int Id { get; set; }
+        [PrimaryKey, AutoIncrement, JsonIgnore] public int Id { get; set; }
 
         [Unique] public int? ServerId { get; set; }
 
-        [ForeignKey(typeof(Item)), Indexed] public int ItemId { get; set; }
+        [ForeignKey(typeof(Item)), Indexed, JsonIgnore] public int ItemId { get; set; }
+
+        public int? ItemServerId { get; set; }
 
         public string Image { get; set; }
 
@@ -19,7 +21,7 @@ namespace Collectio.Models
 
         [Ignore, JsonIgnore]
         public string TempFile => System.IO.Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, "Temp", Image);
-        
+
         public override bool Equals(object obj)
         {
             return obj is ItemImage other && Equals(other);
