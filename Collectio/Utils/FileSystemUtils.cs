@@ -338,12 +338,7 @@ namespace Collectio.Utils
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
             path = Path.Combine(path, fileName);
 
-            if (!File.Exists(path))
-            {
-                //SaveFileFromStream("", fileName);
-            }
-
-            return path;
+            return !File.Exists(path) ? fileName.Equals("default_image.png") ? null : "" : path;
         }
 
         public static string GetCollectionImage(string fileName, int collection)
@@ -354,12 +349,7 @@ namespace Collectio.Utils
             path = Path.Combine(path, $"Collection{collection.ToString()}");
             path = Path.Combine(path, fileName);
 
-            if (!File.Exists(path))
-            {
-                //SaveFileFromStream("", fileName, collection);
-            }
-
-            return path;
+            return !File.Exists(path) ? "" : path;
         }
 
         public static string GetItemImage(string fileName, int itemId)
@@ -373,12 +363,7 @@ namespace Collectio.Utils
             path = Path.Combine(path, $"Item{itemId.ToString()}");
             path = Path.Combine(path, fileName);
 
-            if (!File.Exists(path))
-            {
-                //SaveFileFromStream("", fileName, item.CollectionId, itemId);
-            }
-
-            return path;
+            return !File.Exists(path) ? "" : path;
         }
 
         #endregion
