@@ -11,6 +11,7 @@ namespace Collectio.ViewModels
     public class ItemsViewModel : BaseViewModel
     {
         private bool _isRefreshing;
+        private bool _owner = true;
         private Collection _collection;
         private Item _selectedItem;
 
@@ -25,6 +26,14 @@ namespace Collectio.ViewModels
         public ICommand DuplicateCommand { get; }
 
         public ICommand EditCommand { get; }
+
+        public ICommand ShareCommand { get; }
+
+        public bool Owner
+        {
+            get => _owner;
+            set => SetProperty(ref _owner, value);
+        }
 
         public Collection Collection
         {
@@ -46,10 +55,9 @@ namespace Collectio.ViewModels
                 if (value != null)
                 {
                     Xamarin.Forms.Shell.Current.GoToAsync($"item?item={value.Id.ToString()}");
-                    value = null;
                 }
 
-                _selectedItem = value;
+                SetProperty(ref _selectedItem, null);
                 OnPropertyChanged();
             }
         }
@@ -72,6 +80,7 @@ namespace Collectio.ViewModels
             DuplicateCommand = new Command<Item>(Duplicate);
             EditCommand = new Command<Item>(Edit);
             RefreshCommand = new Command(RefreshEvent);
+            ShareCommand = new AsyncCommand(Share);
         }
 
         private void RefreshEvent()
@@ -87,7 +96,7 @@ namespace Collectio.ViewModels
         private async Task Add()
         {
             var answer = await Xamarin.Forms.Shell.Current.DisplayActionSheet(Strings.NewItem, Strings.Cancel, null,
-                Strings.Create, Strings.Import, Strings.Duplicate);
+                Strings.Create, /*Strings.Import,*/ Strings.Duplicate);
 
             if (answer == null || answer == Strings.Cancel) return;
 
@@ -95,11 +104,11 @@ namespace Collectio.ViewModels
             {
                 await Xamarin.Forms.Shell.Current.GoToAsync($"newItem?collection={Collection.Id.ToString()}");
             }
-            else if (answer == Strings.Import)
+            /*else if (answer == Strings.Import)
             {
                 await Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Import, "Próximamente", Strings.Ok);
                 //await Shell.Current.GoToAsync($"importItem?collection={Collection.Id.ToString()}");
-            }
+            }*/
             else
             {
                 await Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Duplicate, Strings.DuplicateMessage, Strings.Ok);
@@ -127,6 +136,28 @@ namespace Collectio.ViewModels
             FileSystemUtils.DeleteItem(item.CollectionId.ToString(), item.Id.ToString());
 
             IsRefreshing = true;
+        }
+
+        private async Task Share()
+        {
+            if (_collection.ServerId == null)
+            {
+                await Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Error, "Strings.NotSyncedCollection", Strings.Ok);
+                return;
+            }
+
+            if (_collection.Private)
+            {
+                await Xamarin.Forms.Shell.Current.DisplayAlert(Strings.Error, "Strings.PrivateCollection", Strings.Ok);
+                return;
+            }
+
+            await Xamarin.Essentials.Share.RequestAsync(new Xamarin.Essentials.ShareTextRequest
+            {
+                Title = "Share Collection",
+                Uri =
+                    $"collectio://collection?userId={Collection.UserId.ToString()}&collectionId={Collection.ServerId.ToString()}"
+            });
         }
     }
 }
