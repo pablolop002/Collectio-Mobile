@@ -392,11 +392,19 @@ namespace Collectio.Utils
             return true;
         }
 
-        public static bool DeleteAllData(string databasePath)
+        public static bool DeleteAllData()
         {
             var path = Path.Combine(FileSystem.AppDataDirectory, "Images");
-            Directory.Delete(path, true);
-            File.Delete(databasePath);
+
+            try
+            {
+                Directory.Delete(path, true);
+            }
+            catch (Exception ex)
+            {
+                AppCenterUtils.ReportException(ex, "DeleteFolder");
+            }
+
             return true;
         }
 
