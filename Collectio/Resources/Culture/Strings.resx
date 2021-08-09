@@ -79,7 +79,7 @@
     </data>
     <data name="NoGroups" xml:space="preserve">
         <value>Ups, parece que ocurrió un problema.
-No hay grupos disponibles</value>
+No hay categorías disponibles</value>
     </data>
     <data name="EditCollection" xml:space="preserve">
         <value>Editar colección</value>
@@ -233,5 +233,29 @@ No hay grupos disponibles</value>
     </data>
     <data name="LoginMicrosoft" xml:space="preserve">
         <value>Iniciar sesión con Microsoft</value>
+    </data>
+    <data name="Support" xml:space="preserve">
+        <value>Donación</value>
+    </data>
+    <data name="SupportDescription" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Picker" xml:space="preserve">
+        <value>Selector de archivos</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Guardar</value>
+    </data>
+    <data name="SyncCategories" xml:space="preserve">
+        <value>Sincronizar categorías</value>
+    </data>
+    <data name="SyncCategoriesDescription" xml:space="preserve">
+        <value>Si no aparecen categorías o subcategorias, utiliza este botón para forzar la sincronización con el servidor</value>
+    </data>
+    <data name="CategoriesSynced" xml:space="preserve">
+        <value>Las categorías y subcategorias se han sincronizado correctamente</value>
+    </data>
+    <data name="CategoriesNotSynced" xml:space="preserve">
+        <value>Error al sincronizar las categorías y subcategorias. Prueba de nuevo más tarde</value>
     </data>
 </root>

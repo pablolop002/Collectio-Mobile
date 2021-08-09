@@ -470,5 +470,53 @@ namespace Collectio.Resources.Culture {
                 return ResourceManager.GetString("LoginMicrosoft", resourceCulture);
             }
         }
+        
+        internal static string Support {
+            get {
+                return ResourceManager.GetString("Support", resourceCulture);
+            }
+        }
+        
+        internal static string SupportDescription {
+            get {
+                return ResourceManager.GetString("SupportDescription", resourceCulture);
+            }
+        }
+        
+        internal static string Picker {
+            get {
+                return ResourceManager.GetString("Picker", resourceCulture);
+            }
+        }
+        
+        internal static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        internal static string SyncCategories {
+            get {
+                return ResourceManager.GetString("SyncCategories", resourceCulture);
+            }
+        }
+        
+        internal static string SyncCategoriesDescription {
+            get {
+                return ResourceManager.GetString("SyncCategoriesDescription", resourceCulture);
+            }
+        }
+        
+        internal static string CategoriesSynced {
+            get {
+                return ResourceManager.GetString("CategoriesSynced", resourceCulture);
+            }
+        }
+        
+        internal static string CategoriesNotSynced {
+            get {
+                return ResourceManager.GetString("CategoriesNotSynced", resourceCulture);
+            }
+        }
     }
 }

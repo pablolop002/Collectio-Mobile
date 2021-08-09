@@ -217,12 +217,24 @@
     </data>
     <data name="NoGroups" xml:space="preserve">
         <value>Oops, it seems that a problem occurred.
-There are no available groups</value>
+There are no available categories</value>
     </data>
     <data name="RestoreBackupCorrect" xml:space="preserve">
         <value>Backup copy has been restored. Please restart the application or refresh the collection list</value>
     </data>
     <data name="RestoreBackupDescription" xml:space="preserve">
         <value>Restore the latest manual backup. Warning, any application data that is not backed up will be deleted!</value>
+    </data>
+    <data name="Support" xml:space="preserve">
+        <value>Donation</value>
+    </data>
+    <data name="Picker" xml:space="preserve">
+        <value>File picker</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="SyncCategories" xml:space="preserve">
+        <value>Sync categories</value>
     </data>
 </root>
