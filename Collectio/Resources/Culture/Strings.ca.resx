@@ -78,7 +78,7 @@
     </data>
     <data name="NoGroups" xml:space="preserve">
         <value>Ups, parece que ocurrió un problema.
-No hay grupos disponibles.</value>
+No hay categorías disponibles</value>
     </data>
     <data name="EditCollection" xml:space="preserve">
         <value>Editar colección</value>
@@ -108,7 +108,7 @@ No hay grupos disponibles.</value>
         <value>Eliminar una colección implica la eliminación de lodos los elementos que contiene y no podrás recuperarlos</value>
     </data>
     <data name="DeleteItem" xml:space="preserve">
-        <value>Eliminar un elemento y sus imágenes e implica que no podrás recuperarlo</value>
+        <value>Eliminar un elemento y sus imágenes. Esto implica que no podrás recuperarlo</value>
     </data>
     <data name="Edit" xml:space="preserve">
         <value>Editar</value>
@@ -147,7 +147,7 @@ No hay grupos disponibles.</value>
         <value>Comentarios</value>
     </data>
     <data name="CommentsDescription" xml:space="preserve">
-        <value>Si tienes una idea o quieres reportar un fallo en la aplicación este es tu botón. Todo lo que implique mejorar es siempre bienvenido :)</value>
+        <value>Si tienes una idea o quieres reportar un fallo en la aplicación, este es tu botón. Todo lo que implique mejorar es siempre bienvenido :)</value>
     </data>
     <data name="EmptyItemName" xml:space="preserve">
         <value>El nombre del elemento no puede estar vacío</value>
@@ -204,7 +204,7 @@ No hay grupos disponibles.</value>
         <value>Busca entre los elementos de la colección</value>
     </data>
     <data name="LoginBenefit" xml:space="preserve">
-        <value>Iniciando sesión disfrutaras de una sincronización transparente de todas tus colecciones y sus elementos entre todos tus dispositivos.</value>
+        <value>Iniciando sesión disfrutaras de una sincronización transparente de todas tus colecciones y sus elementos entre todos tus dispositivos</value>
     </data>
     <data name="Mail" xml:space="preserve">
         <value>Correo</value>
@@ -216,21 +216,45 @@ No hay grupos disponibles.</value>
         <value>Imagen de perfil</value>
     </data>
     <data name="CommentAddition" xml:space="preserve">
-        <value>Proponer una nueva caracteristica/función</value>
+        <value>Proponer una nueva característica/función</value>
     </data>
     <data name="CommentBugReport" xml:space="preserve">
         <value>Reportar un fallo</value>
     </data>
     <data name="CommentExplain" xml:space="preserve">
-        <value>A continuación describe tu problema o idea de nueva caracteristica:</value>
+        <value>A continuación describe tu problema o idea de nueva característica:</value>
     </data>
     <data name="CommentNotComplete" xml:space="preserve">
         <value>No has seleccionado tipo de comentario</value>
     </data>
     <data name="CategoryNotSelected" xml:space="preserve">
-        <value>Para crear una colección primero tienes que seleccionar la categoria a la que pertenece.</value>
+        <value>Para crear una colección primero tienes que seleccionar la categoría a la que pertenece</value>
     </data>
     <data name="LoginMicrosoft" xml:space="preserve">
         <value>Iniciar sesión con Microsoft</value>
+    </data>
+    <data name="Support" xml:space="preserve">
+        <value>Donación</value>
+    </data>
+    <data name="SupportDescription" xml:space="preserve">
+        <value></value>
+    </data>
+    <data name="Picker" xml:space="preserve">
+        <value>Selector de archivos</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Guardar</value>
+    </data>
+    <data name="SyncCategories" xml:space="preserve">
+        <value>Sincronizar categorías</value>
+    </data>
+    <data name="SyncCategoriesDescription" xml:space="preserve">
+        <value>Si no aparecen categorías o subcategorias, utiliza este botón para forzar la sincronización con el servidor</value>
+    </data>
+    <data name="CategoriesSynced" xml:space="preserve">
+        <value>Las categorías y subcategorias se han sincronizado correctamente</value>
+    </data>
+    <data name="CategoriesNotSynced" xml:space="preserve">
+        <value>Error al sincronizar las categorías y subcategorias. Prueba de nuevo más tarde</value>
     </data>
 </root>
