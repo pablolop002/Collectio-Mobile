@@ -58,12 +58,6 @@
     </Shell.SearchHandler>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding SyncCommand}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconSync}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-
         <ToolbarItem Command="{Binding AddCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="FA-S" Glyph="{StaticResource IconAdd}" />
