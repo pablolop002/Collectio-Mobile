@@ -69,6 +69,22 @@
                         Command="{Binding DeleteDataCommand}"
                         Style="{StaticResource ButtonStyle}" />
 
+                <Label Text="{x:Static culture:Strings.SyncCategories}"
+                       Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.SyncCategoriesDescription}"
+                       Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.SyncCategories}"
+                        Command="{Binding SyncCategoriesCommand}"
+                        Style="{StaticResource ButtonStyle}" />
+
+                <!-- <Label Text="{x:Static culture:Strings.Support}"
+                       Style="{StaticResource TitleLabelStyle}" />
+                <Label Text="{x:Static culture:Strings.SupportDescription}"
+                       Style="{StaticResource LabelStyle}" />
+                <Button Text="{x:Static culture:Strings.Support}"
+                        Command="{Binding SupportCommand}"
+                        Style="{StaticResource ButtonStyle}" /> -->
+
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
