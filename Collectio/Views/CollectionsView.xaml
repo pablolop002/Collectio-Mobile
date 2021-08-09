@@ -247,6 +247,7 @@
                     <Grid>
                         <Label Text="{x:Static culture:Strings.NoCollections}"
                                Style="{StaticResource LabelStyle}"
+                               HorizontalTextAlignment="Center"
                                HorizontalOptions="Center" />
                     </Grid>
                 </CollectionView.EmptyView>
