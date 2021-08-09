@@ -1,8 +1,6 @@
 using Collectio.Utils;
-using MvvmHelpers;
 using Newtonsoft.Json;
 using SQLite;
-using SQLiteNetExtensions.Attributes;
 
 namespace Collectio.Models
 {
