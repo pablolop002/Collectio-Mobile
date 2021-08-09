@@ -1490,7 +1490,7 @@ namespace Collectio.Repositories
                 var form = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonConvert.SerializeObject(item));
                 if (form != null && form.ContainsKey("CollectionServerId"))
                 {
-                    if (!form["CollectionServerId"].Equals(collection.ServerId.ToString()))
+                    if (string.IsNullOrWhiteSpace(form["CollectionServerId"]) || !form["CollectionServerId"].Equals(collection.ServerId.ToString()))
                     {
                         form["CollectionServerId"] = collection.ServerId.ToString();
                         item.CollectionServerId = collection.ServerId;
@@ -1569,7 +1569,7 @@ namespace Collectio.Repositories
 
                 if (form.ContainsKey("CollectionServerId"))
                 {
-                    if (!form["CollectionServerId"].Equals(collection.ServerId.ToString()))
+                    if (string.IsNullOrWhiteSpace(form["CollectionServerId"]) || !form["CollectionServerId"].Equals(collection.ServerId.ToString()))
                     {
                         form["CollectionServerId"] = collection.ServerId.ToString();
                         item.CollectionServerId = collection.ServerId;
@@ -1660,7 +1660,7 @@ namespace Collectio.Repositories
                                         JsonConvert.SerializeObject(itemImage));
                                 if (itemImageForm != null && itemImageForm.ContainsKey("ItemServerId"))
                                 {
-                                    if (!itemImageForm["ItemServerId"].Equals(item.ServerId.ToString()))
+                                    if (string.IsNullOrWhiteSpace(itemImageForm["ItemServerId"]) ||!itemImageForm["ItemServerId"].Equals(item.ServerId.ToString()))
                                     {
                                         itemImageForm["ItemServerId"] = item.ServerId.ToString();
                                         itemImage.ItemServerId = item.ServerId;
