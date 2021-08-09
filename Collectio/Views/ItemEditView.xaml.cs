@@ -191,6 +191,18 @@ namespace Collectio.Views
 
         private async void Done_OnClicked(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(_item.Name))
+            {
+                await Shell.Current.DisplayAlert(Strings.Error, Strings.EmptyItemName, Strings.Ok);
+                return;
+            }
+
+            if (SubcategoryPicker.SelectedIndex == -1)
+            {
+                await Shell.Current.DisplayAlert(Strings.Error, "Strings.SubcategoryNotSelected", Strings.Ok);
+                return;
+            }
+
             var original = App.DataRepo.GetItem(_item.Id.ToString(), true);
 
             foreach (var image in _toDelete)
