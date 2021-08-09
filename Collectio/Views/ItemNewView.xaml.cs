@@ -23,9 +23,10 @@ namespace Collectio.Views
         private readonly double _size;
         private readonly int _maxSize = 3;
         private Collection _collection;
+
         private readonly List<KeyValuePair<string, KeyValuePair<string, ImageButton>>> _images =
             new List<KeyValuePair<string, KeyValuePair<string, ImageButton>>>(6);
-        
+
         private static int NewItemUsage
         {
             get => Preferences.Get(nameof(NewItemUsage), 0);
@@ -39,6 +40,11 @@ namespace Collectio.Views
                 _collection = App.DataRepo.GetCollection(Uri.UnescapeDataString(value));
                 SubcategoryPicker.ItemsSource =
                     new List<Subcategory>(App.DataRepo.GetSubcategoriesByCategoryId(_collection.CategoryId.ToString()));
+                if (_collection.Private)
+                {
+                    Private.IsChecked = true;
+                    Private.IsEnabled = false;
+                }
             }
         }
 
@@ -53,14 +59,14 @@ namespace Collectio.Views
                 foreach (var image in item.Images)
                 {
                     _images.Add(new KeyValuePair<string, KeyValuePair<string, ImageButton>>(image.File,
-                        new KeyValuePair<string, ImageButton>(image.Image, new ImageButton()
+                        new KeyValuePair<string, ImageButton>(image.Image, new ImageButton
                         {
                             Source = image.File,
                             Aspect = Aspect.AspectFill,
                             WidthRequest = _size,
                             HeightRequest = _size
                         })));
-                    _images[_images.Count - 1].Value.Value.Clicked += Delete_OnClicked; 
+                    _images[_images.Count - 1].Value.Value.Clicked += Delete_OnClicked;
                     ImagesGroup.Children.Add(_images[_images.Count - 1].Value.Value, (_images.Count - 1) % _maxSize,
                         (_images.Count - 1) / _maxSize);
                 }
@@ -86,7 +92,7 @@ namespace Collectio.Views
         {
             if (_images.Count > 5)
             {
-                await Shell.Current.DisplayAlert(Strings.Error, "Limit Reached", Strings.Ok);
+                await Shell.Current.DisplayAlert(Strings.Error, "Strings.ItemImagesLimit", Strings.Ok);
                 return;
             }
 
@@ -110,7 +116,7 @@ namespace Collectio.Views
                                 await stream.CopyToAsync(memStream);
                                 var image = FileSystemUtils.TempSave(memStream, photo.FileName);
                                 _images.Add(new KeyValuePair<string, KeyValuePair<string, ImageButton>>(image,
-                                    new KeyValuePair<string, ImageButton>(photo.FileName, new ImageButton()
+                                    new KeyValuePair<string, ImageButton>(photo.FileName, new ImageButton
                                     {
                                         Source = image,
                                         Aspect = Aspect.AspectFill,
@@ -146,7 +152,7 @@ namespace Collectio.Views
                                 await stream.CopyToAsync(memStream);
                                 var image = FileSystemUtils.TempSave(memStream, photo.FileName);
                                 _images.Add(new KeyValuePair<string, KeyValuePair<string, ImageButton>>(image,
-                                    new KeyValuePair<string, ImageButton>(photo.FileName, new ImageButton()
+                                    new KeyValuePair<string, ImageButton>(photo.FileName, new ImageButton
                                     {
                                         Source = image,
                                         Aspect = Aspect.AspectFill,
@@ -194,6 +200,12 @@ namespace Collectio.Views
                 return;
             }
 
+            if (SubcategoryPicker.SelectedIndex == -1)
+            {
+                await Shell.Current.DisplayAlert(Strings.Error, "Strings.SubcategoryNotSelected", Strings.Ok);
+                return;
+            }
+
             var item = new Item
             {
                 Name = Name.Text,
@@ -202,7 +214,8 @@ namespace Collectio.Views
                 Private = Private.IsChecked,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
-                SubcategoryId = SubcategoryPicker.SelectedIndex != -1 ? ((Subcategory) SubcategoryPicker.SelectedItem).Id : -1
+                Images = new List<ItemImage>(),
+                SubcategoryId = ((Subcategory)SubcategoryPicker.SelectedItem).Id
             };
 
             App.DataRepo.AddItem(ref item);
@@ -220,10 +233,10 @@ namespace Collectio.Views
             }
 
             FileSystemUtils.ClearTempPath();
-            
+
             if (NewItemUsage++ == 25) await CrossStoreReview.Current.RequestReview(false);
 
-            await Shell.Current.GoToAsync($"..?collection={_collection.Id}&refresh=true");
+            await Shell.Current.GoToAsync($"..");
             Analytics.TrackEvent("CreateItem");
         }
     }
