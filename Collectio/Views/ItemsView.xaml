@@ -63,6 +63,12 @@
                                  Glyph="{StaticResource IconAdd}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
+        <!--<ToolbarItem Command="{Binding ShareCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FA-S"
+                                 Glyph="{StaticResource IconShare}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>-->
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
@@ -85,7 +91,10 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Item">
-                        <SwipeView Style="{StaticResource SwipeStyle}">
+                        <SwipeView Style="{StaticResource SwipeStyle}"
+                                   IsEnabled="{Binding Source={RelativeSource
+                                   AncestorType={x:Type viewModels:ItemsViewModel}},
+                                   Path=Owner}">
 
                             <SwipeView.RightItems>
                                 <SwipeItems>
