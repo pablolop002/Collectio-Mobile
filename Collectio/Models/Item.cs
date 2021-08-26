@@ -17,6 +17,8 @@ namespace Collectio.Models
         [ForeignKey(typeof(Collection)), Indexed, JsonIgnore] public int CollectionId { get; set; }
         
         public int? CollectionServerId { get; set; }
+        
+        public int? UserServerId { get; set; }
 
         [ForeignKey(typeof(Subcategory))] public int SubcategoryId { get; set; }
 
