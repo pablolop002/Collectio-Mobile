@@ -36,6 +36,6 @@ namespace Collectio.Models
             }
         }
 
-        [Ignore, JsonIgnore] public string File => FileSystemUtils.GetGroupImage(Image);
+        [Ignore, JsonIgnore] public string File => FileSystemUtils.GetCategoryImage(Image);
     }
 }
