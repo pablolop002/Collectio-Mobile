@@ -100,7 +100,7 @@ No hay categorías disponibles</value>
         <value>Galería</value>
     </data>
     <data name="SureQuestion" xml:space="preserve">
-        <value>¿Estas seguro?</value>
+        <value>¿Estás seguro?</value>
     </data>
     <data name="EditItem" xml:space="preserve">
         <value>Editar elemento</value>

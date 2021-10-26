@@ -1,4 +1,5 @@
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Firebase;
@@ -46,6 +47,17 @@ namespace Collectio.Droid
             base.OnResume();
 
             Xamarin.Essentials.Platform.OnResume();
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+
+            var extra = intent.GetStringExtra(Intent.ExtraIntent);
+            if (!string.IsNullOrWhiteSpace(extra) && extra.StartsWith("collectio"))
+            {
+                Xamarin.Forms.Application.Current.SendOnAppLinkRequestReceived(new System.Uri(extra));
+            }
         }
     }
 }

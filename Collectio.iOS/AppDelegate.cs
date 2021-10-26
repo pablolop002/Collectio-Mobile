@@ -1,3 +1,4 @@
+using System;
 using Foundation;
 using UIKit;
 
@@ -33,7 +34,8 @@ namespace Collectio.iOS
                 return true;
             }
 
-            return base.OpenUrl(app, url, options);
+            Xamarin.Forms.Application.Current.SendOnAppLinkRequestReceived(new Uri(url.AbsoluteString));
+            return true;
         }
 
         public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity,
